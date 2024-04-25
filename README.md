@@ -1,5 +1,5 @@
 # ☢️ Trabajo Práctico - El Reactor Nuclear ☢️
--------------------------
+
 ## Introducción
 El Sr. Montgomery B. desea implementar un sistema que asista a los operadores de su planta nuclear, en particular a un tal Homero J. S., en su operatoria diaria.
 En un relevamiento realizado, el Sr. Montgomery B. nos explica que una central nuclear es una instalación industrial en la que se genera electricidad a partir de la energía nuclear que se libera en forma de energía térmica mediante una reacción nuclear de fisión en cadena en la vasija de un reactor nuclear.
@@ -36,10 +36,9 @@ Cada barra de control permite reducir la energía térmica liberada en un determ
 
 Otro de los requerimientos es que el mecanismo de enfriamiento no pueda ser activado si el reactor funciona con normalidad.
 
--------------------------
+
 ## Diagrama de Clases
 
 
--------------------------
 
 ## Instrucciones de funcionamiento
