@@ -37,8 +37,8 @@ Cada barra de control permite reducir la energía térmica liberada en un determ
 Otro de los requerimientos es que el mecanismo de enfriamiento no pueda ser activado si el reactor funciona con normalidad.
 
 
-## Diagrama de Clases
+## Diagrama de clases
 
-
+## Diagramas de secuencia
 
 ## Instrucciones de funcionamiento
