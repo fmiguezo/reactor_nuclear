@@ -1,0 +1,74 @@
+@startuml
+
+title ***Sistema de control Central Nuclear***
+
+
+' Data Processing
+
+class ReactHealthChecker {
+    - isReactorOnline(): boolean;
+    - isTempSafe(): boolean;
+    - isEnergyProducedWithinRange(): boolean;
+    - createAlert(): Alert;
+    - triggerEmergency();
+}
+' Safety auto actions
+
+class SafetyAutoActionModule {
+    + emergencyShutDown();
+}
+
+' Human interface
+
+'' Alert handling
+
+class Alert {
+    + constructor();
+    + getAlertType(): enumAlertType;
+    + getAlertMsg(): string;
+    + getAlertTimestamp(): Date;
+}
+
+class CriticalAlert extends Alert {
+
+}
+
+class RegularAlert extends Alert {
+
+}
+
+class AlertNotifier {
+    + notifyAlert(alert:Alert);
+}
+
+'' Command handling
+enum availableCommands {
+    ROD,
+    REACTOR,
+    REFSYS,
+    RSENSOR,
+    REPORT_STATUS
+}
+
+class Command {
+
+}
+
+class CommandInterpreter {
+    - launchAction();
+    + interpretCommand();
+}
+
+' Actions
+interface Action {
+
+}
+
+'' Control rods
+class CRodsHandler implements Action {
+    + getAvailableRods(): ControlRod[];
+    + insertRod();
+    + removeRod();
+}
+
+@enduml
