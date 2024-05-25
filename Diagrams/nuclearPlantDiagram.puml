@@ -1,0 +1,85 @@
+@startuml
+
+title ***Simulador de Central Nuclear***
+
+' Nuclear Plant
+class NuclearPlant {
+    - reactors: Reactor[];
+}
+
+'General interfaces
+interface Turnable {
+    + turnOn();
+    + turnOff();
+}
+
+'General Sensor
+
+interface iSensor {
+    + isSensorOnline(): boolean;
+    + getValues(): number;
+}
+
+enum enumAlert {
+    CRITICAL,
+    REGULAR
+}
+
+' Control rod
+enum enumCRodStatus {
+    REMOVED,
+    INSERTED,
+    NOT_WORKING
+}
+
+class ControlRod {
+    - material: string;
+    - status: enumCRodStatus;
+    - remainingRodLifePercentage: number;
+    + getStatus(): string;
+    + getRemainingTime(): number;
+    + insertRod();
+    + removeRod();
+}
+
+' Reactor
+
+enum enumReactorStatus {
+    ONLINE,
+    OFFLINE
+}
+
+class Reactor implements Turnable {
+    - reactorID: string;
+    - status: enumReactorStatus;
+    - controlRods: ControlRod[];
+    - refrigerationSystem: RefrigerationSystem || null;
+    - heat: number;
+    + turnOn();
+    + turnOff();
+}
+
+'' Refrigeration system
+class RefrigerationSystem implements Turnable{
+
+}
+
+class CoreTempSensor implements iSensor {
+    ' Reads in °C
+    + isSensorOnline(): boolean;
+    + getValues(): number;
+}
+
+class EnergyProductionSensor implements iSensor {
+    'Reads in watts
+    + isSensorOnline(): boolean;
+    + getValues(): number;
+}
+
+' Easter egg...
+
+class WhatHaveYouDone {
+    + explode();
+}
+
+@enduml
