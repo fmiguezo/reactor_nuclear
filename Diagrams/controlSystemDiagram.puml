@@ -44,8 +44,9 @@ class NotificadorDeAlerta {
 enum ComandosDisponibles {
     BARRA_CONTROL
     REACTOR,
-    REFSYS,
-    RSENSOR,
+    REFRIGERACION,
+    SENSOR_TEMPERATURA,
+    SENSOR_NIVEL_AGUA,
     REPORTAR_ESTADO
 }
 

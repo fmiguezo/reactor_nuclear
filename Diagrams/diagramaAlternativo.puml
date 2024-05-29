@@ -92,10 +92,12 @@ note bottom of Sensor: "Retorna la temperatura? \nActualiza el estado del reacto
 @enduml
 
 'Cambios pendientes para unir diagramas:
-'- Agregar array operadores[] a Planta nuclear
-'- Crear una interfaz para agrupar los mecanismos de control, y crear un array de mecanismosDeControl en la clase Reactor
-'- Traducir nombres al castellano.
 '- Agregar estados faltantes en el enum
+
+
+'Done:
+'- Traducir nombres al castellano.
+'- Crear una interfaz para agrupar los mecanismos de control, y crear un array de mecanismosDeControl en la clase Reactor
+'- Agregar array operadores[] a Planta nuclear
 '- Agregar array de sensores
 '- Agregar clase turbina en el módulo de la planta nuclear.
-

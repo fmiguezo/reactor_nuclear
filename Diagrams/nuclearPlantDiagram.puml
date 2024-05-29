@@ -1,23 +1,28 @@
 @startuml
 
-title ***Simulador de Central Nuclear***
+title ***Central Nuclear***
 
 ' Planta nuclear
 class PlantaNuclear {
     - reactores: Reactor[];
+    - operadores: Operador[];
 }
 
-'Interfaces generales
-interface Encendible {
+' Reactor
+class Reactor implements Encendible {
+    - idReactor: string;
+    - estado: EstadoReactor;
+    - barrasDeControl: BarraDeControl[];
+    - mecanimosDeControl: IMecanismoDeControl[];
+    - sensores: ISensor[];
+    - temperatura: number;
     + encender();
     + apagar();
 }
 
-'Sensor general
-
-interface ISensor {
-    + estaEncendido(): boolean;
-    + obtenerValores(): number;
+enum EstadoReactor {
+    ENCENDIDO,
+    APAGADO
 }
 
 enum TipoAlerta {
@@ -25,63 +30,95 @@ enum TipoAlerta {
     ESTANDAR
 }
 
-' Barra de control
+' Operador
+class Operador {
+    + iniciarReaccion(reactor: Reactor) : void
+    + mantenerReaccion(reactor: Reactor) : void
+    + detenerReaccion(reactor: Reactor) : void
+}
+
+'Interfaces generales
+interface Encendible {
+    + encender();
+    + apagar();
+    + estaEncendido(): boolean;
+}
+
+interface Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+}
+
+
+'Sensores
+interface ISensor implements Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+class SensorTemperatura implements ISensor {
+    ' lee en °C
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+class SensorProduccionDeEnergia implements ISensor {
+    ' lee en watts
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+' Mecanismos de control
+interface IMecanismoDeControl implements Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+}
+
+'' Barra de control
+class BarraDeControl implements IMecanismoDeControl {
+    - material: string;
+    - estado: EstadoBarraDeControl;
+    - tiempoVidaUtilTotal: number;
+    + estaActivo(): boolean;
+    'insertar barra
+    + activar(); 
+    ' quitar barra
+    + desactivar(); 
+    + obtenerEstado(): string;
+    + obtenerTiempoDeVidaRestante(): number;
+}
+
 enum EstadoBarraDeControl {
     ELIMINADA,
     INSERTADA,
     EN_DESUSO
 }
 
-class BarraDeControl {
-    - material: string;
-    - estado: enumCRodStatus;
-    - tiempoVidaUtilTotal: number;
-    + obtenerEstado(): string;
-    + obtenerTiempoDeVidaRestante(): number;
-    + insertarBarra();
-    + quitarBarra();
+'' Turbina de refrigeración
+class TurbinaDeRefrigeracion implements IMecanismoDeControl {
+    + estaActivo(): boolean;
+    + activar(); 
+    + desactivar(); 
 }
 
-' Reactor
-
-enum EstadoReactor {
-    ENCENDIDO,
-    APAGADO
-}
-
-class Reactor implements Encendible {
-    - idReactor: string;
-    - estado: enumReactorStatus;
-    - barrasDeControl: BarraDeControl[];
-    - sistemaDeRefrigeracion: SistemaDeRefrigeracion || null;
-    - temperatura: number;
-    + encender();
-    + apagar();
-}
-
-'' Sistema de refrigeración
-class SistemaDeRefrigeracion implements Encendible {
-    + encender();
-    + apagar();
-}
-
-class SensorTemperatura implements ISensor {
-    ' lee en °C
-    + estaEncendido(): boolean;
-    + obtenerValores(): number;
-}
-
-class SensorProduccionDeEnergia implements ISensor {
-    ' lee en watts
-    + estaEncendido(): boolean;
-    + obtenerValores(): number;
-}
 
 ' Easter egg...
 
 class Chernobyl {
     + explotar();
 }
+
+'Relaciones
+Reactor -u-o PlantaNuclear
+Operador -l-o PlantaNuclear
 
 @enduml
 
