@@ -3,7 +3,7 @@
 title ***Simulador de Central Nuclear***
 
 ' Planta nuclear
-class Planta Nuclear {
+class PlantaNuclear {
     - reactores: Reactor[];
 }
 
