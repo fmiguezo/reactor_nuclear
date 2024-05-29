@@ -33,11 +33,6 @@ enum EstadoReactor {
     APAGADO
 }
 
-enum TipoAlerta {
-    CRITICA,
-    ESTANDAR
-}
-
 ' Operador
 class Operador {
     + iniciarReaccion(reactor: Reactor) : void
@@ -133,6 +128,8 @@ Reactor -[hidden]l- Encendible
 Activable -[hidden]r- IMecanismoDeControl
 Activable -[hidden]l- ISensor
 Reactor <.. Operador
+EstadoBarraDeControl -[hidden]d- BarraDeControl
+
 
 
 'Notas
@@ -145,6 +142,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note left of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
 
 @enduml
 
