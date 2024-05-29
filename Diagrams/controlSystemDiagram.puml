@@ -1,74 +1,73 @@
-@startuml
+@startuml 
 
 title ***Sistema de control Central Nuclear***
 
 
-' Data Processing
-
-class ReactHealthChecker {
-    - isReactorOnline(): boolean;
-    - isTempSafe(): boolean;
-    - isEnergyProducedWithinRange(): boolean;
-    - createAlert(): Alert;
-    - triggerEmergency();
-}
-' Safety auto actions
-
-class SafetyAutoActionModule {
-    + emergencyShutDown();
+' Procesamiento de Datos
+class ComprobadorSaludReactor {
+    - estaEncendido(): boolean;
+    - tieneTemperaturaSegura(): boolean;
+    - produceEnergiaEnRango(): boolean;
+    - crearAlerta(): Alerta;
+    - dispararEmergencia();
 }
 
-' Human interface
+' Acciones automáticas de seguridad
+class ModuloAccionAutomaticaSeguridad {
+    + apagarPorEmergencia();
+}
 
-'' Alert handling
+' Interfaz humana
 
-class Alert {
+'' Manejo de alertas
+
+class Alerta {
     + constructor();
-    + getAlertType(): enumAlertType;
-    + getAlertMsg(): string;
-    + getAlertTimestamp(): Date;
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
 }
 
-class CriticalAlert extends Alert {
-
-}
-
-class RegularAlert extends Alert {
+class AlertaCritica extends Alerta {
 
 }
 
-class AlertNotifier {
-    + notifyAlert(alert:Alert);
+class AlertaEstandar extends Alerta {
+
 }
 
-'' Command handling
-enum availableCommands {
-    ROD,
+class NotificadorDeAlerta {
+    + notificarAlerta(alerta:Alerta);
+}
+
+'' Manejo de comandos
+enum ComandosDisponibles {
+    BARRA_CONTROL
     REACTOR,
     REFSYS,
     RSENSOR,
-    REPORT_STATUS
+    REPORTAR_ESTADO
 }
 
-class Command {
-
-}
-
-class CommandInterpreter {
-    - launchAction();
-    + interpretCommand();
-}
-
-' Actions
-interface Action {
+class Comando {
 
 }
 
-'' Control rods
-class CRodsHandler implements Action {
-    + getAvailableRods(): ControlRod[];
-    + insertRod();
-    + removeRod();
+class InterpreteDeComandos {
+    - lanzarAccion();
+    + interpretarComando();
+}
+
+' Acciones
+interface Accion {
+
+}
+
+'' Barras de control
+class ManejadorDeBarraDeControl implements Accion {
+    + obtenerBarrasDisponibles(): BarraDeControl[];
+    + insertarBarra();
+    + quitarBarra();
 }
 
 @enduml

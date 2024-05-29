@@ -2,84 +2,92 @@
 
 title ***Simulador de Central Nuclear***
 
-' Nuclear Plant
-class NuclearPlant {
-    - reactors: Reactor[];
+' Planta nuclear
+class Planta Nuclear {
+    - reactores: Reactor[];
 }
 
-'General interfaces
-interface Turnable {
-    + turnOn();
-    + turnOff();
+'Interfaces generales
+interface Encendible {
+    + encender();
+    + apagar();
 }
 
-'General Sensor
+'Sensor general
 
-interface iSensor {
-    + isSensorOnline(): boolean;
-    + getValues(): number;
+interface ISensor {
+    + estaEncendido(): boolean;
+    + obtenerValores(): number;
 }
 
-enum enumAlert {
-    CRITICAL,
-    REGULAR
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR
 }
 
-' Control rod
-enum enumCRodStatus {
-    REMOVED,
-    INSERTED,
-    NOT_WORKING
+' Barra de control
+enum EstadoBarraDeControl {
+    ELIMINADA,
+    INSERTADA,
+    EN_DESUSO
 }
 
-class ControlRod {
+class BarraDeControl {
     - material: string;
-    - status: enumCRodStatus;
-    - remainingRodLifePercentage: number;
-    + getStatus(): string;
-    + getRemainingTime(): number;
-    + insertRod();
-    + removeRod();
+    - estado: enumCRodStatus;
+    - tiempoVidaUtilTotal: number;
+    + obtenerEstado(): string;
+    + obtenerTiempoDeVidaRestante(): number;
+    + insertarBarra();
+    + quitarBarra();
 }
 
 ' Reactor
 
-enum enumReactorStatus {
-    ONLINE,
-    OFFLINE
+enum EstadoReactor {
+    ENCENDIDO,
+    APAGADO
 }
 
-class Reactor implements Turnable {
-    - reactorID: string;
-    - status: enumReactorStatus;
-    - controlRods: ControlRod[];
-    - refrigerationSystem: RefrigerationSystem || null;
-    - heat: number;
-    + turnOn();
-    + turnOff();
+class Reactor implements Encendible {
+    - idReactor: string;
+    - estado: enumReactorStatus;
+    - barrasDeControl: BarraDeControl[];
+    - sistemaDeRefrigeracion: SistemaDeRefrigeracion || null;
+    - temperatura: number;
+    + encender();
+    + apagar();
 }
 
-'' Refrigeration system
-class RefrigerationSystem implements Turnable{
-
+'' Sistema de refrigeración
+class SistemaDeRefrigeracion implements Encendible {
+    + encender();
+    + apagar();
 }
 
-class CoreTempSensor implements iSensor {
-    ' Reads in °C
-    + isSensorOnline(): boolean;
-    + getValues(): number;
+class SensorTemperatura implements ISensor {
+    ' lee en °C
+    + estaEncendido(): boolean;
+    + obtenerValores(): number;
 }
 
-class EnergyProductionSensor implements iSensor {
-    'Reads in watts
-    + isSensorOnline(): boolean;
-    + getValues(): number;
+class SensorProduccionDeEnergia implements ISensor {
+    ' lee en watts
+    + estaEncendido(): boolean;
+    + obtenerValores(): number;
 }
 
 ' Easter egg...
 
-class WhatHaveYouDone {
-    + explode();
+class Chernobyl {
+    + explotar();
 }
 
 @enduml
+
+'Cambios sugeridos en PR
+'- establecer relaciones entre clases
+'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
+'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
+'- agregar Clase operador
+' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
