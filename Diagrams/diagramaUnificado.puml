@@ -170,7 +170,7 @@ end note
 
 ' Acciones automáticas de seguridad
 class ModuloAccionAutomaticaSeguridad {
-    + apagarPorEmergencia();
+    + apagarPorEmergencia(A: Alerta);
 }
 
 ' Interfaz humana
