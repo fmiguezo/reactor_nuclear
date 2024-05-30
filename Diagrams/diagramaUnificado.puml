@@ -1,0 +1,256 @@
+@startuml TP
+
+title "Central Nuclear"
+!theme reddress-darkblue
+scale 1.3
+skinparam Linetype ortho
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor skyBlue
+skinparam titleBackgroundColor #96a2ff
+
+
+package CentralNuclear {
+
+
+' Planta nuclear
+class PlantaNuclear {
+    - reactores: Reactor[];
+    - operadores: Operador[];
+}
+
+' Reactor
+class Reactor implements Encendible {
+    - idReactor: string;
+    - estado: EstadoReactor;
+    - mecanimosDeControl: IMecanismoDeControl[];
+    - sensores: ISensor[];
+    - temperatura: number;
+    + encender();
+    + apagar();
+}
+
+enum EstadoReactor {
+    ENCENDIDO,
+    APAGADO
+}
+
+' Operador
+class Operador {
+    + iniciarReaccion(reactor: Reactor) : void
+    + mantenerReaccion(reactor: Reactor) : void
+    + detenerReaccion(reactor: Reactor) : void
+}
+
+'Interfaces generales
+interface Encendible {
+    + encender();
+    + apagar();
+    + estaEncendido(): boolean;
+}
+
+interface Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+}
+
+
+'Sensores
+interface ISensor implements Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+class SensorTemperatura implements ISensor {
+    ' lee en °C
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+class SensorProduccionDeEnergia implements ISensor {
+    ' lee en watts
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+    + obtenerValores(): number;
+}
+
+' Mecanismos de control
+interface IMecanismoDeControl implements Activable {
+    + estaActivo(): boolean;
+    + activar();
+    + desactivar();
+}
+
+'' Barra de control
+class BarraDeControl implements IMecanismoDeControl {
+    - material: string;
+    - estado: EstadoBarraDeControl;
+    - tiempoVidaUtilTotal: number;
+    + estaActivo(): boolean;
+    'insertar barra
+    + activar(); 
+    ' quitar barra
+    + desactivar(); 
+    + obtenerEstado(): string;
+    + obtenerTiempoDeVidaRestante(): number;
+}
+
+enum EstadoBarraDeControl {
+    ELIMINADA,
+    INSERTADA,
+    EN_DESUSO
+}
+
+'' Turbina de refrigeración
+class TurbinaDeRefrigeracion implements IMecanismoDeControl {
+    + estaActivo(): boolean;
+    + activar(); 
+    + desactivar(); 
+}
+
+
+' Easter egg...
+
+class Chernobyl {
+    + explotar();
+}
+
+'Relaciones
+Reactor -u-o PlantaNuclear
+Operador -l-o PlantaNuclear
+Reactor *.. ISensor
+Reactor *.. IMecanismoDeControl
+Reactor -[hidden]l- Encendible
+Activable -[hidden]r- IMecanismoDeControl
+Activable -[hidden]l- ISensor
+Reactor <.. Operador
+EstadoBarraDeControl -[hidden]d- BarraDeControl
+
+
+
+'Notas
+note right of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
+note bottom of Operador: "El reactor va a iniciar apagado, \nal iniciar reaccion cambiamos la \npropiedad EstaEncendido a true"
+note bottom of SensorTemperatura: "Retorna la temperatura"
+note bottom of SensorProduccionDeEnergia: "Retorna la producción de energía"
+note bottom of BarraDeControl: "Retorna el estado de la barra"
+note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
+note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
+note bottom of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
+note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note left of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
+
+}
+
+package SistemaDeControl {
+
+' Procesamiento de Datos
+class ComprobadorSaludReactor {
+    - estaEncendido(reactor: Reactor): boolean;
+    - tieneTemperaturaSegura(reactor: Reactor): boolean;
+    - produceEnergiaEnRango(reactor: Reactor): boolean;
+    - crearAlerta(): Alerta;
+    - dispararEmergencia();
+}
+
+note bottom of ComprobadorSaludReactor
+    Clase que se encarga de verificar el estado del reactor
+    y lanzar alertas en caso de que algo no este funcionando
+    correctamente.
+    Cambio tentativo: crearAlerta() podria ser reemplazado 
+    por un Factory Method que cree alertas de distintos tipos 
+    segun la necesidad
+end note
+
+' Acciones automáticas de seguridad
+class ModuloAccionAutomaticaSeguridad {
+    + apagarPorEmergencia();
+}
+
+' Interfaz humana
+
+'' Manejo de alertas
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR
+}
+
+interface Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+}
+
+class AlertaCritica implements Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+
+}
+
+class AlertaEstandar implements Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+}
+
+class NotificadorDeAlerta {
+    + notificarAlerta(alerta:Alerta);
+}
+
+'' Manejo de comandos
+enum ComandosDisponibles {
+    BARRA_CONTROL
+    REACTOR,
+    REFRIGERACION,
+    SENSOR_TEMPERATURA,
+    SENSOR_NIVEL_AGUA,
+    REPORTAR_ESTADO
+}
+
+class Comando {
+
+}
+
+class InterpreteDeComandos {
+    - lanzarAccion();
+    + interpretarComando();
+}
+
+' Acciones
+interface Accion {
+
+}
+
+'' Barras de control
+class ManejadorDeBarraDeControl implements Accion {
+    + obtenerBarrasDisponibles(): BarraDeControl[];
+    + insertarBarra();
+    + quitarBarra();
+}
+
+' Relaciones
+NotificadorDeAlerta .r.> Alerta
+TipoAlerta -[hidden]l- Alerta
+ComprobadorSaludReactor .r.> Alerta
+
+}
+
+
+ComprobadorSaludReactor -r-* PlantaNuclear
+
+
+@enduml
+
+'Cambios sugeridos en PR
+'- establecer relaciones entre clases
+'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
+'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
+'- agregar Clase operador
+' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
