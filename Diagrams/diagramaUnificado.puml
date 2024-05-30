@@ -214,12 +214,14 @@ enum ComandosDisponibles {
 }
 
 class Comando {
+    -estado: ComandosDisponibles
 
+    +setComando(e: ComandosDisponibles)
 }
 
 class InterpreteDeComandos {
     - lanzarAccion();
-    + interpretarComando();
+    + interpretarComando(c: Comando);
 }
 
 ' Acciones
