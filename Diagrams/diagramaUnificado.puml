@@ -155,8 +155,6 @@ class ComprobadorSaludReactor {
     - estaEncendido(reactor: Reactor): boolean;
     - tieneTemperaturaSegura(reactor: Reactor): boolean;
     - produceEnergiaEnRango(reactor: Reactor): boolean;
-    - crearAlerta(): Alerta;
-    - dispararEmergencia();
 }
 
 note bottom of ComprobadorSaludReactor
@@ -182,9 +180,10 @@ enum TipoAlerta {
 }
 
 interface Alerta {
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
+    + obtenerTipoDeAlerta(C:ComprobadorSaludReactor): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(C:ComprobadorSaludReactor): string;
+    + obtenerTimestampDeAlerta(C:ComprobadorSaludReactor): Date;
+    + crearAlerta(): Alerta;
 }
 
 class AlertaCritica implements Alerta {
