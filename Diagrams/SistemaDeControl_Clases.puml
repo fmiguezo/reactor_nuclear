@@ -1,0 +1,103 @@
+@startuml 
+
+title "Sistema de control Central Nuclear"
+!theme reddress-darkblue
+scale 1.3
+skinparam Linetype ortho
+
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor skyBlue
+skinparam titleBackgroundColor #96a2ff
+
+' Procesamiento de Datos
+class ComprobadorSaludReactor {
+    - estaEncendido(reactor: Reactor): boolean;
+    - tieneTemperaturaSegura(reactor: Reactor): boolean;
+    - produceEnergiaEnRango(reactor: Reactor): boolean;
+    - crearAlerta(): Alerta;
+    - dispararEmergencia();
+}
+
+note bottom of ComprobadorSaludReactor
+    Clase que se encarga de verificar el estado del reactor
+    y lanzar alertas en caso de que algo no este funcionando
+    correctamente.
+    Cambio tentativo: crearAlerta() podria ser reemplazado 
+    por un Factory Method que cree alertas de distintos tipos 
+    segun la necesidad
+end note
+
+' Acciones automáticas de seguridad
+class ModuloAccionAutomaticaSeguridad {
+    + apagarPorEmergencia();
+}
+
+' Interfaz humana
+
+'' Manejo de alertas
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR
+}
+
+interface Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+}
+
+class AlertaCritica implements Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+
+}
+
+class AlertaEstandar implements Alerta {
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
+}
+
+class NotificadorDeAlerta {
+    + notificarAlerta(alerta:Alerta);
+}
+
+'' Manejo de comandos
+enum ComandosDisponibles {
+    BARRA_CONTROL
+    REACTOR,
+    REFRIGERACION,
+    SENSOR_TEMPERATURA,
+    SENSOR_NIVEL_AGUA,
+    REPORTAR_ESTADO
+}
+
+class Comando {
+
+}
+
+class InterpreteDeComandos {
+    - lanzarAccion();
+    + interpretarComando();
+}
+
+' Acciones
+interface Accion {
+
+}
+
+'' Barras de control
+class ManejadorDeBarraDeControl implements Accion {
+    + obtenerBarrasDisponibles(): BarraDeControl[];
+    + insertarBarra();
+    + quitarBarra();
+}
+
+' Relaciones
+NotificadorDeAlerta .r.> Alerta
+TipoAlerta -[hidden]l- Alerta
+ComprobadorSaludReactor .r.> Alerta
+
+@enduml
