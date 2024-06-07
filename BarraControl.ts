@@ -26,8 +26,8 @@ export default class BarraControl implements IMecanismoControl {
     return activoMap.get(this._estado) ?? false;
   }
 
-  getPercBarra(): number {
-    return this.calcPrcBarra();
+  getPctBarra(): number {
+    return this.calcPctBarra();
   }
 
   // Setters
@@ -46,12 +46,11 @@ export default class BarraControl implements IMecanismoControl {
       this.estado = EstadoBarraDeControl.INSERTADA;
     } else throw new Error("Barra inactivable");
   }
-
   desactivar(): void {
     this.estado = EstadoBarraDeControl.EN_DESUSO;
   }
 
-  private calcPrcBarra(): number {
+  private calcPctBarra(): number {
     return (this._tiempoVidaUtilTotal / 3600) * 100;
   }
 }

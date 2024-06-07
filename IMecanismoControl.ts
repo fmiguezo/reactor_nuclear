@@ -1,13 +1,7 @@
-// ' Mecanismos de control
-// interface IMecanismoDeControl implements Activable {
-//     + estaActivo(): boolean;
-//     + activar();
-//     + desactivar();
-//     + enfriarReactor();
+// export default interface IMecanismoControl extends IActivable {
+//   estaActivo(): boolean;
+//   activar(): void;
+//   desactivar(): void;
 // }
-
-export default interface IMecanismoControl {
-  estaActivo(): boolean;
-  activar(): void;
-  desactivar(): void;
-}
+import IActivable from "./IActivable";
+export default interface IMecanismoControl extends IActivable {}
