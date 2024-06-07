@@ -10,5 +10,4 @@ export default interface IMecanismoControl {
   estaActivo(): boolean;
   activar(): void;
   desactivar(): void;
-  enfriarReactor(): void;
 }

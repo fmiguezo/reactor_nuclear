@@ -18,6 +18,10 @@ export default class BarraControl implements IMecanismoControl {
     return activoMap.get(this._estado) ?? false;
   }
 
+  getPercBarra(): number {
+    return this.calcPrcBarra();
+  }
+
   // Setters
   private set estado(nuevoEstado: EstadoBarraDeControl) {
     this._estado = nuevoEstado;
@@ -39,10 +43,7 @@ export default class BarraControl implements IMecanismoControl {
     this.estado = EstadoBarraDeControl.EN_DESUSO;
   }
 
-  enfriarReactor(): void {
-    /* Idea para implementar:
-        let temperatura: number = getReactorTemperatura();
-        tem
-        */
+  private calcPrcBarra(): number {
+    return (this._tiempoVidaUtilTotal / 3600) * 100;
   }
 }
