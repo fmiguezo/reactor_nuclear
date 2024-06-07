@@ -3,10 +3,18 @@ import { EstadoBarraDeControl } from "./EstadoBarraDeControl";
 
 export default class BarraControl implements IMecanismoControl {
   private _material: string;
-  private _estado: EstadoBarraDeControl = EstadoBarraDeControl.EN_DESUSO;
-  private _tiempoVidaUtilTotal: number = 200;
+  private _estado: EstadoBarraDeControl;
+  private _tiempoVidaUtilTotal: number;
 
-  constructor() {}
+  constructor(
+    material: string,
+    tiempoVidaUtilTotal: number = 200,
+    estado: EstadoBarraDeControl = EstadoBarraDeControl.EN_DESUSO
+  ) {
+    this._material = material;
+    this._tiempoVidaUtilTotal = tiempoVidaUtilTotal;
+    this._estado = estado;
+  }
 
   // Getters
   estaActivo(): boolean {
