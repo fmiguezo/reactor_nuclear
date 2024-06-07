@@ -4,7 +4,6 @@ import Reactor from "./Reactor";
 export default class SensorTemperatura implements ISensor {
   private activo: boolean = true;
   private ultimaTemperatura: number = 0;
-  private static readonly INCREMENTO_POR_MINUTO: number = 25;
 
   public estaActivo(): boolean {
     return this.activo;
@@ -19,7 +18,11 @@ export default class SensorTemperatura implements ISensor {
   }
 
   public actualizarValor(valor: number): void {
-    this.ultimaTemperatura = valor;
+    if (this.activo) {
+      this.ultimaTemperatura = valor;
+    } else {
+      throw new Error("El sensor no está activo");
+    }
   }
 
   public obtenerValor(): number {

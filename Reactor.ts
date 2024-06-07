@@ -1,17 +1,22 @@
 import { EstadoReactor } from "./EstadoReactor";
 import IMecanismoDeControl from "./IMecanismoDeControl";
 import ISensor from "./ISensor";
+import SensorProduccionDeEnergia from "./SensorProduccionDeEnergia";
+import SensorTemperatura from "./SensorTemperatura";
 
 export default class Reactor {
   private idReactor: string = "";
   private estado: EstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
-  private sensores: ISensor[] = [];
-  private temperatura: number;
+  private sensorTemp: SensorTemperatura = new SensorTemperatura();
+  private sensorEnergia: SensorProduccionDeEnergia = new SensorProduccionDeEnergia();
+  private temperatura: number = 0;
+  private static readonly INCREMENTO_POR_MINUTO: number = 25;
 
   public encender(): void {
     this.estado = EstadoReactor.ENCENDIDO;
   }
+
   public apagar(): void {
     this.estado = EstadoReactor.APAGADO;
   }
@@ -20,9 +25,15 @@ export default class Reactor {
     return this.temperatura;
   }
 
-  public setTemperatura(temperatura: number): void {
-    this.temperatura = temperatura;
-    this.notificarSensores();
+  public incrementarTemperatura(): void {
+    if (this.estado === EstadoReactor.ENCENDIDO) {
+      this.temperatura += Reactor.INCREMENTO_POR_MINUTO;
+      this.notificarSensores();
+    }
+  }
+
+  public actualizarTemperatura(): void {
+    // TO-DO
   }
 
   public getIdReactor(): string {
@@ -41,15 +52,7 @@ export default class Reactor {
     this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
-  public agregarSensor(sensor: ISensor): void {
-    this.sensores.push(sensor);
-  }
-
-  public eliminarSensor(sensor: ISensor): void {
-    this.sensores = this.sensores.filter((s) => s !== sensor);
-  }
-
   public notificarSensores(): void {
-    this.sensores.forEach((sensor) => sensor.actualizarValor(this.temperatura));
+    this.sensorTemp.actualizarValor(this.temperatura);
   }
 }
