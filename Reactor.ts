@@ -1,4 +1,4 @@
-import EstadoReactor from "./EstadoReactor";
+import { EstadoReactor } from "./EstadoReactor";
 import IMecanismoDeControl from "./IMecanismoDeControl";
 import ISensor from "./ISensor";
 
@@ -6,6 +6,7 @@ export default class Reactor {
   private idReactor: string = "";
   private estado: EstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
+  private sensores: ISensor[] = [];
   private temperatura: number;
 
   public encender(): void {
@@ -21,6 +22,7 @@ export default class Reactor {
 
   public setTemperatura(temperatura: number): void {
     this.temperatura = temperatura;
+    this.notificarSensores();
   }
 
   public getIdReactor(): string {
@@ -37,5 +39,17 @@ export default class Reactor {
 
   public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+  }
+
+  public agregarSensor(sensor: ISensor): void {
+    this.sensores.push(sensor);
+  }
+
+  public eliminarSensor(sensor: ISensor): void {
+    this.sensores = this.sensores.filter((s) => s !== sensor);
+  }
+
+  public notificarSensores(): void {
+    this.sensores.forEach((sensor) => sensor.actualizarValor(this.temperatura));
   }
 }
