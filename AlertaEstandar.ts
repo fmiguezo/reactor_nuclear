@@ -1,4 +1,5 @@
 import IAlerta from "./IAlerta";
+import ComprobadorSaludReactor from "./ComprobadorSaludReactor";
 
 export default class AlertaEstandar implements IAlerta {
 
