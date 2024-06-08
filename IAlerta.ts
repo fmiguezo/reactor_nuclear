@@ -1,3 +1,5 @@
+import ComprobadorSaludReactor from "./ComprobadorSaludReactor";
+
 export default interface IAlerta {
 
     obtenerTipoDeAlerta(c: ComprobadorSaludReactor): TipoAlerta;
