@@ -1,4 +1,4 @@
-const TipoAlerta = {
-    CRITICA: 'CRITICA',
-    ESTANDAR: 'ESTANDAR'
+const enum TipoAlerta  {
+    CRITICA,
+    ESTANDAR
 };

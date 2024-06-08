@@ -1,4 +1,4 @@
-import IAlerta from "./IAlerta"
+import IAlerta from "./IAlerta";
 
 export default class NotificadorDeAlerta {
 
