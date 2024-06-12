@@ -23,8 +23,8 @@ export default class SensorProduccionDeEnergia implements ISensor{
         }
     }
 
-    obtenerValor(): number {
-        throw new Error("Method not implemented.");
+    public obtenerValor(): number {
+        return this._energiaProducida;
     }
 
 }
