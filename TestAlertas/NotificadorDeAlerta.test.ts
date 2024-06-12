@@ -1,6 +1,6 @@
 import NotificadorDeAlerta from "../NotificadorDeAlerta";
 
-describe("Test de la clase Locomotora", () => {
+describe("Test de la clase NotificadorDeAlerta", () => {
 
     let instance: NotificadorDeAlerta;
 
@@ -11,7 +11,5 @@ describe("Test de la clase Locomotora", () => {
     it("Verifica que la instancia sea de NotificadorDeAlerta", () => {
         expect(instance).toBeInstanceOf(NotificadorDeAlerta);
     });
-
-    
 
 })
