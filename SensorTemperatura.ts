@@ -2,30 +2,46 @@ import ISensor from "./ISensor";
 import Reactor from "./Reactor";
 
 export default class SensorTemperatura implements ISensor {
-  private activo: boolean = true;
-  private ultimaTemperatura: number = 0;
+  private _activo: boolean = true;
+  private _ultimaTemperatura: number = 0;
+
+  public get activo(): boolean {
+    return this._activo;
+  }
+
+  public set activo(value: boolean) {
+    this._activo = value;
+  }
+
+  public get ultimaTemperatura(): number {
+    return this._ultimaTemperatura;
+  }
+
+  public set ultimaTemperatura(value: number) {
+    this._ultimaTemperatura = value;
+  }
 
   public estaActivo(): boolean {
-    return this.activo;
+    return this._activo;
   }
 
   public activar(): void {
-    this.activo = true;
+    this._activo = true;
   }
 
   public desactivar(): void {
-    this.activo = false;
+    this._activo = false;
   }
 
   public actualizarValor(temperatura: number): void {
-    if (this.activo) {
-      this.ultimaTemperatura = temperatura;
+    if (this._activo) {
+      this._ultimaTemperatura = temperatura;
     } else {
       throw new Error("El sensor no está activo");
     }
   }
 
   public obtenerValor(): number {
-    return this.ultimaTemperatura;
+    return this._ultimaTemperatura;
   }
 }
