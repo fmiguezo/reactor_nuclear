@@ -6,15 +6,15 @@ export default class AlertaCritica implements IAlerta {
     tipoAlerta: TipoAlerta.CRITICA;
     date: Date = new Date();
 
-    public obtenerTipoDeAlerta(c: ComprobadorSaludReactor) {
+    public obtenerTipoDeAlerta() {
         return this.tipoAlerta;
     }
 
-    public obtenerMensajeDeAlerta(c: ComprobadorSaludReactor): string {
+    public obtenerMensajeDeAlerta(): string {
         return "ALERTA CRITICA, EL REACTOR SE APAGARA";
     }
 
-    public obtenerTimestampDeAlerta(c: ComprobadorSaludReactor): Date {
+    public obtenerTimestampDeAlerta(): Date {
         return this.date;
     }
     
