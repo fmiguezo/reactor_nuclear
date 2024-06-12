@@ -2,7 +2,7 @@ import IAlerta from "./IAlerta";
 
 export default class AlertaEstandar implements IAlerta {
 
-    tipoAlerta: TipoAlerta.ESTANDAR;
+    tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
     date: Date = new Date();
 
     public obtenerTipoDeAlerta() {
