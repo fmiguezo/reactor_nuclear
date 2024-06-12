@@ -19,10 +19,6 @@ export default class SensorTemperatura implements ISensor {
     this._activo = value;
   }
 
-  public get ultimaTemperatura(): number {
-    return this._ultimaTemperatura;
-  }
-
   public set ultimaTemperatura(value: number) {
     this._ultimaTemperatura = value;
   }
@@ -40,11 +36,10 @@ export default class SensorTemperatura implements ISensor {
   }
 
   public actualizarValor(temperatura: number): void {
-    if (this._activo) {
-      this._ultimaTemperatura = temperatura;
-    } else {
+    if (!this._activo) {
       throw new Error("El sensor no está activo");
     }
+    this._ultimaTemperatura = temperatura;
   }
 
   public obtenerValor(): number {
