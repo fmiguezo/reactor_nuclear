@@ -6,15 +6,15 @@ export default class AlertaEstandar implements IAlerta {
     tipoAlerta: TipoAlerta.ESTANDAR;
     date: Date = new Date();
 
-    public obtenerTipoDeAlerta(c: ComprobadorSaludReactor) {
+    public obtenerTipoDeAlerta() {
         return this.tipoAlerta;
     }
 
-    public obtenerMensajeDeAlerta(c: ComprobadorSaludReactor): string {
+    public obtenerMensajeDeAlerta(): string {
         return "ALERTA ESTANDAR, SE ACTIVARAN MECANISMOS DE ENFRIAMIENTO";
     }
 
-    public obtenerTimestampDeAlerta(c: ComprobadorSaludReactor): Date {
+    public obtenerTimestampDeAlerta(): Date {
         return this.date;
     }
     
