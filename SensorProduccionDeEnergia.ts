@@ -14,15 +14,17 @@ export default class SensorProduccionDeEnergia implements ISensor{
     public desactivar(): void {
         this._activo = false;
     }
-    
-    actualizarValor(valor: number): void {
-        throw new Error("Method not implemented.");
+
+    public actualizarValor(energiaPRoducida:number): void {
+        if (this._activo) {
+            this._energiaProducida = energiaPRoducida;
+        } else {
+            throw new Error("El sensor no está activo");
+        }
     }
+
     obtenerValor(): number {
         throw new Error("Method not implemented.");
     }
-
-
-
 
 }
