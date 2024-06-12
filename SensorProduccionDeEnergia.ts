@@ -1,9 +1,10 @@
 import ISensor from "./ISensor";
 
 export default class SensorProduccionDeEnergia implements ISensor{
-    
+    private _activo: boolean = true;
+    private _energiaProducida: number;
     estaActivo(): boolean {
-        throw new Error("Method not implemented.");
+       return this._activo;
     }
     activar(): void {
         throw new Error("Method not implemented.");
