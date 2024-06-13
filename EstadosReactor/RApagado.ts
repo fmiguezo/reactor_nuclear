@@ -26,4 +26,6 @@ export default class RApagado extends IEstadoReactor {
   override estaEncendido() {
     return false;
   }
+
+  override incrementarTemperatura(): void {}
 }
