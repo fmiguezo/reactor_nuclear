@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import RApagado from "./EstadosReactor/RApagado.ts";
 import IEstadoReactor from "./IEstadoReactor.ts";
-=======
->>>>>>> develop
 import { EstadoReactor } from "./EstadoReactor";
 import IMecanismoDeControl from "./IMecanismoDeControl";
 import ISensor from "./ISensor";
@@ -14,17 +11,11 @@ export default class Reactor {
   private estado: IEstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
   private sensorTemp: SensorTemperatura = new SensorTemperatura();
-<<<<<<< HEAD
   private sensorEnergia: SensorProduccionDeEnergia =
     new SensorProduccionDeEnergia();
   private temperatura: number = 0;
 
   constructor(estado: IEstadoReactor = new RApagado()) {}
-=======
-  private sensorEnergia: SensorProduccionDeEnergia = new SensorProduccionDeEnergia();
-  private temperatura: number = 0;
-  private static readonly INCREMENTO_POR_MINUTO: number = 25;
->>>>>>> develop
 
   public encender(): void {
     this.estado.encender();
@@ -38,24 +29,12 @@ export default class Reactor {
     return this.temperatura;
   }
 
-<<<<<<< HEAD
   public actualizarTemperatura(): void {
     // TO-DO
   }
 
   public setTemperatura(temperatura: number): void {
     this.temperatura = temperatura;
-=======
-  public incrementarTemperatura(): void {
-    if (this.estado === EstadoReactor.ENCENDIDO) {
-      this.temperatura += Reactor.INCREMENTO_POR_MINUTO;
-      this.notificarSensores();
-    }
-  }
-
-  public actualizarTemperatura(): void {
-    // TO-DO
->>>>>>> develop
   }
 
   public getIdReactor(): string {
@@ -84,10 +63,6 @@ export default class Reactor {
     this.mecanimosDeControl = this.mecanimosDeControl.filter(
       (mecanismo) => mecanismo !== mecanismoDeControl
     );
-  }
-
-  public notificarSensores(): void {
-    this.sensorTemp.actualizarValor(this.temperatura);
   }
 
   public notificarSensores(): void {
