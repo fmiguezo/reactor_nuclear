@@ -54,6 +54,14 @@ export default class Reactor {
     this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
+  public agregarSensor(sensor: ISensor): void {
+    this.sensores.push(sensor);
+  }
+
+  public eliminarSensor(sensor: ISensor): void {
+    this.sensores = this.sensores.filter((sensor) => sensor !== sensor);
+  }
+
   public notificarSensores(): void {
     this.sensores.forEach((sensor) => sensor.actualizar(this));
   }
