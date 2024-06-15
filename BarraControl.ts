@@ -1,7 +1,7 @@
-import IMecanismoControl from "./IMecanismoControl";
+import IMecanismoDeControl from "./IMecanismoDeControl";
 import { EstadoBarraDeControl } from "./EstadoBarraDeControl";
 
-export default class BarraControl implements IMecanismoControl {
+export default class BarraControl implements IMecanismoDeControl {
   private _material: string;
   private _estado: EstadoBarraDeControl;
   private _tiempoVidaUtilTotal: number;

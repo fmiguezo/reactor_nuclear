@@ -4,4 +4,4 @@
 //   desactivar(): void;
 // }
 import IActivable from "./IActivable";
-export default interface IMecanismoControl extends IActivable {}
+export default interface IMecanismoDeControl extends IActivable {}
