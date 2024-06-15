@@ -28,11 +28,11 @@ export default class SensorTemperatura implements ISensor {
     this._activo = false;
   }
 
-  public actualizarValor(temperatura: number): void {
+  public actualizar(reactor: Reactor): void {
     if (!this._activo) {
       throw new Error("El sensor no está activo");
     }
-    this._ultimaTemperatura = temperatura;
+    this._ultimaTemperatura = Reactor.getTemperatura();
   }
 
   public obtenerValor(): number {

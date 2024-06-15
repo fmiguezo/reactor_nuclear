@@ -2,15 +2,12 @@ import RApagado from "./EstadosReactor/RApagado.ts";
 import IEstadoReactor from "./IEstadoReactor.ts";
 import IMecanismoDeControl from "./IMecanismoDeControl.ts";
 import ISensor from "./ISensor";
-import SensorProduccionDeEnergia from "./SensorProduccionDeEnergia";
-import SensorTemperatura from "./SensorTemperatura";
 
 export default class Reactor {
   private idReactor: string = "";
   private estado: IEstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
-  private sensorTemp: SensorTemperatura = new SensorTemperatura();
-  private sensorEnergia: SensorProduccionDeEnergia = new SensorProduccionDeEnergia();
+  private sensores: ISensor[] = [];
   private temperatura: number = 0;
 
   constructor(estado: IEstadoReactor = new RApagado()) {}
@@ -58,6 +55,6 @@ export default class Reactor {
   }
 
   public notificarSensores(): void {
-    this.sensorTemp.actualizarValor(this.temperatura);
+    this.sensores.forEach((sensor) => sensor.actualizar(this));
   }
 }
