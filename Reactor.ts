@@ -1,7 +1,7 @@
 import RApagado from "./EstadosReactor/RApagado.ts";
 import IEstadoReactor from "./IEstadoReactor.ts";
 import { EstadoReactor } from "./EstadoReactor";
-import IMecanismoDeControl from "./IMecanismoDeControl";
+import IMecanismoDeControl from "./IMecanismoControl";
 import ISensor from "./ISensor";
 import SensorProduccionDeEnergia from "./SensorProduccionDeEnergia";
 import SensorTemperatura from "./SensorTemperatura";
