@@ -1,3 +1,5 @@
+import RApagado from "./EstadosReactor/RApagado.ts";
+import IEstadoReactor from "./IEstadoReactor.ts";
 import { EstadoReactor } from "./EstadoReactor";
 import IMecanismoDeControl from "./IMecanismoControl";
 import ISensor from "./ISensor";
@@ -6,50 +8,61 @@ import SensorTemperatura from "./SensorTemperatura";
 
 export default class Reactor {
   private idReactor: string = "";
-  private estado: EstadoReactor;
+  private estado: IEstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
   private sensorTemp: SensorTemperatura = new SensorTemperatura();
-  private sensorEnergia: SensorProduccionDeEnergia = new SensorProduccionDeEnergia();
+  private sensorEnergia: SensorProduccionDeEnergia =
+    new SensorProduccionDeEnergia();
   private temperatura: number = 0;
-  private static readonly INCREMENTO_POR_MINUTO: number = 25;
+
+  constructor(estado: IEstadoReactor = new RApagado()) {}
 
   public encender(): void {
-    this.estado = EstadoReactor.ENCENDIDO;
+    this.estado.encender();
   }
 
   public apagar(): void {
-    this.estado = EstadoReactor.APAGADO;
+    this.estado.apagar();
   }
 
   public getTemperatura(): number {
     return this.temperatura;
   }
 
-  public incrementarTemperatura(): void {
-    if (this.estado === EstadoReactor.ENCENDIDO) {
-      this.temperatura += Reactor.INCREMENTO_POR_MINUTO;
-      this.notificarSensores();
-    }
-  }
-
   public actualizarTemperatura(): void {
     // TO-DO
+  }
+
+  public setTemperatura(temperatura: number): void {
+    this.temperatura = temperatura;
   }
 
   public getIdReactor(): string {
     return this.idReactor;
   }
 
-  public getEstado(): EstadoReactor {
-    return this.estado;
+  public getEstado() {
+    return this.estado.estaEncendido();
   }
 
-  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+  public cambiarEstado(state: IEstadoReactor): void {
+    console.log("Cambiando estado");
+    this.estado = state;
+    this.estado.cargaContexto(this);
+  }
+
+  public agregarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
     this.mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+  public eliminarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
+    this.mecanimosDeControl = this.mecanimosDeControl.filter(
+      (mecanismo) => mecanismo !== mecanismoDeControl
+    );
   }
 
   public notificarSensores(): void {
