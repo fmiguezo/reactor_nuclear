@@ -1,7 +1,6 @@
 import RApagado from "./EstadosReactor/RApagado.ts";
 import IEstadoReactor from "./IEstadoReactor.ts";
-import { EstadoReactor } from "./EstadoReactor";
-import IMecanismoDeControl from "./IMecanismoControl";
+import IMecanismoDeControl from "./IMecanismoDeControl.ts";
 import ISensor from "./ISensor";
 import SensorProduccionDeEnergia from "./SensorProduccionDeEnergia";
 import SensorTemperatura from "./SensorTemperatura";
@@ -11,8 +10,7 @@ export default class Reactor {
   private estado: IEstadoReactor;
   private mecanimosDeControl: IMecanismoDeControl[] = [];
   private sensorTemp: SensorTemperatura = new SensorTemperatura();
-  private sensorEnergia: SensorProduccionDeEnergia =
-    new SensorProduccionDeEnergia();
+  private sensorEnergia: SensorProduccionDeEnergia = new SensorProduccionDeEnergia();
   private temperatura: number = 0;
 
   constructor(estado: IEstadoReactor = new RApagado()) {}
@@ -51,18 +49,12 @@ export default class Reactor {
     this.estado.cargaContexto(this);
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this.mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this.mecanimosDeControl = this.mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public notificarSensores(): void {

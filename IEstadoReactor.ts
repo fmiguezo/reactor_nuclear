@@ -17,8 +17,8 @@ export default abstract class IEstadoReactor implements IEncendible {
   }
 
   public incrementarTemperatura(): void {
-    contexto.temperatura += IEstadoReactor.INCREMENTO_POR_MINUTO;
-    contexto.notificarSensores();
+    this.contexto.setTemperatura(IEstadoReactor.INCREMENTO_POR_MINUTO + this.contexto.getTemperatura());
+    this.contexto.notificarSensores();
   }
 
   public abstract verificaEstado(): void;
