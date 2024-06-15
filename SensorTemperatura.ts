@@ -2,14 +2,8 @@ import ISensor from "./ISensor";
 import Reactor from "./Reactor";
 
 export default class SensorTemperatura implements ISensor {
-  private _activo: boolean;
-  private _ultimaTemperatura: number;
-
-  public constructor()
-  {
-    this._activo = true;
-    this._ultimaTemperatura = 0
-  }
+  private _activo: boolean = true;
+  private _ultimaTemperatura: number = 0;
 
   public get activo(): boolean {
     return this._activo;
