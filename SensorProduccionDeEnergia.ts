@@ -26,11 +26,11 @@ export default class SensorProduccionDeEnergia implements ISensor {
     this._activo = false;
   }
 
-  public actualizarValor(energiaPRoducida: number): void {
+  public actualizar(reactor: Reactor): void {
     if (!this._activo) {
       throw new Error("El sensor no está activo");
     } else {
-      this._energiaProducida = energiaPRoducida;
+      this._energiaProducida = reactor.getEnergiaProducida();
     }
   }
 
