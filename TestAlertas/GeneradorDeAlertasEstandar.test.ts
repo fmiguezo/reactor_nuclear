@@ -1,3 +1,4 @@
+import AlertaEstandar from "../AlertaEstandar";
 import GeneradorDeAlertasEstandar from "../GeneradorDeAlertasEstandar";
 
 describe("Test de la clase GeneradorDeAlertasEstandar", () => {
@@ -10,6 +11,10 @@ describe("Test de la clase GeneradorDeAlertasEstandar", () => {
 
     it("Verifica que la instancia sea de GeneradorDeAlertasEstandar", () => {
         expect(instance).toBeInstanceOf(GeneradorDeAlertasEstandar);
+    });
+
+    it("Verifica que el objeto retornado sea de tipo AlertaEstandar", () => {
+        expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
     });
 
 })
