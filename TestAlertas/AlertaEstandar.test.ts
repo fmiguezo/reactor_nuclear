@@ -25,4 +25,16 @@ describe("Test de la clase AlertaEstandar", () => {
         expect(instance.obtenerTimestampDeAlerta()).toBeInstanceOf(Date);
     });
 
+    it("Verifica que el setTipoAlerta funcione", () => {
+        instance.tipoAlerta = TipoAlerta.CRITICA;
+        expect(instance.obtenerTipoDeAlerta()).toBe(TipoAlerta.CRITICA);
+    });
+
+    it("Verifica que el setDate funcione", () => {
+        instance.date = new Date("2024-06-08T12:00:00")
+        let anotherDate = new Date;
+        anotherDate = instance.date;
+        expect(instance.obtenerTimestampDeAlerta()).toBe(anotherDate);
+    });
+
 })
