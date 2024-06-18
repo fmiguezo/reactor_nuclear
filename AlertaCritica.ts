@@ -2,8 +2,20 @@ import IAlerta from "./IAlerta";
 
 export default class AlertaCritica implements IAlerta {
 
-    tipoAlerta: TipoAlerta = TipoAlerta.CRITICA;
-    date: Date = new Date();
+    private _tipoAlerta: TipoAlerta = TipoAlerta.CRITICA;
+    public get tipoAlerta(): TipoAlerta {
+        return this._tipoAlerta;
+    }
+    public set tipoAlerta(value: TipoAlerta) {
+        this._tipoAlerta = value;
+    }
+    private _date: Date = new Date();
+    public get date(): Date {
+        return this._date;
+    }
+    public set date(value: Date) {
+        this._date = value;
+    }
 
     public obtenerTipoDeAlerta() {
         return this.tipoAlerta;
