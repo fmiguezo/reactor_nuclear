@@ -155,18 +155,21 @@ package SistemaDeControl {
 
 ' Procesamiento de Datos
 class ComprobadorSaludReactor {
+    -generadorDeAlertas: GeneradorDeAlertas;
+
+    -setGenerador(g: GeneradorDeAlertas)
     - estaEncendido(reactor: Reactor): boolean;
     - tieneTemperaturaSegura(reactor: Reactor): boolean;
     - produceEnergiaEnRango(reactor: Reactor): boolean;
+    +lanzarAlerta();
 }
 
 note bottom of ComprobadorSaludReactor
     Clase que se encarga de verificar el estado del reactor
     y lanzar alertas en caso de que algo no este funcionando
     correctamente.
-    Cambio tentativo: crearAlerta() podria ser reemplazado 
-    por un Factory Method que cree alertas de distintos tipos 
-    segun la necesidad
+    Según el resultado de tieneTemperaturaSegura() se va a
+    setear un generador de alertas u otro
 end note
 
 ' Acciones automáticas de seguridad
@@ -182,11 +185,22 @@ enum TipoAlerta {
     ESTANDAR
 }
 
+interface GeneradorDeAlertas {
+    +generarAlerta(): IAlerta
+}
+
+class GeneradorDeAlertasCriticas implements GeneradorDeAlertas {
+    +generarAlerta(): IAlerta
+}
+
+class GeneradorDeAlertasEstandar implements GeneradorDeAlertas {
+    +generarAlerta(): IAlerta
+}
+
 interface Alerta {
-    + obtenerTipoDeAlerta(C:ComprobadorSaludReactor): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(C:ComprobadorSaludReactor): string;
-    + obtenerTimestampDeAlerta(C:ComprobadorSaludReactor): Date;
-    + crearAlerta(): Alerta;
+    + obtenerTipoDeAlerta(): enumTipoAlerta;
+    + obtenerMensajeDeAlerta(): string;
+    + obtenerTimestampDeAlerta(): Date;
 }
 
 class AlertaCritica implements Alerta {
@@ -203,8 +217,9 @@ class AlertaEstandar implements Alerta {
 }
 
 class NotificadorDeAlerta {
-    + notificarAlerta(alerta:Alerta);
+    + notificarAlerta(alerta:Alerta): string;
 }
+
 
 '' Manejo de comandos
 enum ComandosDisponibles {
@@ -240,9 +255,10 @@ class ManejadorDeBarraDeControl implements Accion {
 }
 
 ' Relaciones
-NotificadorDeAlerta .r.> Alerta
-TipoAlerta -[hidden]l- Alerta
-ComprobadorSaludReactor .r.> Alerta
+NotificadorDeAlerta .l.> Alerta
+TipoAlerta -[hidden]u- NotificadorDeAlerta
+ComprobadorSaludReactor *-r- GeneradorDeAlertas
+GeneradorDeAlertas -[hidden]r- Alerta
 
 }
 

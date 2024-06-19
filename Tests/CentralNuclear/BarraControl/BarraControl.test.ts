@@ -1,5 +1,5 @@
-import BarraControl from "../BarraControl.ts";
-import { EstadoBarraDeControl } from "../EstadoBarraDeControl";
+import BarraControl from "../../../CentralNuclear/BarrasDeControl/BarraControl";
+import { EstadoBarraDeControl } from "../../../CentralNuclear/BarrasDeControl/EstadoBarraDeControl";
 
 describe("Test de Barra de Control", () => {
   let instance: BarraControl;

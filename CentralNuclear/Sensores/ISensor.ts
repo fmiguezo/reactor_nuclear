@@ -1,5 +1,5 @@
-import IActivable from "./IActivable";
-import Reactor from "./Reactor";
+import IActivable from "../Interfaces/IActivable";
+import Reactor from "../Reactor/Reactor";
 
 export default interface ISensor extends IActivable {
   estaActivo(): boolean;
