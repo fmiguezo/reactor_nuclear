@@ -1,4 +1,4 @@
-import IEncendible from "./IEncendible";
+import IEncendible from "../Interfaces/IEncendible";
 import Reactor from "./Reactor";
 
 export default abstract class IEstadoReactor implements IEncendible {
@@ -17,7 +17,9 @@ export default abstract class IEstadoReactor implements IEncendible {
   }
 
   public incrementarTemperatura(): void {
-    this.contexto.setTemperatura(IEstadoReactor.INCREMENTO_POR_MINUTO + this.contexto.getTemperatura());
+    this.contexto.setTemperatura(
+      IEstadoReactor.INCREMENTO_POR_MINUTO + this.contexto.getTemperatura()
+    );
     this.contexto.notificarSensores();
   }
 

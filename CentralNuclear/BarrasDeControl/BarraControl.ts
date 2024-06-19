@@ -1,4 +1,4 @@
-import IMecanismoDeControl from "./IMecanismoDeControl";
+import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
 import { EstadoBarraDeControl } from "./EstadoBarraDeControl";
 
 export default class BarraControl implements IMecanismoDeControl {

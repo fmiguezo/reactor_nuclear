@@ -1,6 +1,6 @@
 import IEstadoReactor from "../IEstadoReactor";
 import Reactor from "../Reactor";
-import REncendiendo from "../EstadosReactor/REncendiendo";
+import REncendiendo from "./REncendiendo";
 
 export default class RApagado extends IEstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
