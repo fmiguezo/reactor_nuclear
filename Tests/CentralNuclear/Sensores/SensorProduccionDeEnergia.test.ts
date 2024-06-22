@@ -36,7 +36,7 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
   });
 
   it("verifica que la instancia actualizar valor reciba correctamente la temperatura y la sette in ultimaTemperatura", () => {
-    instance.actualizarValor(100);
+    instance.actualizar(100);
     expect(instance.obtenerValor()).toBe(100);
   });
 
@@ -47,6 +47,6 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
 
   it("Verifica el else se actualizarValor", () => {
     instance.activo = false;
-    expect(() => instance.actualizarValor(100)).toThrow(Error);
+    expect(() => instance.actualizar(100)).toThrow(Error);
   });
 });
