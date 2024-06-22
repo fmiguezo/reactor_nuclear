@@ -4,7 +4,9 @@ import RApagado from "./RApagado";
 import RCritico from "./RCritico";
 
 export default class RNormal extends IEstadoReactor {
-  override calcularEnergia(temperatura: number = 0): number {}
+  override calcularEnergia(temperatura: number = 0): number {
+    return 0;
+  }
 
   override verificaEstado(): void {
     const tempActual = this.contexto.getTemperatura();

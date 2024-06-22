@@ -5,7 +5,9 @@ import RNormal from "./RNormal";
 import REmergencia from "./REmergencia";
 
 export default class RCritico extends IEstadoReactor {
-  override calcularEnergia(temperatura: number = 0): number {}
+  override calcularEnergia(temperatura: number = 0): number {
+    return 0;
+  }
 
   override verificaEstado(): void {
     const tempActual = this.contexto.getTemperatura();
