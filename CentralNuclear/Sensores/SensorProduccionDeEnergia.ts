@@ -1,3 +1,4 @@
+import Reactor from "../Reactor/Reactor";
 import ISensor from "./ISensor";
 
 export default class SensorProduccionDeEnergia implements ISensor {
@@ -30,7 +31,7 @@ export default class SensorProduccionDeEnergia implements ISensor {
     if (!this._activo) {
       throw new Error("El sensor no está activo");
     } else {
-      this._energiaProducida = reactor.getEnergiaProducida();
+      this._energiaProducida = reactor.estado.calcularEnergia(reactor.getTemperatura());
     }
   }
 
