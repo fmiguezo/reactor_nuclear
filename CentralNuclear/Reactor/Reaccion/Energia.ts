@@ -2,11 +2,16 @@ export default class Energia {
   private calcEnergiaTermal(temp: number): number {
     const pendiente = 8;
     const b = -139.82;
-
     return pendiente * temp + b;
   }
 
   private calcEnergiaNeta(EnergiaTermal: number): number {
+    if (EnergiaTermal < 2100) {
+      return 0;
+    } else if (EnergiaTermal < 2166.67) {
+      return 100;
+    }
+
     const pendiente = 1.75;
     const b = -3675.035;
 
