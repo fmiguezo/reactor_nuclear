@@ -1,4 +1,4 @@
-import Energia from "./Energia";
+import Energia from "../../../CentralNuclear/Reactor/Reaccion/Energia";
 
 describe("Test de Energia", () => {
   let instance: Energia;
