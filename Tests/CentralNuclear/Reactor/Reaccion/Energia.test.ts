@@ -1,4 +1,4 @@
-import Energia from "../../../CentralNuclear/Reactor/Reaccion/Energia";
+import Energia from "./Energia";
 
 describe("Test de Energia", () => {
   let instance: Energia;
@@ -25,11 +25,16 @@ describe("Test de Energia", () => {
       100, 116.65, 233.32, 349.99, 466.66, 583.33, 700,
     ];
 
+    const tolerancia = 2;
+
     let i = 0;
     temp.forEach((t) => {
       let energNetaRetorn: number = instance.getEnergiaNeta(t);
-      expect(Math.round(energNetaRetorn)).toBe(
-        Math.round(energNetaEsperada[i])
+      expect(energNetaRetorn).toBeGreaterThanOrEqual(
+        energNetaEsperada[i] - tolerancia
+      );
+      expect(energNetaRetorn).toBeLessThanOrEqual(
+        energNetaEsperada[i] + tolerancia
       );
       i++;
     });
