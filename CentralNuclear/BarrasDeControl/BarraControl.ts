@@ -1,15 +1,16 @@
 import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
-import { EstadoBarraDeControl } from "./EstadoBarraDeControl";
+import EstadoBarraControl from "./EstadosBarraControl/EstadoBarraControl";
+import EnDesuso from "./EstadosBarraControl/EnDesuso";
 
 export default class BarraControl implements IMecanismoDeControl {
   private _material: string;
-  private _estado: EstadoBarraDeControl;
+  private _estado: EstadoBarraControl;
   private _tiempoVidaUtilTotal: number;
 
   constructor(
     material: string,
     tiempoVidaUtilTotal: number = 200,
-    estado: EstadoBarraDeControl = EstadoBarraDeControl.EN_DESUSO
+    estado: EstadoBarraControl = new EnDesuso()
   ) {
     this._material = material;
     this._tiempoVidaUtilTotal = tiempoVidaUtilTotal;
@@ -18,36 +19,27 @@ export default class BarraControl implements IMecanismoDeControl {
 
   // Getters
   estaActivo(): boolean {
-    const activoMap: Map<EstadoBarraDeControl, boolean> = new Map([
-      [EstadoBarraDeControl.EN_DESUSO, false],
-      [EstadoBarraDeControl.ELIMINADA, false],
-      [EstadoBarraDeControl.INSERTADA, true],
-    ]);
-    return activoMap.get(this._estado) ?? false;
+    return this._estado.estaActivo();
   }
 
   getPctBarra(): number {
     return this.calcPctBarra();
   }
 
-  // Setters
-  private set estado(nuevoEstado: EstadoBarraDeControl) {
-    this._estado = nuevoEstado;
+  // Métodos de control de estado
+  public cambiarEstado(state: EstadoBarraControl): void {
+    console.log("Cambiando estado");
+    this._estado = state;
+    this._estado.setBarraControl(this);
   }
 
   // Otros Metodos
 
-  private revisaSiPuedeActivar(): boolean {
-    return this._estado != EstadoBarraDeControl.ELIMINADA;
-  }
-
   activar(): void {
-    if (this.revisaSiPuedeActivar()) {
-      this.estado = EstadoBarraDeControl.INSERTADA;
-    } else throw new Error("Barra inactivable");
+    this._estado.activar();
   }
   desactivar(): void {
-    this.estado = EstadoBarraDeControl.EN_DESUSO;
+    this._estado.desactivar();
   }
 
   private calcPctBarra(): number {
