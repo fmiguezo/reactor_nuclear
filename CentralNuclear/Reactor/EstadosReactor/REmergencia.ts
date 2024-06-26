@@ -5,7 +5,9 @@ import RCritico from "./RCritico";
 import Chernobyl from "./Chernobyl";
 
 export default class REmergencia extends IEstadoReactor {
-  override calcularEnergia(temperatura: number = 0): number {}
+  override calcularEnergia(temperatura: number = 0): number {
+    return 0;
+  }
 
   override verificaEstado(): void {
     const tempActual = this.contexto.getTemperatura();

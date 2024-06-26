@@ -1,10 +1,13 @@
+import Reactor from "../../../CentralNuclear/Reactor/Reactor";
 import SensorTemperatura from "../../../CentralNuclear/Sensores/SensorTemperatura";
 let instance: SensorTemperatura;
+let instanceReactor: Reactor
 
 beforeEach(() => {
   instance = new SensorTemperatura();
   instance.activo = true;
   instance.ultimaTemperatura = 0;
+  instanceReactor = new Reactor();
 });
 
 describe("SensorTemperatura getters y setters", () => {
@@ -35,7 +38,7 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
   });
 
   it("verifica que la instancia actualizar valor reciba correctamente la temperatura y la sette in ultimaTemperatura", () => {
-    instance.actualizarValor(100);
+    instance.actualizar(instanceReactor);
     expect(instance.obtenerValor()).toBe(100);
   });
 
@@ -46,6 +49,6 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
 
   it("Verifica el else se actualizarValor", () => {
     instance.activo = false;
-    expect(() => instance.actualizarValor(100)).toThrow(Error);
+    expect(() => instance.actualizar(instanceReactor)).toThrow(Error);
   });
 });

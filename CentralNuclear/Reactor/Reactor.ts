@@ -5,19 +5,25 @@ import ISensor from "../Sensores/ISensor.ts";
 
 export default class Reactor {
   private idReactor: string = "";
-  private estado: IEstadoReactor;
+  private _estado: IEstadoReactor = new RApagado();
   private mecanimosDeControl: IMecanismoDeControl[] = [];
   private sensores: ISensor[] = [];
   private temperatura: number = 0;
 
-  constructor(estado: IEstadoReactor = new RApagado()) {}
+  public get estado(): IEstadoReactor {
+    return this._estado;
+  }
+  public set estado(value: IEstadoReactor) {
+    this._estado = value;
+  }
+
 
   public encender(): void {
-    this.estado.encender();
+    this._estado.encender();
   }
 
   public apagar(): void {
-    this.estado.apagar();
+    this._estado.apagar();
   }
 
   public getTemperatura(): number {
@@ -39,7 +45,7 @@ export default class Reactor {
   public getEstado() {
     return this.estado.estaEncendido();
   }
-
+  
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
     this.estado = state;
