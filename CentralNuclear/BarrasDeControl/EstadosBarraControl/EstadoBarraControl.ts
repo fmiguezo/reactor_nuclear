@@ -4,7 +4,7 @@ import IMecanismoDeControl from "../../Interfaces/IMecanismoDeControl";
 export default abstract class EstadoBarraControl
   implements IMecanismoDeControl
 {
-  protected _BarraControl: BarraControl;
+  protected _BarraControl!: BarraControl;
 
   public setBarraControl(barra: BarraControl): void {
     this._BarraControl = barra;

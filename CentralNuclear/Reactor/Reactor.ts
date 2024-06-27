@@ -1,7 +1,7 @@
-import RApagado from "./EstadosReactor/RApagado.ts";
-import IEstadoReactor from "./IEstadoReactor.ts";
-import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl.ts";
-import ISensor from "../Sensores/ISensor.ts";
+import RApagado from "./EstadosReactor/RApagado";
+import IEstadoReactor from "./IEstadoReactor";
+import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
+import ISensor from "../Sensores/ISensor";
 
 export default class Reactor {
   private idReactor: string = "";
@@ -16,7 +16,6 @@ export default class Reactor {
   public set estado(value: IEstadoReactor) {
     this._estado = value;
   }
-
 
   public encender(): void {
     this._estado.encender();
@@ -45,7 +44,7 @@ export default class Reactor {
   public getEstado() {
     return this.estado.estaEncendido();
   }
-  
+
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
     this.estado = state;

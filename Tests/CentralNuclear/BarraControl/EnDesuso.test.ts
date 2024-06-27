@@ -8,7 +8,7 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
 
   beforeEach(() => {
     stateInstance = new EnDesuso();
-    rodInstance = new BarraControl("Uranio", 200, stateInstance);
+    rodInstance = new BarraControl("Cesio", 200, stateInstance);
   });
 
   it("Verifica que no esté activo", () => {

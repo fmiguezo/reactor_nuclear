@@ -4,8 +4,8 @@ import EnDesuso from "./EstadosBarraControl/EnDesuso";
 
 export default class BarraControl implements IMecanismoDeControl {
   private _material: string;
-  private _estado: EstadoBarraControl;
-  private _tiempoVidaUtilTotal: number;
+  private _estado!: EstadoBarraControl;
+  private _vidaUtilRestante: number;
 
   constructor(
     material: string,
@@ -13,11 +13,12 @@ export default class BarraControl implements IMecanismoDeControl {
     estado: EstadoBarraControl = new EnDesuso()
   ) {
     this._material = material;
-    this._tiempoVidaUtilTotal = tiempoVidaUtilTotal;
-    this._estado = estado;
+    this._vidaUtilRestante = tiempoVidaUtilTotal;
+    this.cambiarEstado(estado);
   }
 
   // Getters
+
   estaActivo(): boolean {
     return this._estado.estaActivo();
   }
@@ -26,9 +27,21 @@ export default class BarraControl implements IMecanismoDeControl {
     return this.calcPctBarra();
   }
 
+  public get estado(): EstadoBarraControl {
+    return this._estado;
+  }
+
+  public get VidaUtilRestante(): number {
+    return this._vidaUtilRestante;
+  }
+
+  // Setters
+  public set VidaUtilRestante(valor: number) {
+    this._vidaUtilRestante = valor;
+  }
+
   // Métodos de control de estado
   public cambiarEstado(state: EstadoBarraControl): void {
-    console.log("Cambiando estado");
     this._estado = state;
     this._estado.setBarraControl(this);
   }
@@ -43,6 +56,6 @@ export default class BarraControl implements IMecanismoDeControl {
   }
 
   private calcPctBarra(): number {
-    return (this._tiempoVidaUtilTotal / 3600) * 100;
+    return (this._vidaUtilRestante / 3600) * 100;
   }
 }
