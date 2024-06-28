@@ -3,7 +3,7 @@ import Eliminada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraContr
 import EnDesuso from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EnDesuso";
 import Insertada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Insertada";
 
-describe("Test de expiracion de BarraControl", () => {
+describe("Test de Barra de Control: expiracion", () => {
   let barraControl: BarraControl;
 
   beforeEach(() => {

@@ -12,4 +12,8 @@ export default class Eliminada extends EstadoBarraControl {
   override desactivar(): void {
     console.log("La barra está vencida. No puede utilizarse.");
   }
+
+  override calcPctBarra(): number {
+    return 0;
+  }
 }

@@ -2,11 +2,13 @@ import RApagado from "./EstadosReactor/RApagado";
 import IEstadoReactor from "./IEstadoReactor";
 import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
 import ISensor from "../Sensores/ISensor";
+import BarraControl from "../BarrasDeControl/BarraControl";
 
 export default class Reactor {
   private idReactor: string = "";
   private _estado: IEstadoReactor = new RApagado();
   private mecanimosDeControl: IMecanismoDeControl[] = [];
+  private barrasControl: BarraControl[] = [];
   private sensores: ISensor[] = [];
   private temperatura: number = 0;
 
@@ -27,6 +29,30 @@ export default class Reactor {
 
   public getTemperatura(): number {
     return this.temperatura;
+  }
+
+  public getBarrasInsertadas(): BarraControl[] {
+    return this.barrasControl.filter((b) => {
+      b.estaActivo() == true;
+    });
+  }
+
+  public getBarrasVencidas(): BarraControl[] {
+    return this.barrasControl.filter((b) => {
+      b.VidaUtilRestante == 0;
+    });
+  }
+
+  public removerBarras(barras: BarraControl[]): void {
+    barras.forEach((b) => {
+      this.barrasControl = this.barrasControl.filter((r) => r !== b);
+    });
+  }
+
+  public agregarBarras(barras: BarraControl[]): void {
+    barras.forEach((b) => {
+      this.barrasControl.push(b);
+    });
   }
 
   public actualizarTemperatura(): void {
@@ -76,4 +102,6 @@ export default class Reactor {
   public notificarSensores(): void {
     this.sensores.forEach((sensor) => sensor.actualizar(this));
   }
+
+  public calcularTemperatura(): void {}
 }

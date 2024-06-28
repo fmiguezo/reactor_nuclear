@@ -34,6 +34,10 @@ export default class Insertada extends EstadoBarraControl {
     this._BarraControl.cambiarEstado(nuevoEstado);
   }
 
+  override calcPctBarra(): number {
+    return (this._BarraControl.VidaUtilRestante / 3600) * 100;
+  }
+
   private calcDiffTiempoActual(): number {
     let tiempoActual = new Date();
     let diferencia = tiempoActual.getTime() - this.fechaInsertada.getTime();

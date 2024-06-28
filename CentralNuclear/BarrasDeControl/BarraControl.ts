@@ -24,7 +24,7 @@ export default class BarraControl implements IMecanismoDeControl {
   }
 
   getPctBarra(): number {
-    return this.calcPctBarra();
+    return this._estado.calcPctBarra();
   }
 
   public get estado(): EstadoBarraControl {
@@ -53,9 +53,5 @@ export default class BarraControl implements IMecanismoDeControl {
   }
   desactivar(): void {
     this._estado.desactivar();
-  }
-
-  private calcPctBarra(): number {
-    return (this._vidaUtilRestante / 3600) * 100;
   }
 }

@@ -13,4 +13,5 @@ export default abstract class EstadoBarraControl
   public abstract estaActivo(): boolean;
   public abstract activar(): void;
   public abstract desactivar(): void;
+  public abstract calcPctBarra(): number;
 }

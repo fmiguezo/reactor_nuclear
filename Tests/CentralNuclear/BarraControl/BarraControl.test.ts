@@ -1,8 +1,10 @@
 import BarraControl from "../../../CentralNuclear/BarrasDeControl/BarraControl";
 import EstadoBarraControl from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EstadoBarraControl";
 import EnDesuso from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EnDesuso";
+import Insertada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Insertada";
+import Eliminada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Eliminada";
 
-describe("Test de Barra de Control", () => {
+describe("Test de Barra de Control: Activar/Desactivar", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
@@ -26,5 +28,64 @@ describe("Test de Barra de Control", () => {
     instance.desactivar();
     let estado: boolean = instance.estaActivo();
     expect(estado).toBe(false);
+  });
+});
+
+describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
+  let instance: BarraControl;
+
+  beforeEach(() => {
+    instance = new BarraControl("Cesio", 3600);
+  });
+
+  describe("Con barra insertada:", () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      const estadoInsertada: EstadoBarraControl = new Insertada();
+      instance.cambiarEstado(estadoInsertada);
+      jest.clearAllTimers();
+    });
+
+    it("Verifica que el calculo funcione adecuadamente", () => {
+      const porcentajeObtenido: number = instance.getPctBarra();
+      expect(porcentajeObtenido).toBe(100);
+    });
+
+    afterEach(() => {
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
+  });
+
+  describe("Con barra EnDesuso:", () => {
+    beforeEach(() => {
+      const estadoInsertada: EstadoBarraControl = new EnDesuso();
+      instance.cambiarEstado(estadoInsertada);
+    });
+
+    it("Verifica que el calculo funcione adecuadamente", () => {
+      const porcentajeObtenido: number = instance.getPctBarra();
+      expect(porcentajeObtenido).toBe(100);
+    });
+  });
+
+  describe("Con barra Eliminada:", () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      const estadoInsertada: EstadoBarraControl = new Insertada();
+      instance.cambiarEstado(estadoInsertada);
+      jest.advanceTimersByTime(3600);
+    });
+
+    it("Verifica que el calculo funcione adecuadamente", () => {
+      const porcentajeObtenido: number = instance.getPctBarra();
+      expect(instance.estado).toBeInstanceOf(Eliminada);
+      expect(porcentajeObtenido).toBe(0);
+    });
+
+    afterEach(() => {
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
   });
 });
