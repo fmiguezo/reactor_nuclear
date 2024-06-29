@@ -5,10 +5,15 @@ export default class Energia {
   }
 
   public static calcularEnergiaNeta(energiaTermal: number): number {
-    if (energiaTermal == Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL) {
+    if (energiaTermal < Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL) {
+      return 0
+    }
+    else if (energiaTermal == Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL) {
       return 100;
-    } else {
+    }
+    else {
       return Constantes.M_NETA * energiaTermal + Constantes.B_NETA;
     }
+
   }
 }

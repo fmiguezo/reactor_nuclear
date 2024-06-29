@@ -9,9 +9,9 @@ describe("Test de Energia", () => {
 
   it("Verifica con una temperatura que no pueda generar energía", () => {
     let temp: number = 0;
-    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
-    temp = 279;
-    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
+    expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(temp))).toBe(0);
+    temp = 280;
+    expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(temp))).toBe(0);
   });
 
   it("Verifica la energía neta producida se corresponda con los valores de la tabla", () => {
@@ -22,8 +22,8 @@ describe("Test de Energia", () => {
 
     let i = 0;
     temp.forEach((t) => {
-      expect(Energia.calcularEnergiaNeta(t)).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
-      expect(Energia.calcularEnergiaNeta(t)).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
+      expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(t))).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
+      expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(t))).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
       i++;
     });
   });
