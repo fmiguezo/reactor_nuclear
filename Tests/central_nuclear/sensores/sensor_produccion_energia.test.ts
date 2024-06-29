@@ -8,7 +8,7 @@ beforeEach(() => {
   instance = new SensorProduccionDeEnergia();
   instance.setActivo(true);
   instance.setEnergiaProducida(0);
-  reactor = new Reactor()
+  reactor = new Reactor();
   reactor.setTemperatura(100);
   reactor.getEstado().calcularEnergia(100);
 });
