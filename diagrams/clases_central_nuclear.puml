@@ -1,4 +1,4 @@
-@startuml
+@startuml Tp
 
 title "Central Nuclear"
 !theme reddress-darkblue
@@ -14,40 +14,115 @@ skinparam titleBackgroundColor #96a2ff
 ' Planta nuclear
 class PlantaNuclear {
     - reactores: Reactor[];
-    - operadores: Operador[];
+    - SistemaDeControl: software;
 }
 
 ' Reactor
-class Reactor implements Encendible {
+class Reactor{
     - idReactor: string;
-    - estado: EstadoReactor;
+    - _estado: EstadoReactor;
     - mecanimosDeControl: IMecanismoDeControl[];
     - sensores: ISensor[];
     - temperatura: number;
+    + getters();
+    + setters();
+    + encender(): void;
+    + apagar(): void;
+    + getTemperatura(): number;
+    + actualizarTemperatura(): void;
+    + setTemperatura(temperatura: number): void;
+    + getIdReactor(): string;
+    + getEstado();
+    + cambiarEstado(IEstadoReactor state ): void;
+    + agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    + eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    + agregarSensor(sensor: ISensor): void;
+    + eliminarSensor(sensor: ISensor): void;
+    + notificarSensores(): void;
+}
+
+abstract class IEstadoReactor {
+    # static readonly INCREMENTO_POR_MINUTO;
+    # contexto: Reactor;
+    + IEstadoReactor();
+    + abstract calcularEnergia(temperatura: number): number;
+    + abstract encender(): void;
+    + abstract apagar(): void;
+    + abstract estaEncendido(): boolean;
+    + cargaContexto(context): void;
+    + incrementarTemperatura(): void;
+    + abstract verificaEstado(): void;
+}
+
+class ChernobyL
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
     + encender();
     + apagar();
+    + estaEncendido();
 }
 
-enum EstadoReactor {
-    ENCENDIDO,
-    APAGADO
+class RApagado
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    + encender();
+    + apagar();
+    + estaEncendido();
+    + incrementarTemperatura(): void;
 }
 
-' Operador
-class Operador {
-    + iniciarReaccion(reactor: Reactor) : void
-    + mantenerReaccion(reactor: Reactor) : void
-    + detenerReaccion(reactor: Reactor) : void
+class RCritico
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoNormal();
+    - pasaAEstadoEmergencia();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
+class REmergencia
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoCritico();
+    - pasaAEstadoChernobyl();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
+class REncenciendo
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoNormal();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
+class RNormal
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoCritico();
+    + encender();
+    + apagar();
+    + estaEncendido();
 }
 
 'Interfaces generales
-interface Encendible {
+interface IEncendible {
     + encender();
     + apagar();
     + estaEncendido(): boolean;
 }
 
-interface Activable {
+interface IActivable {
     + estaActivo(): boolean;
     + activar();
     + desactivar();
@@ -55,31 +130,34 @@ interface Activable {
 
 
 'Sensores
-interface ISensor implements Activable {
+interface ISensor{
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
-class SensorTemperatura implements ISensor {
+class SensorTemperatura{
     ' lee en °C
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
-class SensorProduccionDeEnergia implements ISensor {
+class SensorProduccionDeEnergia {
     ' lee en watts
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
 ' Mecanismos de control
-interface IMecanismoDeControl implements Activable {
+interface IMecanismoDeControl{
     + estaActivo(): boolean;
     + activar();
     + desactivar();
@@ -87,16 +165,20 @@ interface IMecanismoDeControl implements Activable {
 
 '' Barra de control
 class BarraDeControl implements IMecanismoDeControl {
-    - material: string;
-    - estado: EstadoBarraDeControl;
-    - tiempoVidaUtilTotal: number;
+    - _material: string;
+    - _estado: EstadoBarraDeControl;
+    - _tiempoVidaUtilTotal: number;
+    + constructor();
     + estaActivo(): boolean;
     'insertar barra
-    + activar(); 
+    + activar();
     ' quitar barra
-    + desactivar(); 
-    + obtenerEstado(): string;
-    + obtenerTiempoDeVidaRestante(): number;
+    + desactivar();
+    + getters();
+    + setters();
+    - calcPctBarra(): number;
+    - revisaSiPuedeActivar(): boolean;
+
 }
 
 enum EstadoBarraDeControl {
@@ -108,8 +190,8 @@ enum EstadoBarraDeControl {
 '' Turbina de refrigeración
 class TurbinaDeRefrigeracion implements IMecanismoDeControl {
     + estaActivo(): boolean;
-    + activar(); 
-    + desactivar(); 
+    + activar();
+    + desactivar();
 }
 
 
@@ -120,30 +202,43 @@ class Chernobyl {
 }
 
 'Relaciones
-Reactor -u-o PlantaNuclear
-Operador -l-o PlantaNuclear
-Reactor *.. ISensor
-Reactor *.. IMecanismoDeControl
-Reactor -[hidden]l- Encendible
-Activable -[hidden]r- IMecanismoDeControl
-Activable -[hidden]l- ISensor
-Reactor <.. Operador
-EstadoBarraDeControl -[hidden]d- BarraDeControl
-
+Reactor -r-o PlantaNuclear
+Reactor *..... ISensor
+Reactor *...... IMecanismoDeControl
+IActivable -[hidden]r- IMecanismoDeControl
+IActivable -[hidden]l- ISensor
+IEstadoReactor o---- Reactor
+IEstadoReactor  <|-u- ChernobyL
+IEstadoReactor  <|-u- RCritico
+IEstadoReactor  <|-r- REmergencia
+IEstadoReactor  <|-u- RNormal
+IEstadoReactor  <|-u- REncenciendo
+IEstadoReactor  <|-l- RApagado
+Reactor  <|.l. IEncendible
+ISensor <|.l. SensorProduccionDeEnergia
+ISensor <|.. SensorTemperatura
+ISensor <|........ IActivable
+IMecanismoDeControl <|........ IActivable
+EstadoBarraDeControl o-l[hidden]- IMecanismoDeControl
 
 
 'Notas
-note right of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
-note bottom of Operador: "El reactor va a iniciar apagado, \nal iniciar reaccion cambiamos la \npropiedad EstaEncendido a true"
 note bottom of SensorTemperatura: "Retorna la temperatura"
-note bottom of SensorProduccionDeEnergia: "Retorna la producción de energía"
+note left of SensorProduccionDeEnergia: "Retorna la producción de energía"
 note bottom of BarraDeControl: "Retorna el estado de la barra"
 note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
-note bottom of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note left of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
+note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
+note right of EstadoBarraDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
+@enduml
 
+'Cambios sugeridos en PR
+'- establecer relaciones entre clases
+'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
+'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
+'- agregar Clase operador
+' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
 @enduml
 
 'Cambios sugeridos en PR
