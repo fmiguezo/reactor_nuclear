@@ -6,7 +6,7 @@ export default class AlertaEstandar extends Alerta {
     super(TipoAlerta);
   }
 
-  public getInstance(): AlertaEstandar {
+  public static getInstance(): AlertaEstandar {
     if (!AlertaEstandar.instance) {
       AlertaEstandar.instance = new AlertaEstandar(TipoAlerta.ESTANDAR);
     }

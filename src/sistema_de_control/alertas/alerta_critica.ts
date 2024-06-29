@@ -6,7 +6,7 @@ export default class AlertaCritica extends Alerta {
     super(TipoAlerta);
   }
 
-  public getInstance(): AlertaCritica {
+  public static getInstance(): AlertaCritica {
     if (!AlertaCritica.instance) {
       AlertaCritica.instance = new AlertaCritica(TipoAlerta.CRITICA);
     }

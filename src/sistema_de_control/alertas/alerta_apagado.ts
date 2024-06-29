@@ -7,7 +7,7 @@ export default class AlertaApagado extends Alerta {
     super(TipoAlerta);
   }
 
-  public getInstance(): AlertaApagado {
+  public static getInstance(): AlertaApagado {
     if (!AlertaApagado.instance) {
       AlertaApagado.instance = new AlertaApagado(TipoAlerta.APAGADO);
     }
