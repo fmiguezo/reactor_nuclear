@@ -88,6 +88,17 @@ class RCritico extends IEstadoReactor
     + estaEncendido();
 }
 
+class REmergencia extends IEstadoReactor
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoCritico();
+    - pasaAEstadoChernobyl();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
 ' Operador
 class Operador {
     + iniciarReaccion(reactor: Reactor) : void
