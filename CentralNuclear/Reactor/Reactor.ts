@@ -1,8 +1,7 @@
-import RApagado from "./EstadosReactor/RApagado";
-import IEstadoReactor from "./IEstadoReactor";
-import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
-import ISensor from "../Sensores/ISensor";
-import BarraControl from "../BarrasDeControl/BarraControl";
+import RApagado from "./estados_reactor/apagado.ts";
+import IEstadoReactor from "./estados_reactor/estadoreactor.ts";
+import IMecanismoDeControl from "../interfaces/imecanismo_control.ts";
+import ISensor from "../interfaces/isensor.ts";
 
 export default class Reactor {
   private idReactor: string = "";
@@ -61,18 +60,12 @@ export default class Reactor {
     this.estado.cargaContexto(this);
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this.mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this.mecanimosDeControl = this.mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {
