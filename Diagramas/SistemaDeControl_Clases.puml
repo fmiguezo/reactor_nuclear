@@ -12,33 +12,22 @@ skinparam titleBackgroundColor #96a2ff
 
 ' Procesamiento de Datos
 class ComprobadorSaludReactor {
+    -generadorDeAlertas: GeneradorDeAlertas;
+    -setGenerador(g: GeneradorDeAlertas)
     - estaEncendido(reactor: Reactor): boolean;
     - tieneTemperaturaSegura(reactor: Reactor): boolean;
     - produceEnergiaEnRango(reactor: Reactor): boolean;
-    - crearAlerta(): Alerta;
-    - dispararEmergencia();
+    +lanzarAlerta();
 }
 
-note bottom of ComprobadorSaludReactor
-    Clase que se encarga de verificar el estado del reactor
-    y lanzar alertas en caso de que algo no este funcionando
-    correctamente.
-    Cambio tentativo: crearAlerta() podria ser reemplazado 
-    por un Factory Method que cree alertas de distintos tipos 
-    segun la necesidad
-end note
-
-' Acciones automáticas de seguridad
-class ModuloAccionAutomaticaSeguridad {
-    + apagarPorEmergencia();
+class SistemaDeControl
+{
+    - operadores: Operador[];
+    - compobadorSalud: ComprobadorSaludReactor;
 }
 
-' Interfaz humana
-
-'' Manejo de alertas
-enum TipoAlerta {
-    CRITICA,
-    ESTANDAR
+' Operador
+class Operador {
 }
 
 interface Alerta {
@@ -47,14 +36,14 @@ interface Alerta {
     + obtenerTimestampDeAlerta(): Date;
 }
 
-class AlertaCritica implements Alerta {
+class AlertaCritica{
     + obtenerTipoDeAlerta(): enumTipoAlerta;
     + obtenerMensajeDeAlerta(): string;
     + obtenerTimestampDeAlerta(): Date;
 
 }
 
-class AlertaEstandar implements Alerta {
+class AlertaEstandar{
     + obtenerTipoDeAlerta(): enumTipoAlerta;
     + obtenerMensajeDeAlerta(): string;
     + obtenerTimestampDeAlerta(): Date;
@@ -64,40 +53,74 @@ class NotificadorDeAlerta {
     + notificarAlerta(alerta:Alerta);
 }
 
-'' Manejo de comandos
-enum ComandosDisponibles {
-    BARRA_CONTROL
-    REACTOR,
-    REFRIGERACION,
-    SENSOR_TEMPERATURA,
-    SENSOR_NIVEL_AGUA,
-    REPORTAR_ESTADO
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR
 }
 
-class Comando {
-
+interface GeneradorDeAlertas
+{
+    + generarAlerta(): IAlerta;
 }
 
-class InterpreteDeComandos {
-    - lanzarAccion();
-    + interpretarComando();
+class GeneradorDeAlertasEstandar
+{
+    + generarAlerta(): IAlerta;
 }
+
+class GeneradorDeAlertasCritica
+{
+    + generarAlerta(): IAlerta;
+}
+
+' Manejo de comandos
+'enum ComandosDisponibles {
+    'BARRA_CONTROL
+    'REACTOR,
+    'REFRIGERACION,
+    'SENSOR_TEMPERATURA,
+    'SENSOR_NIVEL_AGUA,
+    'REPORTAR_ESTADO
+'}
+
+'class InterpreteDeComandos {
+    '- lanzarAccion();
+    '+ interpretarComando();
+'}
 
 ' Acciones
-interface Accion {
+'interface Accion {
 
-}
+'}
 
 '' Barras de control
-class ManejadorDeBarraDeControl implements Accion {
-    + obtenerBarrasDisponibles(): BarraDeControl[];
-    + insertarBarra();
-    + quitarBarra();
-}
+'class ManejadorDeBarraDeControl implements Accion {
+    '+ obtenerBarrasDisponibles(): BarraDeControl[];
+    '+ insertarBarra();
+    '+ quitarBarra();
+'}
+
+'class Comando {
+
+'}
+
+' Acciones automáticas de seguridad
+'class ModuloAccionAutomaticaSeguridad {
+    '+ apagarPorEmergencia();
+'}
 
 ' Relaciones
-NotificadorDeAlerta .r.> Alerta
-TipoAlerta -[hidden]l- Alerta
-ComprobadorSaludReactor .r.> Alerta
+SistemaDeControl o-d- Operador
+SistemaDeControl o-r- ComprobadorSaludReactor
+ComprobadorSaludReactor <|.r. Alerta
+Alerta <|.r. AlertaEstandar
+Alerta <|.u. AlertaCritica
+GeneradorDeAlertas <|.. GeneradorDeAlertasEstandar
+GeneradorDeAlertas <|.. GeneradorDeAlertasCritica
+NotificadorDeAlerta <.u. Alerta
+TipoAlerta -[hidden]r- NotificadorDeAlerta
+AlertaCritica <.u. GeneradorDeAlertasCritica
+AlertaEstandar <.u.. GeneradorDeAlertasEstandar
+
 
 @enduml
