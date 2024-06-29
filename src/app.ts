@@ -8,8 +8,8 @@ const reactor: Reactor[] = [];
 reactor.push(new Reactor(plantaNuclear));
 
 // Falta crear estas clases
-const directorBuildReactor: DirectorReactor = new DirectorReactor();
-const builderReactor: BuilderReactor = new BuilderReactor();
+// const directorBuildReactor: DirectorReactor = new DirectorReactor();
+// const builderReactor: BuilderReactor = new BuilderReactor();
 
 // El reactor construido se incorpora a la planta nuclear
 plantaNuclear.agregarReactores(reactor);
