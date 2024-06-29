@@ -1,14 +1,13 @@
-import RApagado from "./estados_reactor/apagado.js";
-import IEstadoReactor from "./estados_reactor/estadoreactor.js";
-import IMecanismoDeControl from "../interfaces/imecanismo_control.js";
-import ISensor from "../interfaces/isensor.js";
-import BarraControl from "../barras_control/barra_control.js";
-import AdministradorBarras from "./administrador/administrador_barras.js";
-import Energia from "./reaccion/energia.js";
-import PlantaNuclear from "../../planta_nuclear.js";
+import RApagado from "./estados_reactor/apagado";
+import IEstadoReactor from "./estados_reactor/estadoreactor";
+import IMecanismoDeControl from "../interfaces/imecanismo_control";
+import ISensor from "../interfaces/isensor";
+import BarraControl from "../barras_control/barra_control";
+import AdministradorBarras from "./administrador/administrador_barras";
+import Energia from "./reaccion/energia";
+import PlantaNuclear from "../../planta_nuclear";
 
 export default class Reactor {
-  private _idReactor: string = "";
   private _estado: IEstadoReactor = new RApagado(this);
   private _mecanimosDeControl: IMecanismoDeControl[] = [];
   private _barrasControl: BarraControl[] = [];
@@ -16,10 +15,6 @@ export default class Reactor {
   private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
   private _plantaNuclear!: PlantaNuclear;
-
-  constructor(plantaNuclear: PlantaNuclear) {
-    this._plantaNuclear = plantaNuclear;
-  }
 
   public encender(): void {
     this._estado.encender();
@@ -46,10 +41,6 @@ export default class Reactor {
 
   public setTemperatura(temperatura: number): void {
     this._temperatura = temperatura;
-  }
-
-  public getIdReactor(): string {
-    return this._idReactor;
   }
 
   public getBarrasDeControl(): BarraControl[] {
@@ -119,5 +110,9 @@ export default class Reactor {
 
   public setAadministradorBarras(componente: AdministradorBarras) {
     this._administradorBarras = componente;
+  }
+
+  public setPlantaNuclear(plantaNuclear: PlantaNuclear) {
+    this._plantaNuclear = plantaNuclear;
   }
 }
