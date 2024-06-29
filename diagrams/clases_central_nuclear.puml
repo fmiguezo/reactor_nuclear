@@ -190,6 +190,13 @@ abstract class EstadoBarraDeControl {
     +abstract calcPctBarra(): number;
 }
 
+class Eliminada {
+    +abstract estaActivo(): boolean;
+    +abstract activar(): void;
+    +abstract desactivar(): void;
+    +abstract calcPctBarra(): number;
+}
+
 '' Turbina de refrigeración
 class TurbinaDeRefrigeracion implements IMecanismoDeControl {
     + estaActivo(): boolean;
@@ -233,7 +240,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
 note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
-note right of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
+note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
 @enduml
 
 'Cambios sugeridos en PR
