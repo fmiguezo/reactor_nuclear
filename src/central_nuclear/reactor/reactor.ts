@@ -4,6 +4,7 @@ import IMecanismoDeControl from "../interfaces/imecanismo_control.js";
 import ISensor from "../interfaces/isensor.js";
 import BarraControl from "../barras_control/barra_control.js";
 import AdministradorBarras from "./administrador/administrador_barras.js";
+import Energia from "./reaccion/energia.js";
 
 export default class Reactor {
   private _idReactor: string = "";
@@ -14,13 +15,6 @@ export default class Reactor {
   private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
 
-  public get estado(): IEstadoReactor {
-    return this._estado;
-  }
-  public set estado(value: IEstadoReactor) {
-    this._estado = value;
-  }
-
   public encender(): void {
     this._estado.encender();
   }
@@ -29,8 +23,23 @@ export default class Reactor {
     this._estado.apagar();
   }
 
+  public getEstado(): IEstadoReactor {
+    return this._estado;
+  }
+  public setEstado(value: IEstadoReactor) {
+    this._estado = value;
+  }
+
   public getTemperatura(): number {
     return this._temperatura;
+  }
+
+  public setTemperatura(temperatura: number): void {
+    this._temperatura = temperatura;
+  }
+
+  public getIdReactor(): string {
+    return this._idReactor;
   }
 
   public getBarrasDeControl(): BarraControl[] {
@@ -45,22 +54,18 @@ export default class Reactor {
     // TO-DO
   }
 
-  public setTemperatura(temperatura: number): void {
-    this._temperatura = temperatura;
+  public obtenerEnergiaTermal(): number {
+    return Energia.calcularEnergiaTermal(this._temperatura);
   }
 
-  public getIdReactor(): string {
-    return this._idReactor;
-  }
-
-  public getEstado() {
-    return this.estado.estaEncendido();
+  public obtenerEnergiaNeta(): number {
+    return Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
   }
 
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
-    this.estado = state;
-    this.estado.cargaContexto(this);
+    this._estado = state;
+    this._estado.cargaContexto(this);
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
@@ -79,17 +84,19 @@ export default class Reactor {
     this._sensores = this._sensores.filter((sensor) => sensor !== sensor);
   }
 
+  public getSensores(): ISensor[] {
+    return this._sensores;
+  }
+
   public notificarSensores(): void {
     this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
 
-  public calcularTemperatura(): void {}
-
-  public get administradorBarras(): AdministradorBarras {
+  public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
   }
 
-  public set administradorBarras(componente: AdministradorBarras) {
+  public setAadministradorBarras(componente: AdministradorBarras) {
     this._administradorBarras = componente;
   }
 }

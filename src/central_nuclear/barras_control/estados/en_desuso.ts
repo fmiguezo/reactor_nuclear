@@ -12,7 +12,7 @@ export default class EnDesuso extends EstadoBarraControl {
   }
 
   override desactivar(): void {
-    console.log("La barra ya estaba desactivada");
+    throw new Error(MENSAJE_BARRA_DESACTIVADA);
   }
 
   override calcPctBarra(): number {
