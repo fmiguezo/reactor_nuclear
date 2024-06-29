@@ -2,16 +2,20 @@ import IAlerta from "./ialerta";
 
 export default class AlertaEstandar implements IAlerta {
   private _tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
+  private _date: Date = new Date();
+
   public get tipoAlerta(): TipoAlerta {
     return this._tipoAlerta;
   }
+
   public set tipoAlerta(value: TipoAlerta) {
     this._tipoAlerta = value;
   }
-  private _date: Date = new Date();
+
   public get date(): Date {
     return this._date;
   }
+
   public set date(value: Date) {
     this._date = value;
   }
