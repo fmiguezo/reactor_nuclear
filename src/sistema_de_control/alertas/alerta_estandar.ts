@@ -1,7 +1,7 @@
-import IAlerta from "./IAlerta";
+import IAlerta from "./ialerta";
 
-export default class AlertaCritica implements IAlerta {
-  private _tipoAlerta: TipoAlerta = TipoAlerta.CRITICA;
+export default class AlertaEstandar implements IAlerta {
+  private _tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
   public get tipoAlerta(): TipoAlerta {
     return this._tipoAlerta;
   }
@@ -21,7 +21,7 @@ export default class AlertaCritica implements IAlerta {
   }
 
   public obtenerMensajeDeAlerta(): string {
-    return "ALERTA CRITICA, EL REACTOR SE APAGARA";
+    return "ALERTA ESTANDAR, SE ACTIVARAN MECANISMOS DE ENFRIAMIENTO";
   }
 
   public obtenerTimestampDeAlerta(): Date {

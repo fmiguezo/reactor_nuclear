@@ -1,6 +1,6 @@
-import AlertaCritica from "./AlertaCritica";
-import IAlerta from "./IAlerta";
-import IGeneradorDeAlertas from "./IGeneradorDeAlertas";
+import AlertaCritica from "./alerta_critica";
+import IAlerta from "./ialerta";
+import IGeneradorDeAlertas from "./igenerador_alertas";
 
 export default class GeneradorDeAlertasCriticas implements IGeneradorDeAlertas {
   public generarAlerta(): IAlerta {
