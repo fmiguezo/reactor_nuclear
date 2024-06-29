@@ -1,11 +1,12 @@
 import AlertaEstandar from "../../../src/sistema_de_control/alertas/alerta_estandar";
+import {TipoAlerta} from "../../../src/sistema_de_control/alertas/tipo_alerta";
 
 describe("Test de la clase AlertaEstandar", () => {
   let instance: AlertaEstandar;
   let tipo: TipoAlerta = TipoAlerta.ESTANDAR;
 
   beforeEach(() => {
-    instance = new AlertaEstandar();
+    instance = AlertaEstandar.getInstance();
   });
 
   it("Verifica que la instancia sea de AlertaEstandar", () => {
@@ -13,7 +14,7 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que la propiedad tipoAlerta sea Estandar", () => {
-    expect(instance.obtenerTipoDeAlerta()).toBe(tipo);
+    expect(instance.getTipoAlerta()).toBe(tipo);
   });
 
   it("Verifica que el mensaje de alerta sea el correcto", () => {
@@ -21,18 +22,18 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que la propiedad date sea una instancia de Date", () => {
-    expect(instance.obtenerTimestampDeAlerta()).toBeInstanceOf(Date);
+    expect(instance.getDate()).toBeInstanceOf(Date);
   });
 
   it("Verifica que el setTipoAlerta funcione", () => {
-    instance.tipoAlerta = TipoAlerta.CRITICA;
-    expect(instance.obtenerTipoDeAlerta()).toBe(TipoAlerta.CRITICA);
+    instance.setTipoAlerta(TipoAlerta.CRITICA);
+    expect(instance.getTipoAlerta()).toBe(TipoAlerta.CRITICA);
   });
 
   it("Verifica que el setDate funcione", () => {
-    instance.date = new Date("2024-06-08T12:00:00");
+    instance.setDate(new Date("2024-06-08T12:00:00"));
     let anotherDate = new Date();
-    anotherDate = instance.date;
-    expect(instance.obtenerTimestampDeAlerta()).toBe(anotherDate);
+    anotherDate = instance.getDate();
+    expect(instance.getDate()).toBe(anotherDate);
   });
 });

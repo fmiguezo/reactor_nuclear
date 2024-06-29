@@ -13,6 +13,6 @@ describe("Test de la clase GeneradorDeAlertasEstandar", () => {
   });
 
   it("Verifica que el objeto retornado sea de tipo AlertaEstandar", () => {
-    expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
+    expect(GeneradorDeAlertasEstandar.generarAlerta()).toBeInstanceOf(AlertaEstandar);
   });
 });

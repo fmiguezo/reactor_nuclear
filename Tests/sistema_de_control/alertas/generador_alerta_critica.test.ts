@@ -13,6 +13,6 @@ describe("Test de la clase GeneradorDeAlertasCriticas", () => {
   });
 
   it("Verifica que el objeto retornado sea de tipo AlertaCritica", () => {
-    expect(instance.generarAlerta()).toBeInstanceOf(AlertaCritica);
+    expect(GeneradorDeAlertasCriticas.generarAlerta()).toBeInstanceOf(AlertaCritica);
   });
 });
