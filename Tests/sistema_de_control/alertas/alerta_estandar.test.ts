@@ -19,7 +19,7 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que el mensaje de alerta sea el correcto", () => {
-    expect(instance.obtenerMensajeDeAlerta()).toBe(Constantes.MENSAJE_ALERTA_CRITICA);
+    expect(instance.obtenerMensajeDeAlerta()).toBe(Constantes.MENSAJE_ALERTA_ESTANDAR);
   });
 
   it("Verifica que la propiedad date sea una instancia de Date", () => {
