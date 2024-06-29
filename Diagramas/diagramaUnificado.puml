@@ -16,7 +16,6 @@ package CentralNuclear {
 ' Planta nuclear
 class PlantaNuclear {
     - reactores: Reactor[];
-    - operadores: Operador[];
     - SistemaDeControl: software;
 }
 
@@ -118,14 +117,6 @@ class RNormal
     + estaEncendido();
 }
 
-
-' Operador
-class Operador {
-    + iniciarReaccion(reactor: Reactor) : void
-    + mantenerReaccion(reactor: Reactor) : void
-    + detenerReaccion(reactor: Reactor) : void
-}
-
 'Interfaces generales
 interface IEncendible {
     + encender();
@@ -210,12 +201,10 @@ class Chernobyl {
 
 'Relaciones
 Reactor --------r-o PlantaNuclear
-Operador -l-o PlantaNuclear
 Reactor *..... ISensor
 Reactor *...l... IMecanismoDeControl
 IActivable -[hidden]r- IMecanismoDeControl
 IActivable -[hidden]l- ISensor
-Reactor <.. Operador
 IEstadoReactor o---- Reactor
 IEstadoReactor  <|-l- ChernobyL
 IEstadoReactor  <|-r- RCritico
@@ -231,17 +220,14 @@ IMecanismoDeControl <|........ IActivable
 
 
 'Notas
-note right of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
-note bottom of Operador: "El reactor va a iniciar apagado, \nal iniciar reaccion cambiamos la \npropiedad EstaEncendido a true"
 note bottom of SensorTemperatura: "Retorna la temperatura"
 note left of SensorProduccionDeEnergia: "Retorna la producción de energía"
 note bottom of BarraDeControl: "Retorna el estado de la barra"
 note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
-note right of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
 note right of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
-note right of IMecanismoDeControl: "enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
+note right of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
 
 package SistemaDeControl {
@@ -254,6 +240,15 @@ class ComprobadorSaludReactor {
     - tieneTemperaturaSegura(reactor: Reactor): boolean;
     - produceEnergiaEnRango(reactor: Reactor): boolean;
     +lanzarAlerta();
+}
+
+class SistemaDeControl
+{
+    - operadores: Operador[];
+}
+
+' Operador
+class Operador {
 }
 
 note bottom of ComprobadorSaludReactor
@@ -351,12 +346,15 @@ NotificadorDeAlerta .l.> Alerta
 TipoAlerta -[hidden]u- NotificadorDeAlerta
 ComprobadorSaludReactor *-r- GeneradorDeAlertas
 GeneradorDeAlertas -[hidden]r- Alerta
+SistemaDeControl o--- Operador
 
 }
 
 
 ComprobadorSaludReactor -r-* PlantaNuclear
 
+note bottom of Operador: "El reactor va a iniciar apagado, \nal iniciar reaccion cambiamos la \npropiedad EstaEncendido a true"
+note bottom of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
 
 @enduml
 
