@@ -30,9 +30,17 @@ class Reactor implements Encendible {
     + apagar();
 }
 
-enum EstadoReactor {
-    ENCENDIDO,
-    APAGADO
+abstract class IEstadoReactor {
+    # static readonly INCREMENTO_POR_MINUTO;
+    # contexto: Reactor;
+    + IEstadoReactor();
+    + abstract calcularEnergia(temperatura: number): number;
+    + abstract encender(): void;
+    + abstract apagar(): void;
+    + abstract estaEncendido(): boolean;
+    + cargaContexto(context): void;
+    + incrementarTemperatura(): void;
+    + abstract verificaEstado(): void;
 }
 
 ' Operador
