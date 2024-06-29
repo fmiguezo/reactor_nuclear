@@ -1,2 +1,2 @@
-import IActivable from "./IActivable";
+import IActivable from "./iactivable";
 export default interface IMecanismoDeControl extends IActivable {}

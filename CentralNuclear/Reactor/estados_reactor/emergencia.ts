@@ -1,24 +1,30 @@
-import IEstadoReactor from "../IEstadoReactor";
+import IEstadoReactor from "../../interfaces/iestadoreactor";
 import Reactor from "../Reactor";
-import RApagado from "./RApagado";
-import RCritico from "./RCritico";
+import RApagado from "./apagado";
+import RCritico from "./critico";
+import Chernobyl from "./chernobyl";
 
-export default class RNormal extends IEstadoReactor {
+export default class REmergencia extends IEstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
   override verificaEstado(): void {
     const tempActual = this.contexto.getTemperatura();
-    if (tempActual < 280) {
-      this.apagar();
-    } else if (tempActual >= 330) {
+    if (tempActual < 400) {
       this.pasaAEstadoCritico();
+    } else if (tempActual >= 500) {
+      this.pasaAEstadoChernobyl();
     }
   }
 
   private pasaAEstadoCritico() {
     let estado: IEstadoReactor = new RCritico();
+    this.contexto.cambiarEstado(estado);
+  }
+
+  private pasaAEstadoChernobyl() {
+    let estado: IEstadoReactor = new Chernobyl();
     this.contexto.cambiarEstado(estado);
   }
 

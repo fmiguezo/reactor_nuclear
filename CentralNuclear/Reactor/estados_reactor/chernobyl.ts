@@ -1,10 +1,6 @@
-import IEstadoReactor from "../IEstadoReactor";
-import Reactor from "..//Reactor";
-import RApagado from "./RApagado";
-import RCritico from "./RCritico";
-import Chernobyl from "./Chernobyl";
+import IEstadoReactor from "../../interfaces/iestadoreactor";
 
-export default class REmergencia extends IEstadoReactor {
+export default class Chernobyl extends IEstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }

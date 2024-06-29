@@ -1,4 +1,4 @@
-import IActivable from "../Interfaces/IActivable";
+import IActivable from "../interfaces/iactivable";
 import Reactor from "../Reactor/Reactor";
 
 export default interface ISensor extends IActivable {

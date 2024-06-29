@@ -1,7 +1,7 @@
 import Reactor from "../../../CentralNuclear/Reactor/Reactor";
-import SensorTemperatura from "../../../CentralNuclear/Sensores/SensorTemperatura";
+import SensorTemperatura from "../../../CentralNuclear/sensores/sensor_temperatura";
 let instance: SensorTemperatura;
-let instanceReactor: Reactor
+let instanceReactor: Reactor;
 
 beforeEach(() => {
   instance = new SensorTemperatura();

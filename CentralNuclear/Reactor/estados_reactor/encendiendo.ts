@@ -1,30 +1,22 @@
-import IEstadoReactor from "../IEstadoReactor";
+import IEstadoReactor from "../../interfaces/iestadoreactor";
 import Reactor from "../Reactor";
-import RApagado from "./RApagado";
-import RNormal from "./RNormal";
-import REmergencia from "./REmergencia";
+import RApagado from "./apagado";
+import RNormal from "./normal";
 
-export default class RCritico extends IEstadoReactor {
+export default class REncenciendo extends IEstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
   override verificaEstado(): void {
     const tempActual = this.contexto.getTemperatura();
-    if (tempActual < 330) {
+    if (tempActual >= 280) {
       this.pasaAEstadoNormal();
-    } else if (tempActual >= 400) {
-      this.pasaAEstadoEmergencia();
     }
   }
 
   private pasaAEstadoNormal() {
     let estado: IEstadoReactor = new RNormal();
-    this.contexto.cambiarEstado(estado);
-  }
-
-  private pasaAEstadoEmergencia() {
-    let estado: IEstadoReactor = new REmergencia();
     this.contexto.cambiarEstado(estado);
   }
 
@@ -38,6 +30,6 @@ export default class RCritico extends IEstadoReactor {
   }
 
   override estaEncendido() {
-    return true;
+    return false;
   }
 }
