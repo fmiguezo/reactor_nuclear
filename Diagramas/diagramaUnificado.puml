@@ -16,7 +16,7 @@ package CentralNuclear {
 ' Planta nuclear
 class PlantaNuclear {
     - reactores: Reactor[];
-    - SistemaDeControl: software;
+    - Software: software;
 }
 
 ' Reactor
@@ -276,15 +276,65 @@ class AlertaEstandar{
     + obtenerTimestampDeAlerta(): Date;
 }
 
+class NotificadorDeAlerta {
+    + notificarAlerta(alerta:Alerta);
+}
+
 enum TipoAlerta {
     CRITICA,
     ESTANDAR
 }
 
+interface GeneradorDeAlertas
+{
+    + generarAlerta(): IAlerta;
+}
 
+class GeneradorDeAlertasEstandar
+{
+    + generarAlerta(): IAlerta;
+}
 
+class GeneradorDeAlertasCritica
+{
+    + generarAlerta(): IAlerta;
+}
 
+' Manejo de comandos
+'enum ComandosDisponibles {
+    'BARRA_CONTROL
+    'REACTOR,
+    'REFRIGERACION,
+    'SENSOR_TEMPERATURA,
+    'SENSOR_NIVEL_AGUA,
+    'REPORTAR_ESTADO
+'}
 
+'class InterpreteDeComandos {
+    '- lanzarAccion();
+    '+ interpretarComando();
+'}
+
+' Acciones
+'interface Accion {
+
+'}
+
+'' Barras de control
+'class ManejadorDeBarraDeControl implements Accion {
+    '+ obtenerBarrasDisponibles(): BarraDeControl[];
+    '+ insertarBarra();
+    '+ quitarBarra();
+'}
+
+'class Comando {
+
+'}
+
+' Acciones automáticas de seguridad
+'class ModuloAccionAutomaticaSeguridad {
+    '+ apagarPorEmergencia();
+'}
 
 ' Relaciones
 SistemaDeControl o-d- Operador
@@ -292,7 +342,12 @@ SistemaDeControl o-r- ComprobadorSaludReactor
 ComprobadorSaludReactor <|.r. Alerta
 Alerta <|.r. AlertaEstandar
 Alerta <|.u. AlertaCritica
-TipoAlerta -[hidden]u- Alerta
+GeneradorDeAlertas <|.. GeneradorDeAlertasEstandar
+GeneradorDeAlertas <|.. GeneradorDeAlertasCritica
+NotificadorDeAlerta <.u. Alerta
+TipoAlerta -[hidden]r- NotificadorDeAlerta
+AlertaCritica <.u. GeneradorDeAlertasCritica
+AlertaEstandar <.u.. GeneradorDeAlertasEstandar
 
 }
 
@@ -300,10 +355,3 @@ TipoAlerta -[hidden]u- Alerta
 SistemaDeControl -r-* PlantaNuclear
 
 @enduml
-
-'Cambios sugeridos en PR
-'- establecer relaciones entre clases
-'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
-'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
-'- agregar Clase operador
-' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
