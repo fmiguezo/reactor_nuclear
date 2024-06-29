@@ -1,9 +1,9 @@
-import ISuscriptor from "../interfaces/empleado";
+import IEmpleado from "../interfaces/empleado";
 
 export default abstract class Alerta {
   protected _tipoAlerta: TipoAlerta;
   protected _date: Date = new Date();
-  protected _suscriptores: ISuscriptor[] = [];
+  protected _suscriptores: IEmpleado[] = [];
 
   public constructor(tipoAlerta: TipoAlerta) {
     this._tipoAlerta = tipoAlerta;
@@ -33,11 +33,11 @@ export default abstract class Alerta {
         \nFecha: ${this.getDate()}`;
   }
 
-  public agregarSuscriptor(suscriptor: ISuscriptor): void {
+  public agregarSuscriptor(suscriptor: IEmpleado): void {
     this._suscriptores.push(suscriptor);
   }
 
-  public removerSuscriptor(suscriptor: ISuscriptor): void {
+  public removerSuscriptor(suscriptor: IEmpleado): void {
     this._suscriptores = this._suscriptores.filter((s) => s !== suscriptor);
   }
 
