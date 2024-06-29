@@ -7,14 +7,14 @@ export default class REncenciendo extends EstadoReactor {
     return 0;
   }
 
-  override verificaEstado(): void {
+  override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
     if (tempActual >= TEMP_MINIMA_NORMAL && tempActual < TEMP_MAXIMA_NORMAL) {
-      this.pasaAEstadoNormal();
+      this.cambiarAEstadoNormal();
     }
   }
 
-  private pasaAEstadoNormal() {
+  private cambiarAEstadoNormal() {
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
   }

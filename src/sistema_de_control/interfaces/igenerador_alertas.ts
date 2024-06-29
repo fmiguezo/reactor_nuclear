@@ -1,5 +1,3 @@
-import IAlerta from "./ialerta";
+import IAlerta from "../alertas/alerta";
 
-export default interface IGeneradorDeAlertas {
-  generarAlerta(): IAlerta;
-}
+export default interface IGeneradorDeAlertas {}

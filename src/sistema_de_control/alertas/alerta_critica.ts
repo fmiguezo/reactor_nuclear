@@ -1,40 +1,8 @@
-import IAlerta from "../interfaces/ialerta";
+import Alerta from "./alerta";
+import ISuscriptor from "../interfaces/isuscriptor";
 
-export default class AlertaCritica implements IAlerta {
-  private _tipoAlerta: TipoAlerta = TipoAlerta.CRITICA;
-  private _date: Date = new Date();
-
-  public get tipoAlerta(): TipoAlerta {
-    return this._tipoAlerta;
-  }
-
-  public set tipoAlerta(value: TipoAlerta) {
-    this._tipoAlerta = value;
-  }
-
-  public get date(): Date {
-    return this._date;
-  }
-
-  public set date(value: Date) {
-    this._date = value;
-  }
-
-  public obtenerTipoDeAlerta() {
-    return this.tipoAlerta;
-  }
-
-  public obtenerMensajeDeAlerta(): string {
+export default class AlertaCritica extends Alerta {
+  public override obtenerMensajeDeAlerta(): string {
     return MENSAJE_ALERTA_CRITICA;
-  }
-
-  public obtenerTimestampDeAlerta(): Date {
-    return this.date;
-  }
-
-  public toString(): string {
-    return `Mensaje: ${this.obtenerMensajeDeAlerta()}
-        \nTipo de alerta: ${this.obtenerTipoDeAlerta()}
-        \nFecha: ${this.obtenerTimestampDeAlerta()}`;
   }
 }

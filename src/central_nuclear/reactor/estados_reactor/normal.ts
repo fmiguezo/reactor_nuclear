@@ -7,16 +7,16 @@ export default class RNormal extends EstadoReactor {
     return 0;
   }
 
-  override verificaEstado(): void {
+  override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
     if (tempActual < TEMP_MINIMA_NORMAL) {
       this.apagar();
     } else if (tempActual >= TEMP_MAXIMA_NORMAL) {
-      this.pasaAEstadoCritico();
+      this.cambiarAEstadoCritico();
     }
   }
 
-  private pasaAEstadoCritico() {
+  private cambiarAEstadoCritico() {
     let estado: EstadoReactor = new RCritico(this._reactor);
     this._reactor.cambiarEstado(estado);
   }

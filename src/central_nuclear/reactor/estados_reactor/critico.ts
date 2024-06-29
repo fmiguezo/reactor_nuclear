@@ -2,27 +2,30 @@ import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
 import REmergencia from "./emergencia";
+import AlertaEstandar from "../../../sistema_de_control/alertas/alerta_estandar";
+import Alerta from "../../../sistema_de_control/alertas/alerta";
+import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
 
 export default class RCritico extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
-  override verificaEstado(): void {
+  override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
     if (tempActual < TEMP_MAXIMA_NORMAL) {
-      this.pasaAEstadoNormal();
+      this.cambiarAEstadoNormal();
     } else if (tempActual >= TEMP_CRITICA) {
-      this.pasaAEstadoEmergencia();
+      this.cambiarAEstadoEmergencia();
     }
   }
 
-  private pasaAEstadoNormal() {
+  private cambiarAEstadoNormal() {
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
   }
 
-  private pasaAEstadoEmergencia() {
+  private cambiarAEstadoEmergencia() {
     let estado: EstadoReactor = new REmergencia(this._reactor);
     this._reactor.cambiarEstado(estado);
   }
@@ -38,5 +41,9 @@ export default class RCritico extends EstadoReactor {
 
   override estaEncendido() {
     return true;
+  }
+
+  override generarAlerta(): IAlerta {
+    return GeneradorDeAlertasEstandar.generarAlerta();
   }
 }

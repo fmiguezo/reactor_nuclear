@@ -1,5 +1,7 @@
+import IAlerta from "../../../sistema_de_control/alertas/alerta";
 import IEncendible from "../../interfaces/iencendible";
 import Reactor from "../reactor";
+import IGeneradorDeAlertas from "../../../sistema_de_control/interfaces/igenerador_alertas";
 
 export default abstract class EstadoReactor implements IEncendible {
   protected _incrementoTemp: number = INCREMENTO_POR_MINUTO;
@@ -23,5 +25,9 @@ export default abstract class EstadoReactor implements IEncendible {
     this._reactor.notificarSensores();
   }
 
-  public abstract verificaEstado(): void;
+  public abstract verificarEstado(): void;
+
+  public generarAlerta(): IAlerta | null {
+    return null;
+  }
 }

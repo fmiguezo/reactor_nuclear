@@ -4,7 +4,7 @@ import IMecanismoDeControl from "../interfaces/imecanismo_control.js";
 import ISensor from "../interfaces/isensor.js";
 import BarraControl from "../barras_control/barra_control.js";
 import AdministradorBarras from "./administrador/administrador_barras.js";
-import Sistema from "../sistema_de_control/sistema.js";
+import Sistema from "../../sistema_de_control/sistema.js";
 
 export default class Reactor {
   private idReactor: string = "";
@@ -14,7 +14,7 @@ export default class Reactor {
   private sensores: ISensor[] = [];
   private temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
-  private sistema_de_control: Sistema;
+  private sistema_de_control: Sistema = new Sistema(this);
 
   public get estado(): IEstadoReactor {
     return this._estado;
@@ -56,12 +56,13 @@ export default class Reactor {
   }
 
   public getEstado() {
-    return this.estado.estaEncendido();
+    return this.estado;
   }
 
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
     this.estado = state;
+    this.notificarSistema();
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {

@@ -5,7 +5,7 @@ export default class Chernobyl extends EstadoReactor {
     return 0;
   }
 
-  override verificaEstado(): void {
+  override verificarEstado(): void {
     throw new Error("El reactor explotó");
   }
 
