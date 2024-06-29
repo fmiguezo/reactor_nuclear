@@ -197,6 +197,13 @@ class Eliminada {
     +abstract calcPctBarra(): number;
 }
 
+class EnDesuso {
+    +abstract estaActivo(): boolean;
+    +abstract activar(): void;
+    +abstract desactivar(): void;
+    +abstract calcPctBarra(): number;
+}
+
 '' Turbina de refrigeración
 class TurbinaDeRefrigeracion implements IMecanismoDeControl {
     + estaActivo(): boolean;
