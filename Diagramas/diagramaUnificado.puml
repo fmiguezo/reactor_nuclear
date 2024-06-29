@@ -22,12 +22,25 @@ class PlantaNuclear {
 ' Reactor
 class Reactor implements Encendible {
     - idReactor: string;
-    - estado: EstadoReactor;
+    - _estado: EstadoReactor;
     - mecanimosDeControl: IMecanismoDeControl[];
     - sensores: ISensor[];
     - temperatura: number;
-    + encender();
-    + apagar();
+    + getters();
+    + setters();
+    + encender(): void;
+    + apagar(): void;
+    + getTemperatura(): number;
+    + actualizarTemperatura(): void;
+    + setTemperatura(temperatura: number): void;
+    + getIdReactor(): string;
+    + getEstado();
+    + cambiarEstado(IEstadoReactor state ): void;
+    + agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    + eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    + agregarSensor(sensor: ISensor): void;
+    + eliminarSensor(sensor: ISensor): void;
+    + notificarSensores(): void;
 }
 
 abstract class IEstadoReactor {
