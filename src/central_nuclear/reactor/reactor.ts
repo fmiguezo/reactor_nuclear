@@ -6,12 +6,12 @@ import BarraControl from "../barras_control/barra_control.js";
 import AdministradorBarras from "./administrador/administrador_barras.js";
 
 export default class Reactor {
-  private idReactor: string = "";
+  private _idReactor: string = "";
   private _estado: IEstadoReactor = new RApagado(this);
-  private mecanimosDeControl: IMecanismoDeControl[] = [];
-  private barrasControl: BarraControl[] = [];
-  private sensores: ISensor[] = [];
-  private temperatura: number = 0;
+  private _mecanimosDeControl: IMecanismoDeControl[] = [];
+  private _barrasControl: BarraControl[] = [];
+  private _sensores: ISensor[] = [];
+  private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
 
   public get estado(): IEstadoReactor {
@@ -30,15 +30,15 @@ export default class Reactor {
   }
 
   public getTemperatura(): number {
-    return this.temperatura;
+    return this._temperatura;
   }
 
-  public get barrasDeControl(): BarraControl[] {
-    return this.barrasControl;
+  public getBarrasDeControl(): BarraControl[] {
+    return this._barrasControl;
   }
 
-  public set barrasDeControl(bc: BarraControl[]) {
-    this.barrasControl = bc;
+  public setBarrasDeControl(bc: BarraControl[]) {
+    this._barrasControl = bc;
   }
 
   public actualizarTemperatura(): void {
@@ -46,11 +46,11 @@ export default class Reactor {
   }
 
   public setTemperatura(temperatura: number): void {
-    this.temperatura = temperatura;
+    this._temperatura = temperatura;
   }
 
   public getIdReactor(): string {
-    return this.idReactor;
+    return this._idReactor;
   }
 
   public getEstado() {
@@ -63,30 +63,24 @@ export default class Reactor {
     this.estado.cargaContexto(this);
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this.mecanimosDeControl.push(mecanismoDeControl);
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this.mecanimosDeControl = this.mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {
-    this.sensores.push(sensor);
+    this._sensores.push(sensor);
   }
 
   public eliminarSensor(sensor: ISensor): void {
-    this.sensores = this.sensores.filter((sensor) => sensor !== sensor);
+    this._sensores = this._sensores.filter((sensor) => sensor !== sensor);
   }
 
   public notificarSensores(): void {
-    this.sensores.forEach((sensor) => sensor.actualizar(this));
+    this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
 
   public calcularTemperatura(): void {}

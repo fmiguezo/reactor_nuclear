@@ -6,14 +6,15 @@ import BarraControl from "../barra_control";
 export default class Insertada extends EstadoBarraControl {
   private fechaInsertada: Date;
   private timeoutBarra: NodeJS.Timeout | null = null;
+
   constructor() {
     super();
     this.fechaInsertada = new Date();
   }
 
   override setBarraControl(barra: BarraControl): void {
-    this._BarraControl = barra;
-    let tiempoRestanteBarra: number = this._BarraControl.VidaUtilRestante;
+    this._barraControl = barra;
+    let tiempoRestanteBarra: number = this._barraControl.getVidaUtilRestante();
     this.crearTimeOut(tiempoRestanteBarra);
   }
 
@@ -22,7 +23,7 @@ export default class Insertada extends EstadoBarraControl {
   }
 
   override activar(): void {
-    console.log("La barra ya estaba insertada");
+    throw new Error(MENSAJE_BARRA_INSERTADA);
   }
 
   override desactivar(): void {
@@ -31,11 +32,11 @@ export default class Insertada extends EstadoBarraControl {
     }
     this.actualizarVidaRestanteBarra();
     let nuevoEstado: EstadoBarraControl = new EnDesuso();
-    this._BarraControl.cambiarEstado(nuevoEstado);
+    this._barraControl.cambiarEstado(nuevoEstado);
   }
 
   override calcPctBarra(): number {
-    return (this._BarraControl.VidaUtilRestante / 3600) * 100;
+    return (this._barraControl.getVidaUtilRestante() / 3600) * 100;
   }
 
   private calcDiffTiempoActual(): number {
@@ -46,9 +47,9 @@ export default class Insertada extends EstadoBarraControl {
 
   private actualizarVidaRestanteBarra(): void {
     const tiempoTranscurrido = this.calcDiffTiempoActual();
-    this._BarraControl.VidaUtilRestante -= tiempoTranscurrido;
-    if (this._BarraControl.VidaUtilRestante <= 0) {
-      this._BarraControl.VidaUtilRestante = 0;
+    this._barraControl.setVidaUtilRestante(this._barraControl.getVidaUtilRestante() - tiempoTranscurrido);
+    if (this._barraControl.getVidaUtilRestante() <= 0) {
+      this._barraControl.setVidaUtilRestante(0);
       this.expirar();
     }
   }
@@ -61,6 +62,6 @@ export default class Insertada extends EstadoBarraControl {
 
   private expirar(): void {
     let nuevoEstado: EstadoBarraControl = new Eliminada();
-    this._BarraControl.cambiarEstado(nuevoEstado);
+    this._barraControl.cambiarEstado(nuevoEstado);
   }
 }
