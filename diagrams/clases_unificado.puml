@@ -183,10 +183,34 @@ class BarraDeControl implements IMecanismoDeControl {
 
 }
 
-enum EstadoBarraDeControl {
-    ELIMINADA,
-    INSERTADA,
-    EN_DESUSO
+abstract class EstadoBarraDeControl {
+    #BarraControl: BarraControl;
+
+    +abstract estaActivo(): boolean;
+    +abstract activar(): void;
+    +abstract desactivar(): void;
+    +abstract calcPctBarra(): number;
+}
+
+class Eliminada {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+class EnDesuso {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+class Insertada {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
 }
 
 '' Turbina de refrigeración
