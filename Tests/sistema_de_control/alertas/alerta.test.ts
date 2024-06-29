@@ -1,5 +1,5 @@
 import AlertaCritica from "../../../src/sistema_de_control/alertas/alerta_critica";
-import {TipoAlerta} from "../../../src/sistema_de_control/alertas/tipo_alerta";
+import TipoAlerta from "../../sistema_de_control/alertas/tipo_alertas";
 
 describe("Test de la clase AlertaCritica", () => {
   let instance: AlertaCritica;
