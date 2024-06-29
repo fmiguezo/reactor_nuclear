@@ -44,7 +44,6 @@ class Reactor implements Encendible {
     + notificarSensores(): void;
 }
 
-' Estado reactor
 abstract class IEstadoReactor {
     # static readonly INCREMENTO_POR_MINUTO;
     # contexto: Reactor;
@@ -58,8 +57,7 @@ abstract class IEstadoReactor {
     + abstract verificaEstado(): void;
 }
 
-' Estados concretos 
-class ChernobyL extends IEstadoReactor
+class ChernobyL
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -68,7 +66,7 @@ class ChernobyL extends IEstadoReactor
     + estaEncendido();
 }
 
-class RApagado extends IEstadoReactor
+class RApagado
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -78,7 +76,7 @@ class RApagado extends IEstadoReactor
     + incrementarTemperatura(): void;
 }
 
-class RCritico extends IEstadoReactor
+class RCritico
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -89,7 +87,7 @@ class RCritico extends IEstadoReactor
     + estaEncendido();
 }
 
-class REmergencia extends IEstadoReactor
+class REmergencia
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -100,7 +98,7 @@ class REmergencia extends IEstadoReactor
     + estaEncendido();
 }
 
-class REncenciendo extends IEstadoReactor
+class REncenciendo
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -110,7 +108,7 @@ class REncenciendo extends IEstadoReactor
     + estaEncendido();
 }
 
-class RNormal extends IEstadoReactor
+class RNormal
 {
     + calcularEnergia(temperatura: number = 0): number;
     + verificaEstado(): void;
@@ -119,6 +117,7 @@ class RNormal extends IEstadoReactor
     + apagar();
     + estaEncendido();
 }
+
 
 ' Operador
 class Operador {
@@ -219,7 +218,13 @@ Activable -[hidden]r- IMecanismoDeControl
 Activable -[hidden]l- ISensor
 Reactor <.. Operador
 EstadoBarraDeControl -[hidden]d- BarraDeControl
-
+IEstadoReactor o----------- Reactor
+IEstadoReactor  <|-l- ChernobyL
+IEstadoReactor  <|-r- RCritico
+IEstadoReactor  <|-d- REmergencia
+IEstadoReactor  <|-d- RNormal
+IEstadoReactor  <|-u- REncenciendo
+IEstadoReactor  <|-u- RApagado
 
 
 'Notas
