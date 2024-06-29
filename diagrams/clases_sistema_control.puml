@@ -10,30 +10,7 @@ skinparam titleBorderThickness 2
 skinparam titleBorderColor skyBlue
 skinparam titleBackgroundColor #96a2ff
 
-' Procesamiento de Datos
-class ComprobadorSaludReactor {
-    -generadorDeAlertas: GeneradorDeAlertas;
-    -setGenerador(g: GeneradorDeAlertas)
-    - estaEncendido(reactor: Reactor): boolean;
-    - tieneTemperaturaSegura(reactor: Reactor): boolean;
-    - produceEnergiaEnRango(reactor: Reactor): boolean;
-    +lanzarAlerta();
-}
 
-class SistemaDeControl
-{
-    - operadores: Operador[];
-    - compobadorSalud: ComprobadorSaludReactor;
-}
-
-' Operador
-class Operador {
-    class Operador {
-    - nombre : String
-    - reactor : Reactor
-    + constructor(reactor: Reactor, nombre: String)
-    + realizarOperacion(comando : Command) : void
-}
 
 interface Command{
     + ejecutar (comando : Command) : void
@@ -66,65 +43,7 @@ class SacarBarraDeControl {
 
 
 
-
-
-interface Alerta {
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
-}
-
-class AlertaCritica{
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
-
-}
-
-class AlertaEstandar{
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
-}
-
-class NotificadorDeAlerta {
-    + notificarAlerta(alerta:Alerta);
-}
-
-enum TipoAlerta {
-    CRITICA,
-    ESTANDAR
-}
-
-interface GeneradorDeAlertas
-{
-    + generarAlerta(): IAlerta;
-}
-
-class GeneradorDeAlertasEstandar
-{
-    + generarAlerta(): IAlerta;
-}
-
-class GeneradorDeAlertasCritica
-{
-    + generarAlerta(): IAlerta;
-}
-
-
-
 ' Relaciones
-SistemaDeControl o-d- Operador
-SistemaDeControl o-r- ComprobadorSaludReactor
-ComprobadorSaludReactor <|.r. Alerta
-Alerta <|.r. AlertaEstandar
-Alerta <|.u. AlertaCritica
-GeneradorDeAlertas <|.. GeneradorDeAlertasEstandar
-GeneradorDeAlertas <|.. GeneradorDeAlertasCritica
-NotificadorDeAlerta <.u. Alerta
-TipoAlerta -[hidden]r- NotificadorDeAlerta
-AlertaCritica <.u. GeneradorDeAlertasCritica
-AlertaEstandar <.u.. GeneradorDeAlertasEstandar
 Command <|.. ApagarReactor
 Command <|.. EncenderReactor
 Command <|.. InsertarBarraDeControl
