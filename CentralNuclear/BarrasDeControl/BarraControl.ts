@@ -1,56 +1,53 @@
 import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
-import { EstadoBarraDeControl } from "./EstadoBarraDeControl";
-
-export default class BarraControl implements IMecanismoDeControl {
-  private _material: string;
-  private _estado: EstadoBarraDeControl;
-  private _tiempoVidaUtilTotal: number;
+import EstadoBarraControl from "./EstadosBarraControl/EstadoBarraControl";
+import EnDesuso from "./EstadosBarraControl/EnDesuso";
+export default abstract class BarraControl implements IMecanismoDeControl {
+  protected _estado!: EstadoBarraControl;
+  protected _vidaUtilRestante: number;
 
   constructor(
-    material: string,
-    tiempoVidaUtilTotal: number = 200,
-    estado: EstadoBarraDeControl = EstadoBarraDeControl.EN_DESUSO
+    tiempoVidaUtilTotal: number = 0,
+    estado: EstadoBarraControl = new EnDesuso()
   ) {
-    this._material = material;
-    this._tiempoVidaUtilTotal = tiempoVidaUtilTotal;
-    this._estado = estado;
+    this._vidaUtilRestante = tiempoVidaUtilTotal;
+    this.cambiarEstado(estado);
   }
 
   // Getters
+
   estaActivo(): boolean {
-    const activoMap: Map<EstadoBarraDeControl, boolean> = new Map([
-      [EstadoBarraDeControl.EN_DESUSO, false],
-      [EstadoBarraDeControl.ELIMINADA, false],
-      [EstadoBarraDeControl.INSERTADA, true],
-    ]);
-    return activoMap.get(this._estado) ?? false;
+    return this._estado.estaActivo();
   }
 
   getPctBarra(): number {
-    return this.calcPctBarra();
+    return this._estado.calcPctBarra();
+  }
+
+  public get estado(): EstadoBarraControl {
+    return this._estado;
+  }
+
+  public get VidaUtilRestante(): number {
+    return this._vidaUtilRestante;
   }
 
   // Setters
-  private set estado(nuevoEstado: EstadoBarraDeControl) {
-    this._estado = nuevoEstado;
+  public set VidaUtilRestante(valor: number) {
+    this._vidaUtilRestante = valor;
+  }
+
+  // Métodos de control de estado
+  public cambiarEstado(state: EstadoBarraControl): void {
+    this._estado = state;
+    this._estado.setBarraControl(this);
   }
 
   // Otros Metodos
 
-  private revisaSiPuedeActivar(): boolean {
-    return this._estado != EstadoBarraDeControl.ELIMINADA;
-  }
-
   activar(): void {
-    if (this.revisaSiPuedeActivar()) {
-      this.estado = EstadoBarraDeControl.INSERTADA;
-    } else throw new Error("Barra inactivable");
+    this._estado.activar();
   }
   desactivar(): void {
-    this.estado = EstadoBarraDeControl.EN_DESUSO;
-  }
-
-  private calcPctBarra(): number {
-    return (this._tiempoVidaUtilTotal / 3600) * 100;
+    this._estado.desactivar();
   }
 }

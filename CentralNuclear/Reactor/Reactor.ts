@@ -7,6 +7,7 @@ export default class Reactor {
   private idReactor: string = "";
   private _estado: IEstadoReactor = new RApagado();
   private mecanimosDeControl: IMecanismoDeControl[] = [];
+  private barrasControl: BarraControl[] = [];
   private sensores: ISensor[] = [];
   private temperatura: number = 0;
 
@@ -27,6 +28,14 @@ export default class Reactor {
 
   public getTemperatura(): number {
     return this.temperatura;
+  }
+
+  public get barrasDeControl(): BarraControl[] {
+    return this.barrasControl;
+  }
+
+  public set barrasDeControl(bc: BarraControl[]) {
+    this.barrasControl = bc;
   }
 
   public actualizarTemperatura(): void {
@@ -70,4 +79,6 @@ export default class Reactor {
   public notificarSensores(): void {
     this.sensores.forEach((sensor) => sensor.actualizar(this));
   }
+
+  public calcularTemperatura(): void {}
 }
