@@ -28,7 +28,45 @@ class SistemaDeControl
 
 ' Operador
 class Operador {
+    class Operador {
+    - nombre : String
+    - reactor : Reactor
+    + constructor(reactor: Reactor, nombre: String)
+    + realizarOperacion(comando : Command) : void
 }
+
+interface Command{
+    + ejecutar (comando : Command) : void
+}
+
+class ApagarReactor implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+class EncenderReactor implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+class InsertarBarraDeControl implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+class ObtenerInformacionReactor implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+class ReportarEstado implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+class SacarBarraDeControl implements Command{
+    + ejecutar (comando : Command) : void
+}
+
+
+
+
+
 
 interface Alerta {
     + obtenerTipoDeAlerta(): enumTipoAlerta;

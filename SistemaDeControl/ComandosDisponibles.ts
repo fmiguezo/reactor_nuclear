@@ -1,0 +1,8 @@
+const enum ComandosDisponibles{
+    BARRA_CONTROL, 
+    REACTOR,
+    REFRIGERACION,
+    SENSOR_TEMPERATURA,
+    SENSOR_NIVEL_AGUA,
+    REPORTAR_ESTADO
+}
