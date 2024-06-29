@@ -67,6 +67,16 @@ class ChernobyL extends IEstadoReactor
     + estaEncendido();
 }
 
+class RApagado extends IEstadoReactor
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    + encender();
+    + apagar();
+    + estaEncendido();
+    + incrementarTemperatura(): void;
+}
+
 ' Operador
 class Operador {
     + iniciarReaccion(reactor: Reactor) : void
