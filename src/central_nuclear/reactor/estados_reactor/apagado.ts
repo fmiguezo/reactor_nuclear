@@ -1,21 +1,23 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 import REncendiendo from "./encendiendo";
+import Alerta from "../../../sistema_de_control/alertas/alerta";
+import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/generador_alerta_apagado";
 
-export default class RApagado extends IEstadoReactor {
+export default class RApagado extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
-  override verificaEstado(): void {
-    const tempActual = this.contexto.getTemperatura();
+  override verificarEstado(): void {
+    const tempActual = this._reactor.getTemperatura();
     if (tempActual > 0) {
       this.encender();
     }
   }
 
   override encender() {
-    let estado: IEstadoReactor = new REncendiendo(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new REncendiendo(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override apagar() {
@@ -27,4 +29,8 @@ export default class RApagado extends IEstadoReactor {
   }
 
   override incrementarTemperatura(): void {}
+
+  override generarAlerta(): Alerta {
+    return GeneradorDeAlertaApagado.generarAlerta();
+  }
 }
