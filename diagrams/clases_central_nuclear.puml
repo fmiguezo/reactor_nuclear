@@ -226,6 +226,9 @@ class Chernobyl {
 }
 
 'Relaciones
+EstadoBarraDeControl <|-- Eliminada
+EstadoBarraDeControl <|-- EnDesuso
+EstadoBarraDeControl <|-- Insertada
 Reactor -r-o PlantaNuclear
 Reactor *..... ISensor
 Reactor *...... IMecanismoDeControl
