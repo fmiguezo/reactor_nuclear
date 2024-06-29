@@ -210,12 +210,12 @@ Reactor *...l... IMecanismoDeControl
 IActivable -[hidden]r- IMecanismoDeControl
 IActivable -[hidden]l- ISensor
 IEstadoReactor o---- Reactor
-IEstadoReactor  <|-l- ChernobyL
-IEstadoReactor  <|-r- RCritico
-IEstadoReactor  <|-d- REmergencia
-IEstadoReactor  <|-d- RNormal
+IEstadoReactor  <|-u- ChernobyL
+IEstadoReactor  <|-u- RCritico
+IEstadoReactor  <|-r- REmergencia
+IEstadoReactor  <|-u- RNormal
 IEstadoReactor  <|-u- REncenciendo
-IEstadoReactor  <|-u- RApagado
+IEstadoReactor  <|-l- RApagado
 Reactor  <|.... IEncendible
 ISensor <|.l. SensorProduccionDeEnergia
 ISensor <|.. SensorTemperatura
@@ -231,7 +231,7 @@ note bottom of BarraDeControl: "Retorna el estado de la barra"
 note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note right of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
+note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note right of EstadoBarraDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
 
