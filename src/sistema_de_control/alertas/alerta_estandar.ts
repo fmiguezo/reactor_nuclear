@@ -1,4 +1,4 @@
-import IAlerta from "./ialerta";
+import IAlerta from "../interfaces/ialerta";
 
 export default class AlertaEstandar implements IAlerta {
   private _tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
