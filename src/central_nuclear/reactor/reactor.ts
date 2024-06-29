@@ -4,24 +4,18 @@ import IMecanismoDeControl from "../interfaces/imecanismo_control.js";
 import ISensor from "../interfaces/isensor.js";
 import BarraControl from "../barras_control/barra_control.js";
 import AdministradorBarras from "./administrador/administrador_barras.js";
+import Energia from "./reaccion/energia.js";
 import Sistema from "../../sistema_de_control/sistema.js";
 
 export default class Reactor {
-  private idReactor: string = "";
+  private _idReactor: string = "";
   private _estado: IEstadoReactor = new RApagado(this);
-  private mecanimosDeControl: IMecanismoDeControl[] = [];
-  private barrasControl: BarraControl[] = [];
-  private sensores: ISensor[] = [];
-  private temperatura: number = 0;
+  private _mecanimosDeControl: IMecanismoDeControl[] = [];
+  private _barrasControl: BarraControl[] = [];
+  private _sensores: ISensor[] = [];
+  private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
   private sistema_de_control: Sistema = new Sistema(this);
-
-  public get estado(): IEstadoReactor {
-    return this._estado;
-  }
-  public set estado(value: IEstadoReactor) {
-    this._estado = value;
-  }
 
   public encender(): void {
     this._estado.encender();
@@ -31,42 +25,53 @@ export default class Reactor {
     this._estado.apagar();
   }
 
+  public getEstado(): IEstadoReactor {
+    return this._estado;
+  }
+  public setEstado(value: IEstadoReactor) {
+    this._estado = value;
+  }
+
   public getTemperatura(): number {
-    return this.temperatura;
+    return this._temperatura;
   }
 
-  public get barrasDeControl(): BarraControl[] {
-    return this.barrasControl;
+  public setTemperatura(temperatura: number): void {
+    this._temperatura = temperatura;
   }
 
-  public set barrasDeControl(bc: BarraControl[]) {
-    this.barrasControl = bc;
+  public getIdReactor(): string {
+    return this._idReactor;
+  }
+
+  public getBarrasDeControl(): BarraControl[] {
+    return this._barrasControl;
+  }
+
+  public setBarrasDeControl(bc: BarraControl[]) {
+    this._barrasControl = bc;
   }
 
   public actualizarTemperatura(): void {
     // TO-DO
   }
 
-  public setTemperatura(temperatura: number): void {
-    this.temperatura = temperatura;
+  public obtenerEnergiaTermal(): number {
+    return Energia.calcularEnergiaTermal(this._temperatura);
   }
 
-  public getIdReactor(): string {
-    return this.idReactor;
-  }
+  public obtenerEnergiaNeta(): number {
+    return Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
 
-  public getEstado() {
-    return this.estado;
-  }
 
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
-    this.estado = state;
+    this._estado = state;
     this.notificarSistema();
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this.mecanimosDeControl.push(mecanismoDeControl);
+    this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
   public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
@@ -74,28 +79,31 @@ export default class Reactor {
   }
 
   public agregarSensor(sensor: ISensor): void {
-    this.sensores.push(sensor);
+    this._sensores.push(sensor);
   }
 
   public eliminarSensor(sensor: ISensor): void {
-    this.sensores = this.sensores.filter((sensor) => sensor !== sensor);
+    this._sensores = this._sensores.filter((sensor) => sensor !== sensor);
+  }
+
+  public getSensores(): ISensor[] {
+    return this._sensores;
   }
 
   public notificarSensores(): void {
-    this.sensores.forEach((sensor) => sensor.actualizar(this));
+    this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
-
   public notificarSistema(): void {
     this.sistema_de_control.actualizar();
   }
 
   public calcularTemperatura(): void {}
 
-  public get administradorBarras(): AdministradorBarras {
+  public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
   }
 
-  public set administradorBarras(componente: AdministradorBarras) {
+  public setAadministradorBarras(componente: AdministradorBarras) {
     this._administradorBarras = componente;
   }
 }

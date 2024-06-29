@@ -6,11 +6,11 @@ export default class Eliminada extends EstadoBarraControl {
   }
 
   override activar(): void {
-    console.log("La barra está vencida. No puede utilizarse.");
+    throw new Error(MENSAJE_BARRA_VENCIDA);
   }
 
   override desactivar(): void {
-    console.log("La barra está vencida. No puede utilizarse.");
+    throw new Error(MENSAJE_BARRA_VENCIDA);
   }
 
   override calcPctBarra(): number {
