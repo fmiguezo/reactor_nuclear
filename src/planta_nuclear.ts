@@ -1,21 +1,26 @@
-import Reactor from "./central_nuclear/reactor/reactor.js";
-import Operador from "./Operador.ts";
-
+import Reactor from "./central_nuclear/reactor/reactor";
+import Sistema from "./sistema_de_control/sistema";
 export default class PlantaNuclear {
   private _reactores: Reactor[] = [];
-  private _operadores: Operador[] = [];
+  private _sistema!: Sistema;
 
-  public get operadores(): Operador[] {
-    return this._operadores;
-  }
-  public set operadores(value: Operador[]) {
-    this._operadores = value;
+  public set sistema(sistema: Sistema) {
+    this._sistema = sistema;
   }
 
   public get reactores(): Reactor[] {
     return this._reactores;
   }
-  public set reactores(value: Reactor[]) {
-    this._reactores = value;
+
+  public get sistema(): Sistema {
+    return this._sistema;
+  }
+
+  public cargarSistema(sistema: Sistema): void {
+    this._sistema = sistema;
+  }
+
+  public agregarReactores(reactores: Reactor[]): void {
+    this._reactores = this._reactores.concat(reactores);
   }
 }
