@@ -228,6 +228,9 @@ class Chernobyl {
 }
 
 'Relaciones
+EstadoBarraDeControl <|-- Eliminada
+EstadoBarraDeControl <|-- EnDesuso
+EstadoBarraDeControl <|-- Insertada
 Reactor --------r-o PlantaNuclear
 Reactor *..... ISensor
 Reactor *...l... IMecanismoDeControl
@@ -245,7 +248,7 @@ ISensor <|.l. SensorProduccionDeEnergia
 ISensor <|.. SensorTemperatura
 ISensor <|........ IActivable
 IMecanismoDeControl <|........ IActivable
-EstadoBarraDeControl o-l[hidden]- IMecanismoDeControl
+EstadoBarraDeControl .l.|> IMecanismoDeControl
 
 
 'Notas
@@ -256,7 +259,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
 note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
-note right of EstadoBarraDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
+note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
 }
 
 package Software {
