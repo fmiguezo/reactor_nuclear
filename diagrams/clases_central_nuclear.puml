@@ -241,7 +241,7 @@ IEstadoReactor  <|-r- REmergencia
 IEstadoReactor  <|-u- RNormal
 IEstadoReactor  <|-u- REncenciendo
 IEstadoReactor  <|-l- RApagado
-Reactor  <|.l. IEncendible
+IEncendible  <|.r. Reactor
 ISensor <|.l. SensorProduccionDeEnergia
 ISensor <|.. SensorTemperatura
 ISensor <|........ IActivable

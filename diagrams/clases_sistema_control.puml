@@ -39,27 +39,27 @@ interface Command{
     + ejecutar (comando : Command) : void
 }
 
-class ApagarReactor implements Command{
+class ApagarReactor {
     + ejecutar (comando : Command) : void
 }
 
-class EncenderReactor implements Command{
+class EncenderReactor {
     + ejecutar (comando : Command) : void
 }
 
-class InsertarBarraDeControl implements Command{
+class InsertarBarraDeControl {
     + ejecutar (comando : Command) : void
 }
 
-class ObtenerInformacionReactor implements Command{
+class ObtenerInformacionReactor {
     + ejecutar (comando : Command) : void
 }
 
-class ReportarEstado implements Command{
+class ReportarEstado {
     + ejecutar (comando : Command) : void
 }
 
-class SacarBarraDeControl implements Command{
+class SacarBarraDeControl {
     + ejecutar (comando : Command) : void
 }
 
@@ -111,41 +111,7 @@ class GeneradorDeAlertasCritica
     + generarAlerta(): IAlerta;
 }
 
-' Manejo de comandos
-'enum ComandosDisponibles {
-    'BARRA_CONTROL
-    'REACTOR,
-    'REFRIGERACION,
-    'SENSOR_TEMPERATURA,
-    'SENSOR_NIVEL_AGUA,
-    'REPORTAR_ESTADO
-'}
 
-'class InterpreteDeComandos {
-    '- lanzarAccion();
-    '+ interpretarComando();
-'}
-
-' Acciones
-'interface Accion {
-
-'}
-
-'' Barras de control
-'class ManejadorDeBarraDeControl implements Accion {
-    '+ obtenerBarrasDisponibles(): BarraDeControl[];
-    '+ insertarBarra();
-    '+ quitarBarra();
-'}
-
-'class Comando {
-
-'}
-
-' Acciones automáticas de seguridad
-'class ModuloAccionAutomaticaSeguridad {
-    '+ apagarPorEmergencia();
-'}
 
 ' Relaciones
 SistemaDeControl o-d- Operador
@@ -159,6 +125,12 @@ NotificadorDeAlerta <.u. Alerta
 TipoAlerta -[hidden]r- NotificadorDeAlerta
 AlertaCritica <.u. GeneradorDeAlertasCritica
 AlertaEstandar <.u.. GeneradorDeAlertasEstandar
+Command <|.. ApagarReactor
+Command <|.. EncenderReactor
+Command <|.. InsertarBarraDeControl
+Command <|.u. ObtenerInformacionReactor
+Command <|.u. ReportarEstado
+Command <|.u. SacarBarraDeControl
 
 
 @enduml
