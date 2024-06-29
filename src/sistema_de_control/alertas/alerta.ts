@@ -1,4 +1,4 @@
-import ISuscriptor from "../interfaces/isuscriptor";
+import ISuscriptor from "../interfaces/empleado";
 
 export default abstract class Alerta {
   protected _tipoAlerta: TipoAlerta;

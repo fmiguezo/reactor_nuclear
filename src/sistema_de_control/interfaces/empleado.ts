@@ -1,5 +1,5 @@
 import Alerta from "../alertas/alerta";
 
-export default interface ISuscriptor {
+export default interface IEmpleado {
   notificar(a: Alerta): void;
 }
