@@ -235,7 +235,7 @@ note right of PlantaNuclear: "Contiene los reactores y el software que contiene 
 note right of EstadoBarraDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
 
-package SistemaDeControl {
+package Software {
 
 ' Procesamiento de Datos
 class ComprobadorSaludReactor {
@@ -250,43 +250,11 @@ class ComprobadorSaludReactor {
 class SistemaDeControl
 {
     - operadores: Operador[];
+    - compobadorSalud: ComprobadorSaludReactor;
 }
 
 ' Operador
 class Operador {
-}
-
-note bottom of ComprobadorSaludReactor
-    Clase que se encarga de verificar el estado del reactor
-    y lanzar alertas en caso de que algo no este funcionando
-    correctamente.
-    Según el resultado de tieneTemperaturaSegura() se va a
-    setear un generador de alertas u otro
-end note
-
-' Acciones automáticas de seguridad
-class ModuloAccionAutomaticaSeguridad {
-    + apagarPorEmergencia(A: Alerta);
-}
-
-' Interfaz humana
-
-'' Manejo de alertas
-enum TipoAlerta {
-    CRITICA,
-    ESTANDAR
-}
-
-interface GeneradorDeAlertas {
-    +generarAlerta(): IAlerta
-}
-
-class GeneradorDeAlertasCriticas implements GeneradorDeAlertas {
-    +generarAlerta(): IAlerta
-}
-
-class GeneradorDeAlertasEstandar implements GeneradorDeAlertas {
-    +generarAlerta(): IAlerta
 }
 
 interface Alerta {
@@ -295,71 +263,41 @@ interface Alerta {
     + obtenerTimestampDeAlerta(): Date;
 }
 
-class AlertaCritica implements Alerta {
+class AlertaCritica{
     + obtenerTipoDeAlerta(): enumTipoAlerta;
     + obtenerMensajeDeAlerta(): string;
     + obtenerTimestampDeAlerta(): Date;
 
 }
 
-class AlertaEstandar implements Alerta {
+class AlertaEstandar{
     + obtenerTipoDeAlerta(): enumTipoAlerta;
     + obtenerMensajeDeAlerta(): string;
     + obtenerTimestampDeAlerta(): Date;
 }
 
-class NotificadorDeAlerta {
-    + notificarAlerta(alerta:Alerta): string;
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR
 }
 
 
-'' Manejo de comandos
-enum ComandosDisponibles {
-    BARRA_CONTROL
-    REACTOR,
-    REFRIGERACION,
-    SENSOR_TEMPERATURA,
-    SENSOR_NIVEL_AGUA,
-    REPORTAR_ESTADO
-}
 
-class Comando {
-    -estado: ComandosDisponibles
 
-    +setComando(e: ComandosDisponibles)
-}
 
-class InterpreteDeComandos {
-    - lanzarAccion();
-    + interpretarComando(c: Comando);
-}
-
-' Acciones
-interface Accion {
-
-}
-
-'' Barras de control
-class ManejadorDeBarraDeControl implements Accion {
-    + obtenerBarrasDisponibles(): BarraDeControl[];
-    + insertarBarra();
-    + quitarBarra();
-}
 
 ' Relaciones
-NotificadorDeAlerta .l.> Alerta
-TipoAlerta -[hidden]u- NotificadorDeAlerta
-ComprobadorSaludReactor *-r- GeneradorDeAlertas
-GeneradorDeAlertas -[hidden]r- Alerta
-SistemaDeControl o--- Operador
+SistemaDeControl o-d- Operador
+SistemaDeControl o-r- ComprobadorSaludReactor
+ComprobadorSaludReactor <|.r. Alerta
+Alerta <|.r. AlertaEstandar
+Alerta <|.u. AlertaCritica
+TipoAlerta -[hidden]u- Alerta
 
 }
 
 
-ComprobadorSaludReactor -r-* PlantaNuclear
-
-note bottom of Operador: "El reactor va a iniciar apagado, \nal iniciar reaccion cambiamos la \npropiedad EstaEncendido a true"
-note bottom of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
+SistemaDeControl -r-* PlantaNuclear
 
 @enduml
 
