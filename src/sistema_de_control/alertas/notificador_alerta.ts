@@ -1,23 +1,28 @@
 import IAlerta from "../interfaces/ialerta";
-import Usuario from "../usuarios/usuario";
+import ISuscriptor from "../interfaces/isuscriptor";
 
 export default class NotificadorDeAlerta {
-  private _suscriptores!: Usuario[];
+  private _operarios!: ISuscriptor[];
+  private _supervisor!: ISuscriptor[];
 
-  public suscribir(nuevoSub: Usuario): void {
-    this._suscriptores.push(nuevoSub);
+  public suscribirOperario(o: ISuscriptor): void {
+    this._operarios.push(o);
   }
 
-  public desuscribir(suscriptor: Usuario): void {
-    this._suscriptores = this._suscriptores.filter((s) => {
-      s !== suscriptor;
-    });
+  public desuscribirOperario(o: ISuscriptor): void {
+    this._operarios = this._operarios.filter((operario) => operario !== o);
   }
 
-  public notificarAlerta(alerta: IAlerta): void {
-    this._suscriptores.forEach((s) => {
-      s.notificar(alerta);
-    });
+  public suscribirSupervisor(s: ISuscriptor): void {
+    this._supervisor.push(s);
+  }
+
+  public desuscribirSupervisor(s: ISuscriptor): void {
+    this._supervisor = this._supervisor.filter((supervisor) => supervisor !== s);
+  }
+
+  public notificarOperarios(alerta: IAlerta): void {
+    this._operarios.forEach((o) => o.notificar(alerta));
 
     // return `Mensaje: ${alerta.obtenerMensajeDeAlerta()}
     //     \nTipo de alerta: ${alerta.obtenerTipoDeAlerta()}

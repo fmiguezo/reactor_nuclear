@@ -25,10 +25,16 @@ export default class AlertaCritica implements IAlerta {
   }
 
   public obtenerMensajeDeAlerta(): string {
-    return "ALERTA CRITICA, EL REACTOR SE APAGARA";
+    return MENSAJE_ALERTA_CRITICA;
   }
 
   public obtenerTimestampDeAlerta(): Date {
     return this.date;
+  }
+
+  public toString(): string {
+    return `Mensaje: ${this.obtenerMensajeDeAlerta()}
+        \nTipo de alerta: ${this.obtenerTipoDeAlerta()}
+        \nFecha: ${this.obtenerTimestampDeAlerta()}`;
   }
 }

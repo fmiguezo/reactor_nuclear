@@ -1,7 +1,7 @@
 import IAlerta from "../interfaces/ialerta";
 
-export default class AlertaEstandar implements IAlerta {
-  private _tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
+export default class AlertaApagado implements IAlerta {
+  private _tipoAlerta: TipoAlerta = TipoAlerta.APAGADO;
   private _date: Date = new Date();
 
   public get tipoAlerta(): TipoAlerta {
@@ -25,7 +25,7 @@ export default class AlertaEstandar implements IAlerta {
   }
 
   public obtenerMensajeDeAlerta(): string {
-    return MENSAJE_ALERTA_ESTANDAR;
+    return MENSAJE_ALERTA_APAGADO;
   }
 
   public obtenerTimestampDeAlerta(): Date {

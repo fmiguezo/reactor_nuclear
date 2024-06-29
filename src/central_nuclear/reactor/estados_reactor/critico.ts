@@ -1,30 +1,30 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
 import REmergencia from "./emergencia";
 
-export default class RCritico extends IEstadoReactor {
+export default class RCritico extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
   override verificaEstado(): void {
-    const tempActual = this.contexto.getTemperatura();
-    if (tempActual < 330) {
+    const tempActual = this._reactor.getTemperatura();
+    if (tempActual < TEMP_MAXIMA_NORMAL) {
       this.pasaAEstadoNormal();
-    } else if (tempActual >= 400) {
+    } else if (tempActual >= TEMP_CRITICA) {
       this.pasaAEstadoEmergencia();
     }
   }
 
   private pasaAEstadoNormal() {
-    let estado: IEstadoReactor = new RNormal(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new RNormal(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   private pasaAEstadoEmergencia() {
-    let estado: IEstadoReactor = new REmergencia(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new REmergencia(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override encender() {
@@ -32,8 +32,8 @@ export default class RCritico extends IEstadoReactor {
   }
 
   override apagar() {
-    let estado: IEstadoReactor = new RApagado(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new RApagado(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override estaEncendido() {

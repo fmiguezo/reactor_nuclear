@@ -1,21 +1,21 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 import REncendiendo from "./encendiendo";
 
-export default class RApagado extends IEstadoReactor {
+export default class RApagado extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
   override verificaEstado(): void {
-    const tempActual = this.contexto.getTemperatura();
+    const tempActual = this._reactor.getTemperatura();
     if (tempActual > 0) {
       this.encender();
     }
   }
 
   override encender() {
-    let estado: IEstadoReactor = new REncendiendo(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new REncendiendo(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override apagar() {
