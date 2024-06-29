@@ -109,6 +109,16 @@ class REncenciendo extends IEstadoReactor
     + estaEncendido();
 }
 
+class RNormal extends IEstadoReactor
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoCritico();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
 ' Operador
 class Operador {
     + iniciarReaccion(reactor: Reactor) : void
