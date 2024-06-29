@@ -3,13 +3,14 @@ import EstadoBarraControl from "../../../CentralNuclear/BarrasDeControl/EstadosB
 import EnDesuso from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EnDesuso";
 import Insertada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Insertada";
 import Eliminada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Eliminada";
+import BarraControlCadmio from "../../../CentralNuclear/BarrasDeControl/BarraControlCadmio";
 
 describe("Test de Barra de Control: Activar/Desactivar", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
     let defaultState: EstadoBarraControl = new EnDesuso();
-    instance = new BarraControl("Cesio", 200, defaultState);
+    instance = new BarraControlCadmio(200, defaultState);
   });
 
   it("Verifica que no esté activa", () => {
@@ -35,7 +36,7 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
-    instance = new BarraControl("Cesio", 3600);
+    instance = new BarraControlCadmio(3600);
   });
 
   describe("Con barra insertada:", () => {

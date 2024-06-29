@@ -1,6 +1,7 @@
 import BarraControl from "../../../CentralNuclear/BarrasDeControl/BarraControl";
 import EstadoBarraControl from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EstadoBarraControl";
 import EnDesuso from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EnDesuso";
+import BarraControlCadmio from "../../../CentralNuclear/BarrasDeControl/BarraControlCadmio";
 
 describe("Test de Estado Barra de Control: EnDesuso", () => {
   let rodInstance: BarraControl;
@@ -8,7 +9,7 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
 
   beforeEach(() => {
     stateInstance = new EnDesuso();
-    rodInstance = new BarraControl("Cesio", 200, stateInstance);
+    rodInstance = new BarraControlCadmio(200, stateInstance);
   });
 
   it("Verifica que no esté activo", () => {

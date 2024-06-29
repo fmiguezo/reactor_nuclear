@@ -2,12 +2,13 @@ import BarraControl from "../../../CentralNuclear/BarrasDeControl/BarraControl";
 import Eliminada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Eliminada";
 import EnDesuso from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/EnDesuso";
 import Insertada from "../../../CentralNuclear/BarrasDeControl/EstadosBarraControl/Insertada";
+import BarraControlCadmio from "../../../CentralNuclear/BarrasDeControl/BarraControlCadmio";
 
 describe("Test de Barra de Control: expiracion", () => {
   let barraControl: BarraControl;
 
   beforeEach(() => {
-    barraControl = new BarraControl("Cesio", 200, new EnDesuso());
+    barraControl = new BarraControlCadmio(new EnDesuso());
   });
 
   afterEach(() => {

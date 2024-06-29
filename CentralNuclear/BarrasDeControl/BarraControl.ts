@@ -1,18 +1,14 @@
 import IMecanismoDeControl from "../Interfaces/IMecanismoDeControl";
 import EstadoBarraControl from "./EstadosBarraControl/EstadoBarraControl";
 import EnDesuso from "./EstadosBarraControl/EnDesuso";
-
-export default class BarraControl implements IMecanismoDeControl {
-  private _material: string;
-  private _estado!: EstadoBarraControl;
-  private _vidaUtilRestante: number;
+export default abstract class BarraControl implements IMecanismoDeControl {
+  protected _estado!: EstadoBarraControl;
+  protected _vidaUtilRestante: number;
 
   constructor(
-    material: string,
-    tiempoVidaUtilTotal: number = 200,
+    tiempoVidaUtilTotal: number = 0,
     estado: EstadoBarraControl = new EnDesuso()
   ) {
-    this._material = material;
     this._vidaUtilRestante = tiempoVidaUtilTotal;
     this.cambiarEstado(estado);
   }

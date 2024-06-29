@@ -31,28 +31,12 @@ export default class Reactor {
     return this.temperatura;
   }
 
-  public getBarrasInsertadas(): BarraControl[] {
-    return this.barrasControl.filter((b) => {
-      b.estaActivo() == true;
-    });
+  public get barrasDeControl(): BarraControl[] {
+    return this.barrasControl;
   }
 
-  public getBarrasVencidas(): BarraControl[] {
-    return this.barrasControl.filter((b) => {
-      b.VidaUtilRestante == 0;
-    });
-  }
-
-  public removerBarras(barras: BarraControl[]): void {
-    barras.forEach((b) => {
-      this.barrasControl = this.barrasControl.filter((r) => r !== b);
-    });
-  }
-
-  public agregarBarras(barras: BarraControl[]): void {
-    barras.forEach((b) => {
-      this.barrasControl.push(b);
-    });
+  public set barrasDeControl(bc: BarraControl[]) {
+    this.barrasControl = bc;
   }
 
   public actualizarTemperatura(): void {
