@@ -31,7 +31,7 @@ class InterpreteComandos{
 
 
 interface Command{
-    +ejecutar(): void
+    +ejecutar(reactor: Reactor): void
 }
 
 class IniciarReactor implements Command{
