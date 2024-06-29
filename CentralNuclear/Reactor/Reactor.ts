@@ -1,5 +1,5 @@
 import RApagado from "./estados_reactor/apagado.ts";
-import IEstadoReactor from "../interfaces/iestadoreactor.ts";
+import IEstadoReactor from "./estados_reactor/estadoreactor.ts";
 import IMecanismoDeControl from "../interfaces/imecanismo_control.ts";
 import ISensor from "../interfaces/isensor.ts";
 

@@ -1,4 +1,4 @@
-import IEstadoReactor from "../../interfaces/iestadoreactor";
+import IEstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RCritico from "./critico";
 

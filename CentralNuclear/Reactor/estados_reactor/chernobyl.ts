@@ -1,4 +1,4 @@
-import IEstadoReactor from "../../interfaces/iestadoreactor";
+import IEstadoReactor from "./estadoreactor";
 
 export default class Chernobyl extends IEstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {

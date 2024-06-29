@@ -1,5 +1,5 @@
-import IEncendible from "../interfaces/iencendible";
-import Reactor from "./Reactor";
+import IEncendible from "../../interfaces/iencendible";
+import Reactor from "../Reactor";
 
 export default abstract class IEstadoReactor implements IEncendible {
   protected static readonly INCREMENTO_POR_MINUTO: number = 25;
