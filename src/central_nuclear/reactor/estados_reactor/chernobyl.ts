@@ -1,11 +1,11 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 
-export default class Chernobyl extends IEstadoReactor {
+export default class Chernobyl extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
-  override verificaEstado(): void {
+  override verificarEstado(): void {
     throw new Error("El reactor explotó");
   }
 

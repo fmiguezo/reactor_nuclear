@@ -21,16 +21,16 @@ export default abstract class BarraControl implements IMecanismoDeControl {
     return this._estado.calcPctBarra();
   }
 
-  public get estado(): EstadoBarraControl {
+  public getEstado(): EstadoBarraControl {
     return this._estado;
   }
 
-  public get VidaUtilRestante(): number {
+  public getVidaUtilRestante(): number {
     return this._vidaUtilRestante;
   }
 
   // Setters
-  public set VidaUtilRestante(valor: number) {
+  public setVidaUtilRestante(valor: number) {
     this._vidaUtilRestante = valor;
   }
 

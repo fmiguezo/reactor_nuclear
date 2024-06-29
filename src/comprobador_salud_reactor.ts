@@ -3,11 +3,7 @@ import Reactor from "./central_nuclear/reactor/reactor";
 
 export default class ComprobadorSaludReactor {
   private estaEncendido(reactor: Reactor): boolean {
-    if (reactor.getEstado() === EstadoReactor.ENCENDIDO) {
-      return true;
-    } else {
-      return false;
-    }
+    return reactor.estaEncendido();
   }
 
   private tieneTemperaturaSegura(reactor: Reactor): boolean {
@@ -19,7 +15,7 @@ export default class ComprobadorSaludReactor {
   }
   // Esta puesto de modo temporal, Agregar el metodo produccion de energia que va
   private produceEnergiaEnRango(reactor: Reactor): boolean {
-    if (reactor.getProduccionDeEnergia() > 280 && reactor.getTemperatura() < 330) {
+    if (reactor.obtenerEnergiaNeta() > 280 && reactor.getTemperatura() < 330) {
       return true;
     } else {
       return false;

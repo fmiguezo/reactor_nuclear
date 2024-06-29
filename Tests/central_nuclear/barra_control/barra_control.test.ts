@@ -80,7 +80,7 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
 
     it("Verifica que el calculo funcione adecuadamente", () => {
       const porcentajeObtenido: number = instance.getPctBarra();
-      expect(instance.estado).toBeInstanceOf(Eliminada);
+      expect(instance.getEstado()).toBeInstanceOf(Eliminada);
       expect(porcentajeObtenido).toBe(0);
     });
 

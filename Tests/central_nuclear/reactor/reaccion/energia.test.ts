@@ -1,5 +1,5 @@
 import Energia from "../../../../src/central_nuclear/reactor/reaccion/energia";
-
+import { Constantes } from "../../../../src/central_nuclear/reactor/reaccion/constantes_formula_energia";
 describe("Test de Energia", () => {
   let instance: Energia;
 
@@ -9,12 +9,9 @@ describe("Test de Energia", () => {
 
   it("Verifica con una temperatura que no pueda generar energía", () => {
     let temp: number = 0;
-    let energiaNeta: number = instance.getEnergiaNeta(temp);
-    expect(energiaNeta).toBe(0);
-
+    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
     temp = 279;
-    energiaNeta = instance.getEnergiaNeta(temp);
-    expect(energiaNeta).toBe(0);
+    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
   });
 
   it("Verifica la energía neta producida se corresponda con los valores de la tabla", () => {
@@ -25,9 +22,8 @@ describe("Test de Energia", () => {
 
     let i = 0;
     temp.forEach((t) => {
-      let energNetaRetorn: number = instance.getEnergiaNeta(t);
-      expect(energNetaRetorn).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
-      expect(energNetaRetorn).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
+      expect(Energia.calcularEnergiaNeta(t)).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
+      expect(Energia.calcularEnergiaNeta(t)).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
       i++;
     });
   });

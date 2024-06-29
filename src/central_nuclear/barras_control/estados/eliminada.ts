@@ -1,4 +1,5 @@
 import EstadoBarraControl from "./estado_barra_control";
+import { Constantes } from "../constantes";
 
 export default class Eliminada extends EstadoBarraControl {
   override estaActivo(): boolean {
@@ -6,14 +7,15 @@ export default class Eliminada extends EstadoBarraControl {
   }
 
   override activar(): void {
-    console.log("La barra está vencida. No puede utilizarse.");
+    throw new Error(Constantes.MENSAJE_BARRA_VENCIDA);
   }
 
   override desactivar(): void {
-    console.log("La barra está vencida. No puede utilizarse.");
+    throw new Error(Constantes.MENSAJE_BARRA_VENCIDA);
   }
 
   override calcPctBarra(): number {
     return 0;
   }
 }
+

@@ -1,30 +1,32 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RCritico from "./critico";
 import Chernobyl from "./chernobyl";
+import Alerta from "../../../sistema_de_control/alertas/alerta";
+import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
 
-export default class REmergencia extends IEstadoReactor {
+export default class REmergencia extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
-  override verificaEstado(): void {
-    const tempActual = this.contexto.getTemperatura();
-    if (tempActual < 400) {
-      this.pasaAEstadoCritico();
-    } else if (tempActual >= 500) {
-      this.pasaAEstadoChernobyl();
+  override verificarEstado(): void {
+    const tempActual = this._reactor.getTemperatura();
+    if (tempActual < TEMP_CRITICA) {
+      this.cambiarAEstadoCritico();
+    } else if (tempActual >= TEMP_CHERNOBYL) {
+      this.cambiarAEstadoChernobyl();
     }
   }
 
-  private pasaAEstadoCritico() {
-    let estado: IEstadoReactor = new RCritico(this.contexto);
-    this.contexto.cambiarEstado(estado);
+  private cambiarAEstadoCritico() {
+    let estado: EstadoReactor = new RCritico(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
-  private pasaAEstadoChernobyl() {
-    let estado: IEstadoReactor = new Chernobyl(this.contexto);
-    this.contexto.cambiarEstado(estado);
+  private cambiarAEstadoChernobyl() {
+    let estado: EstadoReactor = new Chernobyl(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override encender() {
@@ -32,11 +34,15 @@ export default class REmergencia extends IEstadoReactor {
   }
 
   override apagar() {
-    let estado: IEstadoReactor = new RApagado(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new RApagado(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override estaEncendido() {
     return true;
+  }
+
+  override generarAlerta(): Alerta {
+    return GeneradorDeAlertaCritica.generarAlerta();
   }
 }
