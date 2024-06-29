@@ -19,22 +19,19 @@ export default class AdministradorBarras {
   }
 
   public getBarrasInsertadas(): BarraControl[] {
-    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
-    return coleccionBarras.filter((b) => {
+    return this.reactor.getBarrasDeControl().filter((b) => {
       b.estaActivo();
     });
   }
 
   public getBarrasEnDesuso(): BarraControl[] {
-    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
-    return coleccionBarras.filter((b) => {
+    return this.reactor.getBarrasDeControl().filter((b) => {
       !b.estaActivo() && b.getVidaUtilRestante() > 0;
     });
   }
 
   public getBarrasVencidas(): BarraControl[] {
-    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
-    return coleccionBarras.filter((b) => {
+    return this.reactor.getBarrasDeControl().filter((b) => {
       b.getVidaUtilRestante() === 0;
     });
   }
@@ -43,7 +40,9 @@ export default class AdministradorBarras {
     const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
     let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
-      nuevaColeccion = coleccionBarras.filter((r) => r !== b);
+      this.reactor.setBarrasDeControl(
+        this.reactor.getBarrasDeControl().filter((r) => r !== b)
+      );
     });
     this.reactor.setBarrasDeControl(nuevaColeccion);
   }
@@ -51,7 +50,7 @@ export default class AdministradorBarras {
   private agregarBarras(barras: BarraControl[]): void {
     let coleccionModificada: BarraControl[] = this.retreiveColeccionBarras();
     barras.forEach((b) => {
-      coleccionModificada.push(b);
+      this.reactor.getBarrasDeControl().push(b);
     });
 
     this.reactor.setBarrasDeControl(coleccionModificada);
@@ -66,14 +65,14 @@ export default class AdministradorBarras {
     try {
       fabricaBarra = selectorDeFabrica.getFabrica(material);
     } catch (error) {
-      console.log("No existe el tipo de barra elegido");
+      error.message;
     }
     return fabricaBarra ? fabricaBarra.crearBarra() : null;
   }
 
   public subirBarras(cantidadInput: number = 0): void {
     const barrasRemovibles: BarraControl[] = this.getBarrasInsertadas();
-    const numBarras: number = this._reactor.barrasDeControl.length;
+    const numBarras: number = this._reactor.getBarrasDeControl().length;
     let cantidadASubir: number;
 
     if (cantidadInput > 0) {
@@ -91,7 +90,7 @@ export default class AdministradorBarras {
 
   public insertarBarras(cantidadInput: number = 0): void {
     const barrasActivables: BarraControl[] = this.getBarrasEnDesuso();
-    const numBarras: number = this._reactor.barrasDeControl.length;
+    const numBarras: number = this._reactor.getBarrasDeControl().length;
     let cantidadAInsertar: number;
 
     if (cantidadInput > 0) {
