@@ -5,6 +5,7 @@ import ISensor from "../interfaces/isensor.js";
 import BarraControl from "../barras_control/barra_control.js";
 import AdministradorBarras from "./administrador/administrador_barras.js";
 import Energia from "./reaccion/energia.js";
+import Sistema from "../../sistema_de_control/sistema.js";
 
 export default class Reactor {
   private _idReactor: string = "";
@@ -14,6 +15,7 @@ export default class Reactor {
   private _sensores: ISensor[] = [];
   private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
+  private sistema_de_control: Sistema = new Sistema(this);
 
   public encender(): void {
     this._estado.encender();
@@ -60,12 +62,12 @@ export default class Reactor {
 
   public obtenerEnergiaNeta(): number {
     return Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
-  }
+
 
   public cambiarEstado(state: IEstadoReactor): void {
     console.log("Cambiando estado");
     this._estado = state;
-    this._estado.cargaContexto(this);
+    this.notificarSistema();
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
@@ -73,7 +75,7 @@ export default class Reactor {
   }
 
   public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+    this.mecanimosDeControl = this.mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -91,6 +93,11 @@ export default class Reactor {
   public notificarSensores(): void {
     this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
+  public notificarSistema(): void {
+    this.sistema_de_control.actualizar();
+  }
+
+  public calcularTemperatura(): void {}
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;

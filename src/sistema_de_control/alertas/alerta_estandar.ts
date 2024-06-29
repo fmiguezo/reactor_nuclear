@@ -1,34 +1,20 @@
-import IAlerta from "../interfaces/ialerta";
+import Alerta from "./alerta";
+export default class AlertaEstandar extends Alerta {
+  private static instance: AlertaEstandar | null = null;
 
-export default class AlertaEstandar implements IAlerta {
-  private _tipoAlerta: TipoAlerta = TipoAlerta.ESTANDAR;
-  private _date: Date = new Date();
-
-  public get tipoAlerta(): TipoAlerta {
-    return this._tipoAlerta;
+  private constructor(TipoAlerta: TipoAlerta) {
+    super(TipoAlerta);
   }
 
-  public set tipoAlerta(value: TipoAlerta) {
-    this._tipoAlerta = value;
+  public static getInstance(): AlertaEstandar {
+    if (!AlertaEstandar.instance) {
+      AlertaEstandar.instance = new AlertaEstandar(TipoAlerta.ESTANDAR);
+    }
+    AlertaEstandar.instance.setDate(new Date());
+    return AlertaEstandar.instance;
   }
 
-  public get date(): Date {
-    return this._date;
-  }
-
-  public set date(value: Date) {
-    this._date = value;
-  }
-
-  public obtenerTipoDeAlerta() {
-    return this.tipoAlerta;
-  }
-
-  public obtenerMensajeDeAlerta(): string {
-    return "ALERTA ESTANDAR, SE ACTIVARAN MECANISMOS DE ENFRIAMIENTO";
-  }
-
-  public obtenerTimestampDeAlerta(): Date {
-    return this.date;
+  public override obtenerMensajeDeAlerta(): string {
+    return MENSAJE_ALERTA_ESTANDAR;
   }
 }

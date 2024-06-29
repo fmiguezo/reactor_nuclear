@@ -1,12 +1,13 @@
 import IEncendible from "../../interfaces/iencendible";
 import Reactor from "../reactor";
+import Alerta from "../../../sistema_de_control/alertas/alerta";
 
 export default abstract class EstadoReactor implements IEncendible {
-  protected static readonly INCREMENTO_POR_MINUTO: number = 25;
-  protected contexto: Reactor;
+  protected _incrementoTemp: number = INCREMENTO_POR_MINUTO;
+  protected _reactor: Reactor;
 
   constructor(r: Reactor) {
-    this.contexto = r;
+    this._reactor = r;
   }
 
   public abstract calcularEnergia(temperatura: number): number;
@@ -14,14 +15,18 @@ export default abstract class EstadoReactor implements IEncendible {
   public abstract apagar(): void;
   public abstract estaEncendido(): boolean;
 
-  public cargaContexto(contexto: Reactor): void {
-    this.contexto = contexto;
+  public setReactor(reactor: Reactor): void {
+    this._reactor = reactor;
   }
 
   public incrementarTemperatura(): void {
-    this.contexto.setTemperatura(EstadoReactor.INCREMENTO_POR_MINUTO + this.contexto.getTemperatura());
-    this.contexto.notificarSensores();
+    this._reactor.setTemperatura(this._incrementoTemp + this._reactor.getTemperatura());
+    this._reactor.notificarSensores();
   }
 
-  public abstract verificaEstado(): void;
+  public abstract verificarEstado(): void;
+
+  public generarAlerta(): Alerta | null {
+    return null;
+  }
 }

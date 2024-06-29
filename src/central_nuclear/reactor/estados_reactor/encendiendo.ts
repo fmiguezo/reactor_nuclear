@@ -1,22 +1,22 @@
-import IEstadoReactor from "./estadoreactor";
+import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
 
-export default class REncenciendo extends IEstadoReactor {
+export default class REncenciendo extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
 
-  override verificaEstado(): void {
-    const tempActual = this.contexto.getTemperatura();
-    if (tempActual >= 280) {
-      this.pasaAEstadoNormal();
+  override verificarEstado(): void {
+    const tempActual = this._reactor.getTemperatura();
+    if (tempActual >= TEMP_MINIMA_NORMAL && tempActual < TEMP_MAXIMA_NORMAL) {
+      this.cambiarAEstadoNormal();
     }
   }
 
-  private pasaAEstadoNormal() {
-    let estado: IEstadoReactor = new RNormal(this.contexto);
-    this.contexto.cambiarEstado(estado);
+  private cambiarAEstadoNormal() {
+    let estado: EstadoReactor = new RNormal(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override encender() {
@@ -24,8 +24,8 @@ export default class REncenciendo extends IEstadoReactor {
   }
 
   override apagar() {
-    let estado: IEstadoReactor = new RApagado(this.contexto);
-    this.contexto.cambiarEstado(estado);
+    let estado: EstadoReactor = new RApagado(this._reactor);
+    this._reactor.cambiarEstado(estado);
   }
 
   override estaEncendido() {
