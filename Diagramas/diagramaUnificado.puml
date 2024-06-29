@@ -23,6 +23,7 @@ class PlantaNuclear {
 class Reactor implements Encendible {
     - idReactor: string;
     - _estado: EstadoReactor;
+    - SistemaDeControl: software;
     - mecanimosDeControl: IMecanismoDeControl[];
     - sensores: ISensor[];
     - temperatura: number;
