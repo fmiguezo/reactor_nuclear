@@ -1,7 +1,7 @@
-import BarraControl from "../../../CentralNuclear/BarrasDeControl/barra_control";
-import EstadoBarraControl from "../../../CentralNuclear/BarrasDeControl/estados/estado_barra_control";
-import Insertada from "../../../CentralNuclear/BarrasDeControl/estados/Insertada";
-import BarraControlCadmio from "../../../CentralNuclear/BarrasDeControl/barra_control_cadmio";
+import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
+import EstadoBarraControl from "../../../src/central_nuclear/barras_control/estados/estado_barra_control";
+import Insertada from "../../../src/central_nuclear/barras_control/estados/insertada";
+import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
 
 describe("Test de Estado Barra de Control: Insertada", () => {
   let rodInstance: BarraControl;

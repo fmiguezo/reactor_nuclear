@@ -1,7 +1,7 @@
-import BarraControl from "../../../CentralNuclear/barras_control/barra_control";
-import EstadoBarraControl from "../../../CentralNuclear/barras_control/estados/estado_barra_control";
-import EnDesuso from "../../../CentralNuclear/barras_control/estados/en_desuso";
-import BarraControlCadmio from "../../../CentralNuclear/barras_control/barra_control_cadmio";
+import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
+import EstadoBarraControl from "../../../src/central_nuclear/barras_control/estados/estado_barra_control";
+import EnDesuso from "../../../src/central_nuclear/barras_control/estados/en_desuso";
+import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
 
 describe("Test de Estado Barra de Control: EnDesuso", () => {
   let rodInstance: BarraControl;

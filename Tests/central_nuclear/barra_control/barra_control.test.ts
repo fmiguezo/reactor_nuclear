@@ -1,9 +1,9 @@
-import BarraControl from "../../../CentralNuclear/BarrasDeControl/barra_control";
-import EstadoBarraControl from "../../../CentralNuclear/BarrasDeControl/estados/EstadoBarraControl";
-import EnDesuso from "../../../CentralNuclear/BarrasDeControl/estados/en_desuso";
-import Insertada from "../../../CentralNuclear/BarrasDeControl/estados/Insertada";
-import Eliminada from "../../../CentralNuclear/BarrasDeControl/estados/eliminada";
-import 
+import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
+import EstadoBarraControl from "../../../src/central_nuclear/barras_control/estados/estado_barra_control";
+import EnDesuso from "../../../src/central_nuclear/barras_control/estados/en_desuso";
+import Insertada from "../../../src/central_nuclear/barras_control/estados/insertada";
+import Eliminada from "../../../src/central_nuclear/barras_control/estados/eliminada";
+import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
 
 describe("Test de Barra de Control: Activar/Desactivar", () => {
   let instance: BarraControl;

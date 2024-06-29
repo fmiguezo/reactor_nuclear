@@ -8,7 +8,7 @@ describe("Test de Barra de Control: expiracion", () => {
   let barraControl: BarraControl;
 
   beforeEach(() => {
-    barraControl = new BarraControlCadmio(new EnDesuso());
+    barraControl = new BarraControlCadmio(200, new EnDesuso());
   });
 
   afterEach(() => {
