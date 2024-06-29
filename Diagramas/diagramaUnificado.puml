@@ -77,6 +77,17 @@ class RApagado extends IEstadoReactor
     + incrementarTemperatura(): void;
 }
 
+class RCritico extends IEstadoReactor
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    - pasaAEstadoNormal();
+    - pasaAEstadoEmergencia();
+    + encender();
+    + apagar();
+    + estaEncendido();
+}
+
 ' Operador
 class Operador {
     + iniciarReaccion(reactor: Reactor) : void
@@ -189,6 +200,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note bottom of RCritico: " Las dos funciones privadas, las usamos para los saltos de estado"
 note left of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
 note right of IMecanismoDeControl: "enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
