@@ -36,7 +36,7 @@ export default class Insertada extends EstadoBarraControl {
   }
 
   override calcPctBarra(): number {
-    return (this._barraControl.getVidaUtilRestante() / 3600) * 100;
+    return (this._barraControl.getVidaUtilRestante() / VIDA_UTIL_BARRA) * MULTIPLICADOR_FORMULA_BARRA;
   }
 
   private calcDiffTiempoActual(): number {
