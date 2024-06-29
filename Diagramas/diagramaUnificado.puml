@@ -43,6 +43,7 @@ class Reactor implements Encendible {
     + notificarSensores(): void;
 }
 
+' Estado reactor
 abstract class IEstadoReactor {
     # static readonly INCREMENTO_POR_MINUTO;
     # contexto: Reactor;
@@ -54,6 +55,16 @@ abstract class IEstadoReactor {
     + cargaContexto(context): void;
     + incrementarTemperatura(): void;
     + abstract verificaEstado(): void;
+}
+
+' Estados concretos 
+class ChernobyL extends IEstadoReactor
+{
+    + calcularEnergia(temperatura: number = 0): number;
+    + verificaEstado(): void;
+    + encender();
+    + apagar();
+    + estaEncendido();
 }
 
 ' Operador
