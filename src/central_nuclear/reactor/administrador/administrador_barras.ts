@@ -14,36 +14,47 @@ export default class AdministradorBarras {
 
   // Getters
 
+  private retreiveColeccionBarras(): BarraControl[] {
+    return this.reactor.getBarrasDeControl();
+  }
+
   public getBarrasInsertadas(): BarraControl[] {
-    return this.reactor.barrasDeControl.filter((b) => {
+    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
+    return coleccionBarras.filter((b) => {
       b.estaActivo();
     });
   }
 
   public getBarrasEnDesuso(): BarraControl[] {
-    return this.reactor.barrasDeControl.filter((b) => {
-      !b.estaActivo() && b.VidaUtilRestante > 0;
+    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
+    return coleccionBarras.filter((b) => {
+      !b.estaActivo() && b.getVidaUtilRestante() > 0;
     });
   }
 
   public getBarrasVencidas(): BarraControl[] {
-    return this.reactor.barrasDeControl.filter((b) => {
-      b.VidaUtilRestante === 0;
+    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
+    return coleccionBarras.filter((b) => {
+      b.getVidaUtilRestante() === 0;
     });
   }
 
   private removerBarras(barras: BarraControl[]): void {
+    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
+    let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
-      this.reactor.barrasDeControl = this.reactor.barrasDeControl.filter(
-        (r) => r !== b
-      );
+      nuevaColeccion = coleccionBarras.filter((r) => r !== b);
     });
+    this.reactor.setBarrasDeControl(nuevaColeccion);
   }
 
   private agregarBarras(barras: BarraControl[]): void {
+    let coleccionModificada: BarraControl[] = this.retreiveColeccionBarras();
     barras.forEach((b) => {
-      this.reactor.barrasDeControl.push(b);
+      coleccionModificada.push(b);
     });
+
+    this.reactor.setBarrasDeControl(coleccionModificada);
   }
 
   private crearBarra(material: string): BarraControl | null {
