@@ -1,34 +1,20 @@
-import IAlerta from "../interfaces/ialerta";
+import Alerta from "./alerta";
+export default class AlertaCritica extends Alerta {
+  private static instance: AlertaCritica | null = null;
 
-export default class AlertaCritica implements IAlerta {
-  private _tipoAlerta: TipoAlerta = TipoAlerta.CRITICA;
-  private _date: Date = new Date();
-
-  public get tipoAlerta(): TipoAlerta {
-    return this._tipoAlerta;
+  private constructor(TipoAlerta: TipoAlerta) {
+    super(TipoAlerta);
   }
 
-  public set tipoAlerta(value: TipoAlerta) {
-    this._tipoAlerta = value;
+  public static getInstance(): AlertaCritica {
+    if (!AlertaCritica.instance) {
+      AlertaCritica.instance = new AlertaCritica(TipoAlerta.CRITICA);
+    }
+    AlertaCritica.instance.setDate(new Date());
+    return AlertaCritica.instance;
   }
 
-  public get date(): Date {
-    return this._date;
-  }
-
-  public set date(value: Date) {
-    this._date = value;
-  }
-
-  public obtenerTipoDeAlerta() {
-    return this.tipoAlerta;
-  }
-
-  public obtenerMensajeDeAlerta(): string {
-    return "ALERTA CRITICA, EL REACTOR SE APAGARA";
-  }
-
-  public obtenerTimestampDeAlerta(): Date {
-    return this.date;
+  public override obtenerMensajeDeAlerta(): string {
+    return MENSAJE_ALERTA_CRITICA;
   }
 }
