@@ -2,7 +2,6 @@ import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
 import REmergencia from "./emergencia";
-import AlertaEstandar from "../../../sistema_de_control/alertas/alerta_estandar";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
 
@@ -43,7 +42,7 @@ export default class RCritico extends EstadoReactor {
     return true;
   }
 
-  override generarAlerta(): IAlerta {
+  override generarAlerta(): Alerta {
     return GeneradorDeAlertasEstandar.generarAlerta();
   }
 }

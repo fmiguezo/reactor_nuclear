@@ -5,32 +5,32 @@ export default abstract class Alerta {
   protected _date: Date = new Date();
   protected _suscriptores: ISuscriptor[] = [];
 
-  constructor(tipoAlerta: TipoAlerta) {
+  public constructor(tipoAlerta: TipoAlerta) {
     this._tipoAlerta = tipoAlerta;
   }
 
   public abstract obtenerMensajeDeAlerta(): string;
 
-  public get tipoAlerta(): TipoAlerta {
+  public getTipoAlerta(): TipoAlerta {
     return this._tipoAlerta;
   }
 
-  public set tipoAlerta(value: TipoAlerta) {
+  public setTipoAlerta(value: TipoAlerta) {
     this._tipoAlerta = value;
   }
 
-  public get date(): Date {
+  public getDate(): Date {
     return this._date;
   }
 
-  public set date(value: Date) {
+  public setDate(value: Date) {
     this._date = value;
   }
 
   public toString(): string {
     return `Mensaje: ${this.obtenerMensajeDeAlerta()}
-        \nTipo de alerta: ${this.tipoAlerta}
-        \nFecha: ${this.date}`;
+        \nTipo de alerta: ${this.getTipoAlerta()}
+        \nFecha: ${this.getDate()}`;
   }
 
   public agregarSuscriptor(suscriptor: ISuscriptor): void {
@@ -41,7 +41,7 @@ export default abstract class Alerta {
     this._suscriptores = this._suscriptores.filter((s) => s !== suscriptor);
   }
 
-  public notificarSuscriptores(): void {
+  public notificar(): void {
     this._suscriptores.forEach((s) => s.notificar(this));
   }
 }

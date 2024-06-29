@@ -1,6 +1,5 @@
 import EstadoReactor from "./estadoreactor";
 import REncendiendo from "./encendiendo";
-import AlertaApagado from "../../../sistema_de_control/alertas/alerta_apagado";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/generador_alerta_apagado";
 
@@ -31,7 +30,7 @@ export default class RApagado extends EstadoReactor {
 
   override incrementarTemperatura(): void {}
 
-  override generarAlerta(): IAlerta {
+  override generarAlerta(): Alerta {
     return GeneradorDeAlertaApagado.generarAlerta();
   }
 }

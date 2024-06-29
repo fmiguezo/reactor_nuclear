@@ -1,6 +1,6 @@
 import ISuscriptor from "../interfaces/isuscriptor";
-import IAlerta from "../alertas/alerta";
+import Alerta from "../alertas/alerta";
 
 export default abstract class Operador implements ISuscriptor {
-  public abstract notificar(alerta: IAlerta): void;
+  public abstract notificar(a: Alerta): void;
 }

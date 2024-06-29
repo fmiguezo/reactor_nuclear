@@ -1,9 +1,9 @@
 import AlertaEstandar from "./alerta_estandar";
-import IAlerta from "./alerta";
+import Alerta from "./alerta";
 import IGeneradorDeAlertas from "../interfaces/igenerador_alertas";
 
 export default class GeneradorDeAlertasEstandar implements IGeneradorDeAlertas {
-  public static generarAlerta(): IAlerta {
-    return new AlertaEstandar();
+  public static generarAlerta(): Alerta {
+    return AlertaEstanger.getInstance();
   }
 }

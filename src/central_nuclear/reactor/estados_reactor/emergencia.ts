@@ -2,9 +2,7 @@ import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RCritico from "./critico";
 import Chernobyl from "./chernobyl";
-import AlertaCritica from "../../../sistema_de_control/alertas/alerta_critica";
-import IAlerta from "../../../sistema_de_control/alertas/alerta";
-import IGeneradorDeAlertas from "../../../sistema_de_control/interfaces/igenerador_alertas";
+import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
 
 export default class REmergencia extends EstadoReactor {
@@ -44,7 +42,7 @@ export default class REmergencia extends EstadoReactor {
     return true;
   }
 
-  override generarAlerta(): IAlerta {
+  override generarAlerta(): Alerta {
     return GeneradorDeAlertaCritica.generarAlerta();
   }
 }
