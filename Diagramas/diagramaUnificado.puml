@@ -164,17 +164,20 @@ interface IMecanismoDeControl{
 
 '' Barra de control
 class BarraDeControl implements IMecanismoDeControl {
-    - material: string;
-    - estado: EstadoBarraDeControl;
-    - tiempoVidaUtilTotal: number;
+    - _material: string;
+    - _estado: EstadoBarraDeControl;
+    - _tiempoVidaUtilTotal: number;
+    + constructor();
     + estaActivo(): boolean;
     'insertar barra
     + activar();
     ' quitar barra
     + desactivar();
-    + obtenerEstado(): string;
-    + obtenerTiempoDeVidaRestante(): number;
-    + enfriarReactor();
+    + getters();
+    + setters();
+    - calcPctBarra(): number;
+    - revisaSiPuedeActivar(): boolean;
+
 }
 
 enum EstadoBarraDeControl {
@@ -188,7 +191,6 @@ class TurbinaDeRefrigeracion implements IMecanismoDeControl {
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + enfriarReactor();
 }
 
 
