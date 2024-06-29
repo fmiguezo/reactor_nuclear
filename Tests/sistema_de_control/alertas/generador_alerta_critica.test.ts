@@ -1,5 +1,5 @@
-import AlertaCritica from "../../../SistemaDeControl/Alertas/AlertaCritica";
-import GeneradorDeAlertasCriticas from "../../../SistemaDeControl/Alertas/GeneradorDeAlertasCriticas";
+import AlertaCritica from "../../../src/sistema_de_control/alertas/alerta_critica";
+import GeneradorDeAlertasCriticas from "../../../src/sistema_de_control/alertas/generador_alerta_critica";
 
 describe("Test de la clase GeneradorDeAlertasCriticas", () => {
   let instance: GeneradorDeAlertasCriticas;

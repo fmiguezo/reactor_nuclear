@@ -1,4 +1,4 @@
-import AlertaEstandar from "../../../SistemaDeControl/Alertas/AlertaEstandar";
+import AlertaEstandar from "../../../src/sistema_de_control/alertas/alerta_estandar";
 
 describe("Test de la clase AlertaEstandar", () => {
   let instance: AlertaEstandar;
@@ -17,9 +17,7 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que el mensaje de alerta sea el correcto", () => {
-    expect(instance.obtenerMensajeDeAlerta()).toBe(
-      "ALERTA ESTANDAR, SE ACTIVARAN MECANISMOS DE ENFRIAMIENTO"
-    );
+    expect(instance.obtenerMensajeDeAlerta()).toBe("ALERTA ESTANDAR, SE ACTIVARAN MECANISMOS DE ENFRIAMIENTO");
   });
 
   it("Verifica que la propiedad date sea una instancia de Date", () => {

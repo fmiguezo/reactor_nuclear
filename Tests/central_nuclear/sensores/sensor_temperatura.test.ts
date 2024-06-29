@@ -1,5 +1,5 @@
-import Reactor from "../../../CentralNuclear/Reactor/Reactor";
-import SensorTemperatura from "../../../CentralNuclear/sensores/sensor_temperatura";
+import Reactor from "../../../src/central_nuclear/reactor/reactor";
+import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
 let instance: SensorTemperatura;
 let instanceReactor: Reactor;
 

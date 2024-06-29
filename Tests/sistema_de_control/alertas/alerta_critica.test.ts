@@ -1,4 +1,4 @@
-import AlertaCritica from "../../../SistemaDeControl/Alertas/AlertaCritica";
+import AlertaCritica from "../../../src/sistema_de_control/alertas/alerta_critica";
 
 describe("Test de la clase AlertaCritica", () => {
   let instance: AlertaCritica;
@@ -17,9 +17,7 @@ describe("Test de la clase AlertaCritica", () => {
   });
 
   it("Verifica que el mensaje de alerta sea el correcto", () => {
-    expect(instance.obtenerMensajeDeAlerta()).toBe(
-      "ALERTA CRITICA, EL REACTOR SE APAGARA"
-    );
+    expect(instance.obtenerMensajeDeAlerta()).toBe("ALERTA CRITICA, EL REACTOR SE APAGARA");
   });
 
   it("Verifica que la propiedad date sea una instancia de Date", () => {

@@ -1,5 +1,5 @@
-import AlertaEstandar from "../../../SistemaDeControl/Alertas/AlertaEstandar";
-import GeneradorDeAlertasEstandar from "../../../SistemaDeControl/Alertas/GeneradorDeAlertasEstandar";
+import AlertaEstandar from "../../../src/sistema_de_control/alertas/alerta_estandar";
+import GeneradorDeAlertasEstandar from "../../../src/sistema_de_control/alertas/generador_alerta_estandar";
 
 describe("Test de la clase GeneradorDeAlertasEstandar", () => {
   let instance: GeneradorDeAlertasEstandar;

@@ -1,5 +1,5 @@
-import AlertaEstandar from "../../../SistemaDeControl/Alertas/AlertaEstandar";
-import NotificadorDeAlerta from "../../../SistemaDeControl/Alertas/NotificadorDeAlerta";
+import AlertaEstandar from "../../../src/sistema_de_control/alertas/alerta_estandar";
+import NotificadorDeAlerta from "../../../src/sistema_de_control/alertas/notificador_alerta";
 
 describe("Test de la clase NotificadorDeAlerta", () => {
   let instance: NotificadorDeAlerta;
@@ -17,8 +17,7 @@ describe("Test de la clase NotificadorDeAlerta", () => {
   });
 
   it("Verifica que la notificación se realice de forma correcta", () => {
-    expect(instance.notificarAlerta(alertaEstandar))
-      .toBe(`Mensaje: ${alertaEstandar.obtenerMensajeDeAlerta()} 
+    expect(instance.notificarAlerta(alertaEstandar)).toBe(`Mensaje: ${alertaEstandar.obtenerMensajeDeAlerta()} 
         \nTipo de alerta: ${alertaEstandar.obtenerTipoDeAlerta()} 
         \nFecha: ${alertaEstandar.obtenerTimestampDeAlerta()}`);
   });

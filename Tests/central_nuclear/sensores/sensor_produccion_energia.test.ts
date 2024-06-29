@@ -1,5 +1,5 @@
-import SensorProduccionDeEnergia from "../../../CentralNuclear/Sensores/SensorProduccionDeEnergia";
-import SensorTemperatura from "../../../CentralNuclear/Sensores/SensorProduccionDeEnergia";
+import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
+import SensorProduccionDeEnergia from "../../../src/central_nuclear/sensores/sensor_produccion_energia";
 let instance: SensorProduccionDeEnergia;
 
 beforeEach(() => {
