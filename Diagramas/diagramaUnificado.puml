@@ -136,7 +136,8 @@ interface ISensor{
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
 class SensorTemperatura{
@@ -144,7 +145,8 @@ class SensorTemperatura{
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
 class SensorProduccionDeEnergia {
@@ -152,7 +154,8 @@ class SensorProduccionDeEnergia {
     + estaActivo(): boolean;
     + activar();
     + desactivar();
-    + obtenerValores(): number;
+    + actualizar(reactor: Reactor): void;
+    + obtenerValor(): number;
 }
 
 ' Mecanismos de control
@@ -213,11 +216,12 @@ IEstadoReactor  <|-d- REmergencia
 IEstadoReactor  <|-d- RNormal
 IEstadoReactor  <|-u- REncenciendo
 IEstadoReactor  <|-u- RApagado
-Reactor  <.... IEncendible
+Reactor  <|.... IEncendible
 ISensor <|.l. SensorProduccionDeEnergia
 ISensor <|.. SensorTemperatura
 ISensor <|........ IActivable
 IMecanismoDeControl <|........ IActivable
+EstadoBarraDeControl o-l[hidden]- IMecanismoDeControl
 
 
 'Notas
@@ -228,7 +232,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
 note right of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
-note right of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
+note right of EstadoBarraDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor y enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
 
 package SistemaDeControl {
