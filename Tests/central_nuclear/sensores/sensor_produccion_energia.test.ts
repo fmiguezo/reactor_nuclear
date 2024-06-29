@@ -1,11 +1,16 @@
 import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
 import SensorProduccionDeEnergia from "../../../src/central_nuclear/sensores/sensor_produccion_energia";
+import Reactor from "../../../src/central_nuclear/reactor/reactor";
 let instance: SensorProduccionDeEnergia;
+let reactor: Reactor;
 
 beforeEach(() => {
   instance = new SensorProduccionDeEnergia();
   instance.activo = true;
   instance.energiaProducida = 0;
+  reactor = new Reactor()
+  reactor.setTemperatura(100);
+  reactor.estado.calcularEnergia(100);
 });
 
 describe("SensorTemperatura getters y setters", () => {
@@ -36,7 +41,7 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
   });
 
   it("verifica que la instancia actualizar valor reciba correctamente la temperatura y la sette in ultimaTemperatura", () => {
-    instance.actualizar(100);
+    instance.actualizar(reactor);
     expect(instance.obtenerValor()).toBe(100);
   });
 
@@ -47,6 +52,7 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
 
   it("Verifica el else se actualizarValor", () => {
     instance.activo = false;
-    expect(() => instance.actualizar(100)).toThrow(Error);
+    expect(() => instance.actualizar(reactor)).toThrow(Error);
   });
+  
 });
