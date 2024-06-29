@@ -1,5 +1,6 @@
 import EstadoBarraControl from "./estado_barra_control";
 import Insertada from "./insertada";
+import { Constantes } from "../constantes";
 
 export default class EnDesuso extends EstadoBarraControl {
   override estaActivo(): boolean {
@@ -12,10 +13,10 @@ export default class EnDesuso extends EstadoBarraControl {
   }
 
   override desactivar(): void {
-    throw new Error(MENSAJE_BARRA_DESACTIVADA);
+    throw new Error(Constantes.MENSAJE_BARRA_DESACTIVADA);
   }
 
   override calcPctBarra(): number {
-    return (this._barraControl.getVidaUtilRestante() / VIDA_UTIL_BARRA) * MULTIPLICADOR_FORMULA_BARRA;
+    return (this._barraControl.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) * Constantes.MULTIPLICADOR_FORMULA_BARRA;
   }
 }

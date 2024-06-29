@@ -1,4 +1,5 @@
 import Alerta from "./alerta";
+import { Constantes } from "../constantes";
 export default class AlertaEstandar extends Alerta {
   private static instance: AlertaEstandar | null = null;
 
@@ -15,6 +16,6 @@ export default class AlertaEstandar extends Alerta {
   }
 
   public override obtenerMensajeDeAlerta(): string {
-    return MENSAJE_ALERTA_ESTANDAR;
+    return Constantes.MENSAJE_ALERTA_ESTANDAR;
   }
 }
