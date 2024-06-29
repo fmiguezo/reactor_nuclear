@@ -1,5 +1,4 @@
 import IEstadoReactor from "../../interfaces/iestadoreactor";
-import Reactor from "../reactor";
 import REncendiendo from "./encendiendo";
 
 export default class RApagado extends IEstadoReactor {

@@ -1,7 +1,7 @@
-import RApagado from "./EstadosReactor/RApagado.ts";
-import IEstadoReactor from "./IEstadoReactor.ts";
+import RApagado from "./estados_reactor/apagado.ts";
+import IEstadoReactor from "../interfaces/iestadoreactor.ts";
 import IMecanismoDeControl from "../interfaces/imecanismo_control.ts";
-import ISensor from "../sensores/isensor.ts";
+import ISensor from "../interfaces/isensor.ts";
 
 export default class Reactor {
   private idReactor: string = "";

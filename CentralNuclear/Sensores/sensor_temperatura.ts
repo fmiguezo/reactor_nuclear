@@ -1,5 +1,5 @@
-import ISensor from "./isensor";
 import Reactor from "../Reactor/Reactor";
+import ISensor from "../interfaces/isensor";
 
 export default class SensorTemperatura implements ISensor {
   private _activo: boolean = true;
