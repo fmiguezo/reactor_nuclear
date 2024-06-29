@@ -26,12 +26,12 @@ describe("Test de Barra de Control: expiracion", () => {
     jest.advanceTimersByTime(100);
     estaActiva = barraControl.estaActivo();
     expect(estaActiva).toBeTruthy();
-    expect(barraControl.estado).toBeInstanceOf(Insertada);
+    expect(barraControl.getEstado()).toBeInstanceOf(Insertada);
 
     jest.advanceTimersByTime(100);
     estaActiva = barraControl.estaActivo();
     expect(estaActiva).toBeFalsy();
-    expect(barraControl.estado).toBeInstanceOf(Eliminada);
+    expect(barraControl.getEstado()).toBeInstanceOf(Eliminada);
   });
 
   it("Verifica que la barra mantenga el tiempo restante adecuado despues de cambiar de estado", () => {
@@ -43,10 +43,10 @@ describe("Test de Barra de Control: expiracion", () => {
     expect(estaActiva).toBeTruthy();
 
     jest.advanceTimersByTime(100);
-    expect(barraControl.estado).toBeInstanceOf(Insertada);
+    expect(barraControl.getEstado()).toBeInstanceOf(Insertada);
 
     barraControl.desactivar();
-    expect(barraControl.estado).toBeInstanceOf(EnDesuso);
+    expect(barraControl.getEstado()).toBeInstanceOf(EnDesuso);
 
     estaActiva = barraControl.estaActivo();
     expect(estaActiva).toBeFalsy();
@@ -56,9 +56,9 @@ describe("Test de Barra de Control: expiracion", () => {
     barraControl.cambiarEstado(new Insertada());
 
     jest.advanceTimersByTime(50);
-    expect(barraControl.estado).toBeInstanceOf(Insertada);
+    expect(barraControl.getEstado()).toBeInstanceOf(Insertada);
 
     jest.advanceTimersByTime(50);
-    expect(barraControl.estado).toBeInstanceOf(Eliminada);
+    expect(barraControl.getEstado()).toBeInstanceOf(Eliminada);
   });
 });

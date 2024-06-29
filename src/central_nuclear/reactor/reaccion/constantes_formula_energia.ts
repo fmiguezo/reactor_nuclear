@@ -3,3 +3,11 @@ const B_TERMAL = -141.008403361345;
 const PRODUCCCION_MINIMA_ENERGIA_TERMAL = 2100;
 const M_NETA = 1.75;
 const B_NETA = -3674.94125393732;
+
+export const Constantes = {
+    M_TERMAL,
+    B_TERMAL,
+    PRODUCCCION_MINIMA_ENERGIA_TERMAL,
+    M_NETA,
+    B_NETA
+};
