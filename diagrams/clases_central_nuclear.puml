@@ -191,17 +191,24 @@ abstract class EstadoBarraDeControl {
 }
 
 class Eliminada {
-    +abstract estaActivo(): boolean;
-    +abstract activar(): void;
-    +abstract desactivar(): void;
-    +abstract calcPctBarra(): number;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
 }
 
 class EnDesuso {
-    +abstract estaActivo(): boolean;
-    +abstract activar(): void;
-    +abstract desactivar(): void;
-    +abstract calcPctBarra(): number;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+class Insertada {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
 }
 
 '' Turbina de refrigeración
