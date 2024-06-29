@@ -21,7 +21,7 @@ class PlantaNuclear {
 }
 
 ' Reactor
-class Reactor implements Encendible {
+class Reactor{
     - idReactor: string;
     - _estado: EstadoReactor;
     - mecanimosDeControl: IMecanismoDeControl[];
@@ -127,7 +127,7 @@ class Operador {
 }
 
 'Interfaces generales
-interface Encendible {
+interface IEncendible {
     + encender();
     + apagar();
     + estaEncendido(): boolean;
@@ -179,9 +179,9 @@ class BarraDeControl implements IMecanismoDeControl {
     - tiempoVidaUtilTotal: number;
     + estaActivo(): boolean;
     'insertar barra
-    + activar(); 
+    + activar();
     ' quitar barra
-    + desactivar(); 
+    + desactivar();
     + obtenerEstado(): string;
     + obtenerTiempoDeVidaRestante(): number;
     + enfriarReactor();
@@ -196,8 +196,8 @@ enum EstadoBarraDeControl {
 '' Turbina de refrigeración
 class TurbinaDeRefrigeracion implements IMecanismoDeControl {
     + estaActivo(): boolean;
-    + activar(); 
-    + desactivar(); 
+    + activar();
+    + desactivar();
     + enfriarReactor();
 }
 
@@ -209,23 +209,22 @@ class Chernobyl {
 }
 
 'Relaciones
-Reactor -u-o PlantaNuclear
+Reactor --------r-o PlantaNuclear
 Operador -l-o PlantaNuclear
 Reactor *.. ISensor
 Reactor *.. IMecanismoDeControl
-Reactor -[hidden]l- Encendible
 Activable -[hidden]r- IMecanismoDeControl
 Activable -[hidden]l- ISensor
 Reactor <.. Operador
 EstadoBarraDeControl -[hidden]d- BarraDeControl
-IEstadoReactor o----------- Reactor
+IEstadoReactor o---- Reactor
 IEstadoReactor  <|-l- ChernobyL
 IEstadoReactor  <|-r- RCritico
 IEstadoReactor  <|-d- REmergencia
 IEstadoReactor  <|-d- RNormal
 IEstadoReactor  <|-u- REncenciendo
 IEstadoReactor  <|-u- RApagado
-
+Reactor  <...... IEncendible
 
 'Notas
 note right of Operador: "Mantener: verificar que los mecanismos \nse activen bajo las condiciones especificadas"
@@ -237,8 +236,7 @@ note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
 note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
 note bottom of IMecanismoDeControl: "Interfaz común para los mecanismos de control\nque serán utilizados para controlar la temperatura del reactor"
 note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note bottom of RCritico: " Las dos funciones privadas, las usamos para los saltos de estado"
-note left of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
+note right of PlantaNuclear: "Contiene los reactores y operadores de la central\nCambio tentativo: Singleton"
 note right of IMecanismoDeControl: "enfriarReactor() va a ser llamado por activar() para bajar la temperatura del Reactor"
 }
 
