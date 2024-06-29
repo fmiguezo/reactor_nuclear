@@ -8,14 +8,14 @@ export default class EnDesuso extends EstadoBarraControl {
 
   override activar(): void {
     let nuevoEstado: EstadoBarraControl = new Insertada();
-    this._BarraControl.cambiarEstado(nuevoEstado);
+    this._barraControl.cambiarEstado(nuevoEstado);
   }
 
   override desactivar(): void {
-    console.log("La barra ya estaba desactivada");
+    throw new Error(MENSAJE_BARRA_DESACTIVADA);
   }
 
   override calcPctBarra(): number {
-    return (this._BarraControl.VidaUtilRestante / 3600) * 100;
+    return (this._barraControl.getVidaUtilRestante() / VIDA_UTIL_BARRA) * MULTIPLICADOR_FORMULA_BARRA;
   }
 }
