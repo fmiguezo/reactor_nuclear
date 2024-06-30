@@ -5,6 +5,7 @@ import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/regis
 import Reactor from "../reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import { Constantes } from "../constantes";
+import BarraControl from "../../barras_control/barra_control";
 export default class RNormal extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -13,25 +14,19 @@ export default class RNormal extends EstadoReactor {
 
   constructor(r: Reactor) {
     super(r);
-    this.crearTimeOut();
+    this.crearTimeOutEnergia();
   }
 
-  private resetTimeOut(frecuencia: number = 30000): void {
-    this.eliminarTimeOut();
-    this.crearTimeOut(frecuencia);
+  private resetTimeOutEnergia(frecuencia: number = 30000): void {
+    this.eliminarTimeOut(this._timerGeneracion);
+    this.crearTimeOutEnergia(frecuencia);
   }
 
-  private crearTimeOut(frecuencia: number = 30000): void {
+  private crearTimeOutEnergia(frecuencia: number = 30000): void {
     this._timerGeneracion = setTimeout(() => {
       this.liberarEnergia();
-      this.resetTimeOut(frecuencia);
+      this.resetTimeOutEnergia(frecuencia);
     }, frecuencia);
-  }
-
-  private eliminarTimeOut(): void {
-    if (this._timerGeneracion !== null) {
-      clearTimeout(this._timerGeneracion);
-    }
   }
 
   override calcularEnergia(temperatura: number = 0): number {
@@ -48,7 +43,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   private cambiarAEstadoCritico() {
-    this.eliminarTimeOut();
+    this.eliminarTimeOut(this._timerGeneracion);
     let estado: EstadoReactor = new RCritico(this._reactor);
     this._reactor.cambiarEstado(estado);
     RegistroEstados.instancia.aumentarRegistro(estado);
@@ -59,7 +54,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   override apagar() {
-    this.eliminarTimeOut();
+    this.eliminarTimeOut(this._timerGeneracion);
     let estado: EstadoReactor = new RApagado(this._reactor);
     this._reactor.cambiarEstado(estado);
     RegistroEstados.instancia.aumentarRegistro(estado);

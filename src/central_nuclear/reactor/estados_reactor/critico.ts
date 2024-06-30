@@ -22,22 +22,16 @@ export default class RCritico extends EstadoReactor {
     return 0;
   }
 
-  private resetTimeOut(frecuencia: number = 30000): void {
-    this.eliminarTimeOut();
+  private resetTimeOutEnergia(frecuencia: number = 30000): void {
+    this.eliminarTimeOut(this._timerGeneracion);
     this.crearTimeOut(frecuencia);
   }
 
   private crearTimeOut(frecuencia: number = 30000): void {
     this._timerGeneracion = setTimeout(() => {
       this.liberarEnergia();
-      this.resetTimeOut(frecuencia);
+      this.resetTimeOutEnergia(frecuencia);
     }, frecuencia);
-  }
-
-  private eliminarTimeOut(): void {
-    if (this._timerGeneracion !== null) {
-      clearTimeout(this._timerGeneracion);
-    }
   }
 
   override verificarEstado(): void {
@@ -50,14 +44,14 @@ export default class RCritico extends EstadoReactor {
   }
 
   private cambiarAEstadoNormal() {
-    this.eliminarTimeOut();
+    this.eliminarTimeOut(this._timerGeneracion);
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
     RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   private cambiarAEstadoEmergencia() {
-    this.eliminarTimeOut();
+    this.eliminarTimeOut(this._timerGeneracion);
     let estado: EstadoReactor = new REmergencia(this._reactor);
     this._reactor.cambiarEstado(estado);
   }
@@ -67,7 +61,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   override apagar() {
-    this.eliminarTimeOut();
+    this.eliminarTimeOut(this._timerGeneracion);
     let estado: EstadoReactor = new RApagado(this._reactor);
     this._reactor.cambiarEstado(estado);
   }
