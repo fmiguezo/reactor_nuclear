@@ -58,15 +58,27 @@ abstract class Alerta {
 }
 
 class AlertaApagado {
+    -static instance: AlertaApagado;
 
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaApagado;
+    +obtenerMensajeDeAlerta(): String;
 }
 
 class AlertaCritica {
+    -static instance: AlertaCritica;
 
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaCritica;
+    +obtenerMensajeDeAlerta(): String;
 }
 
 class AlertaEstandar {
+    -static instance: AlertaEstandar;
 
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaEstandar;
+    +obtenerMensajeDeAlerta(): String;
 }
 
 class GeneradorAlertaApagado {
@@ -95,5 +107,8 @@ Command <|.u. ObtenerInformacionReactor
 Command <|.u. ReportarEstado
 Command <|.u. SacarBarraDeControl
 
+Alerta <|-- AlertaApagado
+Alerta <|-- AlertaCritica
+Alerta <|-- AlertaEstandar
 
 @enduml
