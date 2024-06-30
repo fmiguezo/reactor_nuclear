@@ -12,34 +12,65 @@ skinparam titleBackgroundColor #96a2ff
 
 
 
-interface Command{
-    + ejecutar (comando : Command) : void
+interface Command {
+    +ejecutar(comando: Command): void
 }
 
 class ApagarReactor {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
 class EncenderReactor {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
 class InsertarBarraDeControl {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
 class ObtenerInformacionReactor {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
 class ReportarEstado {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
 class SacarBarraDeControl {
-    + ejecutar (comando : Command) : void
+    +ejecutar(comando: Command): void
 }
 
+abstract class Alerta {
+
+}
+
+class AlertaApagado {
+
+}
+
+class AlertaCritica {
+
+}
+
+class AlertaEstandar {
+
+}
+
+class GeneradorAlertaApagado {
+
+}
+
+class GeneradorAlertaCritica {
+
+}
+
+class GeneradorAlertaEstandar {
+
+}
+
+enum TipoAlerta {
+
+}
 
 
 
