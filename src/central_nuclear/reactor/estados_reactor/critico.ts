@@ -4,13 +4,10 @@ import RNormal from "./normal";
 import REmergencia from "./emergencia";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
-<<<<<<< HEAD
 import Reactor from "../reactor";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 
-=======
 import { Constantes } from "../constantes";
->>>>>>> develop
 export default class RCritico extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -82,13 +79,11 @@ export default class RCritico extends EstadoReactor {
     return GeneradorDeAlertasEstandar.generarAlerta();
   }
 
-<<<<<<< HEAD
   public liberarEnergia(): void {
     const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
-=======
+  }
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_CRITICO;
->>>>>>> develop
   }
 }
