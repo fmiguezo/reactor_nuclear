@@ -1,7 +1,7 @@
 import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RCritico from "./critico";
-
+import { Constantes } from "../constantes";
 export default class RNormal extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -9,9 +9,9 @@ export default class RNormal extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < TEMP_MINIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_NORMAL) {
       this.apagar();
-    } else if (tempActual >= TEMP_MAXIMA_NORMAL) {
+    } else if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoCritico();
     }
   }
@@ -22,7 +22,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error("Ya estaba encendido");
+    throw new Error(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {

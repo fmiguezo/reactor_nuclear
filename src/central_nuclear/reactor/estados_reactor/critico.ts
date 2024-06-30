@@ -4,7 +4,7 @@ import RNormal from "./normal";
 import REmergencia from "./emergencia";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
-
+import { Constantes } from "../constantes";
 export default class RCritico extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -12,9 +12,9 @@ export default class RCritico extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < TEMP_MAXIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoNormal();
-    } else if (tempActual >= TEMP_CRITICA) {
+    } else if (tempActual >= Constantes.TEMP_CRITICA) {
       this.cambiarAEstadoEmergencia();
     }
   }
@@ -30,7 +30,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error("Ya estaba encendido");
+    throw new Error(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {

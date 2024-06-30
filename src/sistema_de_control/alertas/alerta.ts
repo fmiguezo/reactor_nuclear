@@ -1,4 +1,6 @@
 import IEmpleado from "../interfaces/empleado";
+import { TipoAlerta } from "./tipo_alerta";
+import { Constantes } from "../constantes";
 
 export default abstract class Alerta {
   protected _tipoAlerta: TipoAlerta;
