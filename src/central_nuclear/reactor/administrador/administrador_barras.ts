@@ -70,6 +70,17 @@ export default class AdministradorBarras {
     return fabricaBarra ? fabricaBarra.crearBarra() : null;
   }
 
+  public cargarBarras(cantBarras: number): void {
+    for (let i = 0; i < cantBarras; i++) {
+      let nuevasBarras: BarraControl[] = [];
+      let nuevaBarra = this.crearBarra("cadmio");
+      if (nuevaBarra !== null) {
+        nuevasBarras.push(nuevaBarra);
+        this.agregarBarras(nuevasBarras);
+      }
+    }
+  }
+
   public subirBarras(cantidadInput: number = 0): void {
     const barrasRemovibles: BarraControl[] = this.getBarrasInsertadas();
     const numBarras: number = this._reactor.getBarrasDeControl().length;
@@ -80,8 +91,6 @@ export default class AdministradorBarras {
     } else {
       cantidadASubir = numBarras;
     }
-
-    // Pendiente: agregar validación para los casos donde se reciba un valor mayor a la cantidad de barras existentes. También, agregar excepciones (todo respetando SOLID).
 
     for (let i = 0; i < cantidadASubir; i++) {
       barrasRemovibles[i].desactivar();
@@ -98,8 +107,6 @@ export default class AdministradorBarras {
     } else {
       cantidadAInsertar = numBarras;
     }
-
-    // Pendiente: agregar validación para los casos donde se reciba un valor mayor a la cantidad de barras existentes. También, agregar excepciones (todo respetando SOLID).
 
     for (let i = 0; i < cantidadAInsertar; i++) {
       barrasActivables[i].activar();

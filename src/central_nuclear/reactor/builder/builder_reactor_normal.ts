@@ -19,7 +19,7 @@ export default class BuilderReactorNormal implements IBuilder {
   }
 
   public setBarras(): void {
-    this._nuevoReactor.getAdministradorBarras().insertarBarras(100);
+    this._nuevoReactor.getAdministradorBarras().cargarBarras(100);
   }
 
   public setSensores(): void {
