@@ -36,7 +36,7 @@ export default class AdministradorBarras {
     });
   }
 
-  private removerBarras(barras: BarraControl[]): void {
+  public removerBarras(barras: BarraControl[]): void {
     const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
     let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
@@ -130,5 +130,5 @@ export default class AdministradorBarras {
     this.removerBarras(barrasVencidas);
 
     this.agregarBarras(nuevasBarras);
-  }
+  }  
 }
