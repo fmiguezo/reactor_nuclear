@@ -53,6 +53,7 @@ describe("Test del estado apagado", () => {
     });
 
     //Hay que revisarlo y los que anote en el pr, por que no se como probar esa logica.
+    // y el apagar.
     it("Verifica que liberarEnergia devuelva lo esperado", () => {
         Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(280));
         RegistroEnergiaGenerada.instancia.insertarRegistro(instanceReactor.obtenerEnergiaNeta());

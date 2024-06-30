@@ -20,7 +20,7 @@ export default class Chernobyl extends EstadoReactor {
   }
 
   override apagar() {
-    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO);
+    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_APAGO);
   }
 
   override estaEncendido() {

@@ -4,15 +4,15 @@ export default class PlantaNuclear {
   private _reactores: Reactor[] = [];
   private _sistema!: Sistema;
 
-  public set sistema(sistema: Sistema) {
+  public setSistema(sistema: Sistema) {
     this._sistema = sistema;
   }
 
-  public get reactores(): Reactor[] {
+  public getReactores(): Reactor[] {
     return this._reactores;
   }
 
-  public get sistema(): Sistema {
+  public getSistema(): Sistema {
     return this._sistema;
   }
 

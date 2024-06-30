@@ -2,7 +2,6 @@ import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
-import GeneradorDeAlertaApagado from "../../../../src/sistema_de_control/alertas/generador_alerta_apagado";
 import Alerta from "../../../../src/sistema_de_control/alertas/alerta";
 let instance: RApagado;
 let instanceReactor: Reactor;
@@ -23,7 +22,8 @@ describe("Test del estado apagado", () => {
         expect(instance.calcularEnergia()).toBe(0);
     });
     
-    it("Verifica que verificarEstado, si la temperatura del reactor es mayor a 0, lo encienda", () => {
+    it("Verifica que verificarEstado funcione, si la temperatura del reactor es mayor a 0, lo encienda", () => {
+        instanceReactor.setTemperatura(100);
         instance.verificarEstado();
         expect(instanceReactor.estaEncendido()).toBe(true);
     });
@@ -37,7 +37,7 @@ describe("Test del estado apagado", () => {
     it("Verifica que encender al encenderse se cambie el estado correctamente", () => {
         instance.encender();
         expect(instanceReactor.getEstado()).toBeInstanceOf(REncenciendo);
-    });
+      });
 
     it("Verifica que apagar siempre tire el mensaje de error correspondiente", () => {
         expect(() => instance.apagar()).toThrow(new Error(Constantes.MENSAJE_APAGADO));
@@ -48,7 +48,9 @@ describe("Test del estado apagado", () => {
     });
 
     it("Verifica que al realizar el incremento de temperatura, no se modifique la misma", () => {
-        expect(instance.incrementarTemperatura()).toBe(instanceReactor.getTemperatura());
+        let valorTemperatura = instanceReactor.getTemperatura();
+        instance.incrementarTemperatura();
+        expect(valorTemperatura).toBe(instanceReactor.getTemperatura());
     });
 
     it("Verifica que generar alerta genere la alerta esperada", () => {
@@ -56,6 +58,6 @@ describe("Test del estado apagado", () => {
     });
 
     it("Verifica que to string devuelva el mensaje esperado", () => {
-        expect(instance.toString()).toBeInstanceOf(Constantes.MENSAJE_ESTADO_APAGADO);
+        expect(instance.toString()).toBe(Constantes.MENSAJE_ESTADO_APAGADO);
     });
 });
