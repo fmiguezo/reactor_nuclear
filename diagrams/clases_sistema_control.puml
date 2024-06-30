@@ -41,7 +41,20 @@ class SacarBarraDeControl {
 }
 
 abstract class Alerta {
+    #tipoAlerta: TipoAlerta;
+    #date: Date;
+    #suscriptores: IEmpleado[];
 
+    +constructor(tipoAlerta: TipoAlerta)
+    +abstract obtenerMensajeDeAlerta(): String;
+    +getTipoAlerta(): TipoAlerta;
+    +setTipoAlerta(value: TipoAlerta);
+    +getDate(): Date;
+    +setDate(value: Date);
+    +toString(): String;
+    +agregarSuscriptor(suscriptor: IEmpleado): void;
+    +removerSuscriptor(suscriptor: IEmpleado): void;
+    +notificar(): void;
 }
 
 class AlertaApagado {
