@@ -13,31 +13,31 @@ skinparam titleBackgroundColor #96a2ff
 
 
 interface Command {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ApagarReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class EncenderReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class InsertarBarraDeControl {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ObtenerInformacionReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ReportarEstado {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class SacarBarraDeControl {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 abstract class Alerta {
@@ -112,7 +112,7 @@ class Operario {
     -reactor: Reactor;
 
     +constructor(reactor: Reactor, nombre : String);
-    +realizarOperacion(comando: Command): void;
+    +realizarOperacion(r: Reactor): void;
     +notificar(a: Alerta): void;
 }
 
