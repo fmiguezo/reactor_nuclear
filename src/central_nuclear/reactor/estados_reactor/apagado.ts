@@ -3,7 +3,13 @@ import REncendiendo from "./encendiendo";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/generador_alerta_apagado";
 import { Constantes } from "../constantes";
+import Reactor from "../reactor";
 export default class RApagado extends EstadoReactor {
+  constructor(r: Reactor) {
+    super(r);
+    this.eliminarTimeOut(this._timerTemp);
+  }
+
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }

@@ -1,6 +1,11 @@
 import EstadoReactor from "./estadoreactor";
-
+import Reactor from "../reactor";
 export default class Chernobyl extends EstadoReactor {
+  constructor(r: Reactor) {
+    super(r);
+    this.eliminarTimeOut(this._timerTemp);
+  }
+
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
   }
