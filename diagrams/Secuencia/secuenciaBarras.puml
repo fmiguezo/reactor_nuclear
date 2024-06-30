@@ -9,8 +9,13 @@ title *Diagrama de secuencia: creación de barras*
     BuilderReactorNormal ->> Reactor: setAdminBarras()
     Reactor ->> AdministradorBarras: setAadministradorBarras(new AdministradorBarras())
     BuilderReactorNormal --> AdministradorBarras: cargarBarras(100)
-    AdministradorBarras --> AdministradorBarras: crearBarra("cadmio")
-    AdministradorBarras --> AdministradorBarras: agregarBarras(nuevasBarras)
-    AdministradorBarras --> Reactor: setBarrasDeControl()
+    AdministradorBarras --> SelectorFabricaBarra: crearBarra("Cadmio")
+    SelectorFabricaBarra --> SelectorFabricaBarra: getFabrica("FabricaBarraCadmio")
+
+    SelectorFabricaBarra --> FabricaBarraCadmio: crearBarra("Cadmio")
+
+    AdministradorBarras --> AdministradorBarras:cargarBarras(cantBarras)
+    AdministradorBarras --> AdministradorBarras:subirBarras(cantidadInput)
+    Reactor --> AdministradorBarras: setBarrasDeControl(Barras[])
 
 @enduml
