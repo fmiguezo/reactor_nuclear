@@ -14,11 +14,11 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
 
   
     beforeEach(() => {
-      reactorNormal = new Reactor();
-      reactorCritico = new Reactor();
-      insertarBarraControl = new InsertarBarraDeControl();
-      MockNormal = new RNormal(reactorNormal) as jest.Mocked<RNormal>;
-      MockCritico = new RCritico(reactorCritico) as jest.Mocked<RCritico>;
+      let reactorNormal = new Reactor();
+      let reactorCritico = new Reactor();
+      let insertarBarraControl = new InsertarBarraDeControl();
+      let MockNormal = new RNormal(reactorNormal) as jest.Mocked<RNormal>;
+      let MockCritico = new RCritico(reactorCritico) as jest.Mocked<RCritico>;
 
     });
     

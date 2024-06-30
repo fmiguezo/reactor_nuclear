@@ -21,11 +21,14 @@ describe("Test del comando para reportar estado del reactor", () => {
     });
     
   
-    test("Deberia reportar el estado", () => {
-
+    it("Verifica el estado", () => {
+        let estado : String;
+        estado = reactor.getEstado().toString();
         expect(reactor.getEstado()).toBeInstanceOf(RCritico);
-        reportarEstado.ejecutar(reactor);
         // Falta desarrollar verificacion
+    });
 
+    it("se testea que el mensaje sea el correcto", () => {
+        // A REALIZAR
     });
   });

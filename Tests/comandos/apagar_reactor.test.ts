@@ -7,7 +7,7 @@ import RNormal from "../../src/central_nuclear/reactor/estados_reactor/normal";
 describe("Test del comando Apagar reactor", () => {
     let reactor: Reactor;
     let apagarReactor: ApagarReactor;
-    let MockEncendido 
+    let MockEncendido : RNormal;
     beforeEach(() => {
       reactor = new Reactor();
       apagarReactor = new ApagarReactor();
@@ -20,7 +20,7 @@ describe("Test del comando Apagar reactor", () => {
     });
     
   
-    test("debería apagar el reactor", () => {
+    it("debería apagar el reactor", () => {
       expect(reactor.getEstado().estaEncendido()).toBe(true);
       apagarReactor.ejecutar(reactor);
       expect(reactor.getEstado().estaEncendido()).toBe(false);
