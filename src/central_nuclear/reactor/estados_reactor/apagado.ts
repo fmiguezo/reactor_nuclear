@@ -2,7 +2,7 @@ import EstadoReactor from "./estadoreactor";
 import REncendiendo from "./encendiendo";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/generador_alerta_apagado";
-
+import { Constantes } from "../constantes";
 export default class RApagado extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -21,7 +21,7 @@ export default class RApagado extends EstadoReactor {
   }
 
   override apagar() {
-    throw new Error("Ya estaba apagado");
+    throw new Error(Constantes.MENSAJE_APAGADO);
   }
 
   override estaEncendido() {
@@ -32,5 +32,9 @@ export default class RApagado extends EstadoReactor {
 
   override generarAlerta(): Alerta {
     return GeneradorDeAlertaApagado.generarAlerta();
+  }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_APAGADO;
   }
 }

@@ -1,4 +1,4 @@
-const enum TipoAlerta {
+export const enum TipoAlerta {
   CRITICA,
   ESTANDAR,
   APAGADO,

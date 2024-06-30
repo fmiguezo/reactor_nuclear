@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "Command.js",
+  "sourceRoot": "",
+  "sources": [
+    "Command.ts"
+  ],
+  "names": [],
+  "mappings": ""
+}

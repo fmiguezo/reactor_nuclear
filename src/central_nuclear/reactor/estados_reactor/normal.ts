@@ -1,9 +1,13 @@
 import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RCritico from "./critico";
+<<<<<<< HEAD
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 import Reactor from "../reactor";
 
+=======
+import { Constantes } from "../constantes";
+>>>>>>> develop
 export default class RNormal extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -39,9 +43,9 @@ export default class RNormal extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < TEMP_MINIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_NORMAL) {
       this.apagar();
-    } else if (tempActual >= TEMP_MAXIMA_NORMAL) {
+    } else if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoCritico();
     }
   }
@@ -53,7 +57,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error("Ya estaba encendido");
+    throw new Error(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {
@@ -66,8 +70,13 @@ export default class RNormal extends EstadoReactor {
     return true;
   }
 
+<<<<<<< HEAD
   public liberarEnergia(): void {
     const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
+=======
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_NORMAL;
+>>>>>>> develop
   }
 }

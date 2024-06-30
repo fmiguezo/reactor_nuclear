@@ -1,5 +1,6 @@
 import Reactor from "../reactor/reactor";
 import ISensor from "../interfaces/isensor";
+import { Constantes } from "./constantes";
 
 export default class SensorProduccionDeEnergia implements ISensor {
   private _activo: boolean = true;
@@ -35,9 +36,17 @@ export default class SensorProduccionDeEnergia implements ISensor {
 
   public actualizar(reactor: Reactor): void {
     if (!this._activo) {
-      throw new Error(MENSAJE_SENSOR_INACTIVO);
+      throw new Error(Constantes.MENSAJE_SENSOR_INACTIVO);
     } else {
       this._energiaProducida = reactor.obtenerEnergiaNeta();
+    }
+  }
+
+  public toString(): string {
+    try {
+      return Constantes.MENSAJE_SENSOR_ENERGIA + this._energiaProducida;
+    } catch (error) {
+      return error.message;
     }
   }
 }
