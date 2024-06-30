@@ -153,7 +153,114 @@ class AdministradorBarras {
     +reemplazarBarrasVencidas(material: string);
 }
 
+interface Builder {
+    +reset(): void;
+    +setAdminBarras(): void;
+    +setBarras(): void;
+    +setSensores(): void;
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +getReactor(): Reactor;
+}
 
+class DirectorBuildReactor {
+    -builder: IBuilder;
+    -plantaNuclear: PlantaNuclear;
+
+    +constructor(builder: IBuilder);
+    +cargarPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +buildReactorNormal(): Reactor;
+    +cambiarBuilder(builder: IBuilder): void;
+}
+
+class BuilderReactorNormal {
+    -nuevoReactor: Reactor;
+
+    +reset(): void;
+    +setAdminBarras(): void;
+    +setBarras(): void;
+    +setSensores(): void;
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +getReactor(): Reactor;
+}
+
+abstract class EstadoReactor {
+    #incrementoTemp: number;
+    #reactor: Reactor;
+
+    +constructor(r: Reactor);
+    +abstract calcularEnergia(temperatura: number): number;
+    +abstract encender(): void;
+    +abstract apagar(): void;
+    +abstract estaEncendido(): boolean;
+    +setReactor(reactor: Reactor): void;
+    +incrementarTemperatura(): void;
+    +abstract verificarEstado(): void;
+    +generarAlerta(): Alerta;
+}
+
+class Normal {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoCritico();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Encendiendo {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoNormal();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Emergencia {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoCritico();
+    -cambiarAEstadoChernobyl();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +generarAlerta(): Alerta;
+}
+
+class Critico {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoNormal();
+    -cambiarAEstadoEmergencia();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +generarAlerta(): Alerta;
+}
+
+class Chernobyl {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Apagado {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +incrementarTemperatura(): void;
+    +generarAlerta(): Alerta;
+}
 
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
@@ -164,6 +271,16 @@ BarraControl <|-- BarraControlCadmio
 
 Activable <|.. MecanismoDeControl
 Activable <|.. Sensor
+
+Builder <|.. BuilderReactorNormal
+
+Encendible <|.. EstadoReactor
+EstadoReactor <|-- Normal
+EstadoReactor <|-- Encendiendo
+EstadoReactor <|-- Emergencia
+EstadoReactor <|-- Critico
+EstadoReactor <|-- Chernobyl
+EstadoReactor <|-- Apagado
 
 
 'Notas
