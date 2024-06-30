@@ -1,0 +1,14 @@
+@startuml Secuencia
+!theme reddress-darkblue
+scale 1.3
+
+autonumber
+
+GeneradorAlertaCritica -> AlertaCritica: generarAlerta(a: Alerta)
+AlertaCritica -> Operario: notificar()
+Operario -> ApagarReactor: realizarOperacion(c: comando)
+ApagarReactor -> Reactor: ejecutar(r: Reactor)
+Reactor -> Reactor: apagar()
+ApagarReactor -> Supervisor: informar()
+
+@enduml

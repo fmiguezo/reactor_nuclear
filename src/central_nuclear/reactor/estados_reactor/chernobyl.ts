@@ -1,5 +1,6 @@
 import EstadoReactor from "./estadoreactor";
 import Reactor from "../reactor";
+import { Constantes } from "../constantes";
 export default class Chernobyl extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
@@ -11,15 +12,15 @@ export default class Chernobyl extends EstadoReactor {
   }
 
   override verificarEstado(): void {
-    throw new Error("El reactor explotó");
+    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO);
   }
 
   override encender() {
-    throw new Error("No se puede encender: el reactor explotó");
+    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO);
   }
 
   override apagar() {
-    throw new Error("No se puede apagar: el reactor explotó");
+    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO);
   }
 
   override estaEncendido() {
