@@ -33,4 +33,8 @@ export default class RApagado extends EstadoReactor {
   override generarAlerta(): Alerta {
     return GeneradorDeAlertaApagado.generarAlerta();
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_APAGADO;
+  }
 }

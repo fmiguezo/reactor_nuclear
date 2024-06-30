@@ -40,4 +40,12 @@ export default class SensorTemperatura implements ISensor {
   public obtenerValor(): number {
     return this._ultimaTemperatura;
   }
+
+  public toString(): string {
+    try {
+      return Constantes.MENSAJE_SENSOR_TEMPERATURA + this._ultimaTemperatura;
+    } catch (error) {
+      return error.message;
+    }
+  }
 }

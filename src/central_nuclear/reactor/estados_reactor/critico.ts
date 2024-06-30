@@ -45,4 +45,8 @@ export default class RCritico extends EstadoReactor {
   override generarAlerta(): Alerta {
     return GeneradorDeAlertasEstandar.generarAlerta();
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_CRITICO;
+  }
 }

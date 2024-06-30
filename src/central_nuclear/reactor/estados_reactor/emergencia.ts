@@ -45,4 +45,8 @@ export default class REmergencia extends EstadoReactor {
   override generarAlerta(): Alerta {
     return GeneradorDeAlertaCritica.generarAlerta();
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_EMERGENCIA;
+  }
 }

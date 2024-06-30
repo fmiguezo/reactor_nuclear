@@ -41,4 +41,12 @@ export default class SensorProduccionDeEnergia implements ISensor {
       this._energiaProducida = reactor.obtenerEnergiaNeta();
     }
   }
+
+  public toString(): string {
+    try {
+      return Constantes.MENSAJE_SENSOR_ENERGIA + this._energiaProducida;
+    } catch (error) {
+      return error.message;
+    }
+  }
 }

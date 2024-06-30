@@ -33,4 +33,8 @@ export default class RNormal extends EstadoReactor {
   override estaEncendido() {
     return true;
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_NORMAL;
+  }
 }

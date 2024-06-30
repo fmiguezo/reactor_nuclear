@@ -31,4 +31,8 @@ export default class REncenciendo extends EstadoReactor {
   override estaEncendido() {
     return false;
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_ENCENDIENDO;
+  }
 }
