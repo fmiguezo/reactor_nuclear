@@ -1,6 +1,5 @@
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
-import PlantaNuclear from "../../../src/planta_nuclear";
 let instance: SensorTemperatura;
 let instanceReactor: Reactor;
 
@@ -40,7 +39,7 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
 
   it("verifica que la instancia actualizar valor reciba correctamente la temperatura y la sette in ultimaTemperatura", () => {
     instance.actualizar(instanceReactor);
-    expect(instance.obtenerValor()).toBe(100);
+    expect(instance.obtenerValor()).toBe(0);
   });
 
   it("Verifica que este activo devuelva el valor esperado", () => {

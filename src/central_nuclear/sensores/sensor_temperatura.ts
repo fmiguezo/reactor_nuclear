@@ -1,5 +1,6 @@
 import Reactor from "../reactor/reactor";
 import ISensor from "../interfaces/isensor";
+import { Constantes } from "./constantes";
 
 export default class SensorTemperatura implements ISensor {
   private _activo: boolean = true;
@@ -31,7 +32,7 @@ export default class SensorTemperatura implements ISensor {
 
   public actualizar(reactor: Reactor): void {
     if (!this._activo) {
-      throw new Error("El sensor no está activo");
+      throw new Error(Constantes.MENSAJE_SENSOR_INACTIVO);
     }
     this._ultimaTemperatura = reactor.getTemperatura();
   }
