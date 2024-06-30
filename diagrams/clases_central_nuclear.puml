@@ -79,14 +79,39 @@ class BarraControlCadmio {
     +constructor(tiempoVidaUtilTotal: number, estado: EstadoBarraControl)
 }
 
+interface Activable {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+}
+
+interface Encendible {
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+interface MecanismoDeControl {
+
+}
+
+interface Sensor {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+    +obtenerValor(): number;
+}
+
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
 EstadoBarraDeControl <|-- Insertada
-
 FabricaBarra <|-- FabricaBarraCadmio
-
 BarraControl <|-- BarraControlCadmio
+
+Activable <|.. MecanismoDeControl
+Activable <|.. Sensor
 
 
 'Notas
