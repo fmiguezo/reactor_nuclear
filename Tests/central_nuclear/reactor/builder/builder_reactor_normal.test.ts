@@ -12,6 +12,10 @@ describe("Test de BuilderReactorNormal", () => {
     instance = new BuilderReactorNormal();
   });
 
+  it("Verifica que la instancia sea de tipo BuilderReactorNormal", () => {
+    expect(() => instance).toBeInstanceOf(BuilderReactorNormal);
+  })
+
   it("Verifica que el reset() devuelva un nuevo Reactor", () => {
     instance.reset();
     expect(() => instance.getReactor).toBeInstanceOf(Reactor);
