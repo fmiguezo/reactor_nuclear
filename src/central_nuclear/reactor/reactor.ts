@@ -51,10 +51,6 @@ export default class Reactor {
     this._barrasControl = bc;
   }
 
-  public actualizarTemperatura(): void {
-    // TO-DO
-  }
-
   public obtenerEnergiaTermal(): number {
     return Energia.calcularEnergiaTermal(this._temperatura);
   }
