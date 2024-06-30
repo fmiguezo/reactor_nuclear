@@ -468,7 +468,7 @@ class Operario {
     -reactor: Reactor;
 
     +constructor(reactor: Reactor, nombre : String);
-    +realizarOperacion(comando: Command): void;
+    +realizarOperacion(r: Reactor): void;
     +notificar(a: Alerta): void;
 }
 
@@ -486,6 +486,39 @@ class Sistema {
     +init(): void;
 }
 
+interface Registro {
+    +insertarRegistro(registro: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
+
+class RegistroEstados {
+    -static instancia: RegistroEstados;
+    -contadorCambiosEstado: Map<EstadoReactor, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroEstados;
+    +aumentarRegistro(estado: EstadoReactor): void;
+}
+
+class RegistroEnergiaGenerada {
+    -static instancia: RegistroEnergiaGenerada;
+    -mapaRegistros: Map<Date, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroEnergiaGenerada;
+    +insertarRegistro(energiaProducida: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
+
+class RegistroBarrasUsadas {
+    -static instancia: RegistroBarrasUsadas;
+    -mapaRegistros: Map<Date, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroBarrasUsadas;
+    +insertarRegistro(barrasUsadas: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
 
 ' Relaciones
 Command <|.. ApagarReactor
@@ -513,6 +546,9 @@ GeneradorAlertaEstandar -u-> AlertaEstandar
 
 Empleado <|.. Operario
 Empleado <|.. Supervisor
-Sistema -r-* PlantaNuclear
+
+Registro <|.. RegistroEnergiaGenerada
+Registro <|.. RegistroBarrasUsadas
+RegistroEstados -d[hidden]- Registro
 
 @enduml
