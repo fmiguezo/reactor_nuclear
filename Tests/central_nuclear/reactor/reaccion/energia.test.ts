@@ -7,11 +7,29 @@ describe("Test de Energia", () => {
     instance = new Energia();
   });
 
-  it("Verifica con una temperatura que no pueda generar energía", () => {
+  it("Verifica con una temperatura de 0 no se puede generar energia termal", () => {
     let temp: number = 0;
-    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
-    temp = 279;
-    expect(Energia.calcularEnergiaNeta(temp)).toBe(Constantes.B_NETA);
+    expect(() => Energia.calcularEnergiaTermal(temp)).toThrow(new Error(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE));
+  })
+
+  it("Verifica con una temperatura de 280 generara 2100", () => {
+    let temp: number = 280;
+    expect(Energia.calcularEnergiaTermal(temp)).toBe(2100);
+  })
+
+  it("Verifica con una temperatura de 0 no puede generar energia neta", () => {
+    let temp: number = 0;
+    expect(() => Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(temp))).toThrow(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);
+  });
+
+  it("Verifica con una temperatura de 280, genera una energia neta de 100", () => {
+    let temp: number = 280;
+    expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(temp))).toBe(100);
+  });
+
+  it("Verifica con una temperatura de 288.33, genera una energia neta de 116.65", () => {
+    let temp: number = 288.33;
+    expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(temp))).toBe(116.65);
   });
 
   it("Verifica la energía neta producida se corresponda con los valores de la tabla", () => {
@@ -22,8 +40,8 @@ describe("Test de Energia", () => {
 
     let i = 0;
     temp.forEach((t) => {
-      expect(Energia.calcularEnergiaNeta(t)).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
-      expect(Energia.calcularEnergiaNeta(t)).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
+      expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(t))).toBeGreaterThanOrEqual(energNetaEsperada[i] - tolerancia);
+      expect(Energia.calcularEnergiaNeta(Energia.calcularEnergiaTermal(t))).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
       i++;
     });
   });

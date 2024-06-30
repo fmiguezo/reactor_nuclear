@@ -4,7 +4,7 @@ import RCritico from "./critico";
 import Chernobyl from "./chernobyl";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
-
+import { Constantes } from "../constantes";
 export default class REmergencia extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -12,9 +12,9 @@ export default class REmergencia extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < TEMP_CRITICA) {
+    if (tempActual < Constantes.TEMP_CRITICA) {
       this.cambiarAEstadoCritico();
-    } else if (tempActual >= TEMP_CHERNOBYL) {
+    } else if (tempActual >= Constantes.TEMP_CHERNOBYL) {
       this.cambiarAEstadoChernobyl();
     }
   }
@@ -30,7 +30,7 @@ export default class REmergencia extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error("Ya estaba encendido");
+    throw new Error(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {

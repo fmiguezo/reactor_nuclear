@@ -18,7 +18,6 @@ describe("Test de Estado Barra de Control: Insertada", () => {
   });
 
   it("Verifica que siga activa", () => {
-    rodInstance.activar();
     let estado: boolean = rodInstance.estaActivo();
     expect(estado).toBe(true);
   });

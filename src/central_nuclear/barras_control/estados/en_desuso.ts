@@ -17,9 +17,6 @@ export default class EnDesuso extends EstadoBarraControl {
   }
 
   override calcPctBarra(): number {
-    return (
-      (this._barraControl.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) *
-      Constantes.MULTIPLICADOR_FORMULA_BARRA
-    );
+    return (this._barraControl.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) * Constantes.MULTIPLICADOR_FORMULA_BARRA;
   }
 }

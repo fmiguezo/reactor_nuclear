@@ -3,3 +3,15 @@ const TEMP_MAXIMA_NORMAL = 330;
 const TEMP_CRITICA = 400;
 const TEMP_CHERNOBYL = 500;
 const INCREMENTO_POR_MINUTO = 25;
+const MENSAJE_APAGADO = "Ya esta apagado";
+const MENSAJE_ENCENDIDO = "Ya esta encendido";
+
+export const Constantes = {
+    TEMP_MINIMA_NORMAL,
+    TEMP_MAXIMA_NORMAL,
+    TEMP_CRITICA,
+    TEMP_CHERNOBYL,
+    INCREMENTO_POR_MINUTO,
+    MENSAJE_APAGADO,
+    MENSAJE_ENCENDIDO
+};

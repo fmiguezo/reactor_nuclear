@@ -1,9 +1,10 @@
 import IEncendible from "../../interfaces/iencendible";
 import Reactor from "../reactor";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
+import { Constantes } from "../constantes";
 
 export default abstract class EstadoReactor implements IEncendible {
-  protected _incrementoTemp: number = INCREMENTO_POR_MINUTO;
+  protected _incrementoTemp: number = Constantes.INCREMENTO_POR_MINUTO;
   protected _reactor: Reactor;
 
   constructor(r: Reactor) {
