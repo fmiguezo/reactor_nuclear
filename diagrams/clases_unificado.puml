@@ -1,0 +1,504 @@
+@startuml TP
+
+title "Central Nuclear"
+!theme reddress-darkblue
+scale 1.3
+
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor skyBlue
+skinparam titleBackgroundColor #96a2ff
+
+
+package CentralNuclear {
+
+abstract class EstadoBarraDeControl {
+    #BarraControl: BarraControl;
+
+    +abstract estaActivo(): boolean;
+    +abstract activar(): void;
+    +abstract desactivar(): void;
+    +abstract calcPctBarra(): number;
+}
+
+class Eliminada {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+class EnDesuso {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+class Insertada {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +calcPctBarra(): number;
+}
+
+abstract class FabricaBarra {
+    +abstract crearBarra(): BarraControl;
+}
+
+class FabricaBarraCadmio {
+    +crearBarra(): BarraControl;
+}
+
+class SelectorFabricaBarras {
+    -mapaFabricas: Map<string, FabricaBarra>;
+    -static instancia: SelectorFabricaBarra;
+
+    +constructor();
+    +getFabrica(nombre: string): FabricaBarra;
+    +static getInstancia(): SelectorFabricaBarra;
+}
+
+abstract class BarraControl {
+    #estado: EstadoBarraControl;
+    #vidaUtilRestante: number;
+
+    +constructor(tiempoVidaUtilTotal: number, estado: EstadoBarraControl)
+    +estaActivo(): boolean;
+    +getPctBarra(): number;
+    +getEstado(): EstadoBarraControl;
+    +getVidaUtilRestante(): number;
+    +setVidaUtilRestante(valor: number);
+    +cambiarEstado(state: EstadoBarraControl): void;
+    +activar(): void;
+    +desactivar(): void;
+}
+
+class BarraControlCadmio {
+    +constructor(tiempoVidaUtilTotal: number, estado: EstadoBarraControl)
+}
+
+interface Activable {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+}
+
+interface Encendible {
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+interface MecanismoDeControl {
+
+}
+
+interface Sensor {
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+    +obtenerValor(): number;
+}
+
+class Reactor {
+    -estado: IEstadoReactor;
+    -mecanimosDeControl: IMecanismoDeControl[];
+    -barrasControl: BarraControl[];
+    -sensores: ISensor[];
+    -temperatura: number;
+    -administradorBarras: AdministradorBarras;
+    -plantaNuclear: PlantaNuclear;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +getEstado(): IEstadoReactor;
+    +setEstado(value: IEstadoReactor);
+    +getTemperatura(): number;
+    +setTemperatura(temperatura: number): void;
+    +getBarrasDeControl(): BarraControl[];
+    +setBarrasDeControl(bc: BarraControl[]);
+    +actualizarTemperatura(): void;
+    +obtenerEnergiaTermal(): number;
+    +obtenerEnergiaNeta(): number;
+    +cambiarEstado(state: IEstadoReactor): void;
+    +agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    +eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    +agregarSensor(sensor: ISensor): void;
+    +eliminarSensor(sensor: ISensor): void;
+    +getSensores(): ISensor[];
+    +notificarSensores(): void;
+    +calcularTemperatura(): void;
+    +getAdministradorBarras(): AdministradorBarras;
+    +setAadministradorBarras(componente: AdministradorBarras);
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear);
+}
+
+class AdministradorBarras {
+    -reactor: Reactor;
+
+    +set reactor(r: Reactor);
+    -retreiveColeccionBarras(): BarraControl[];
+    +getBarrasInsertadas(): BarraControl[];
+    +getBarrasEnDesuso(): BarraControl[];
+    +getBarrasVencidas(): BarraControl[];
+    -removerBarras(barras: BarraControl[]): void;
+    -agregarBarras(barras: BarraControl[]): void;
+    -crearBarra(material: string): BarraControl;
+    +subirBarras(cantidadInput: number = 0): void;
+    +insertarBarras(cantidadInput: number = 0): void;
+    +reemplazarBarrasVencidas(material: string);
+}
+
+interface Builder {
+    +reset(): void;
+    +setAdminBarras(): void;
+    +setBarras(): void;
+    +setSensores(): void;
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +getReactor(): Reactor;
+}
+
+class DirectorBuildReactor {
+    -builder: IBuilder;
+    -plantaNuclear: PlantaNuclear;
+
+    +constructor(builder: IBuilder);
+    +cargarPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +buildReactorNormal(): Reactor;
+    +cambiarBuilder(builder: IBuilder): void;
+}
+
+class BuilderReactorNormal {
+    -nuevoReactor: Reactor;
+
+    +reset(): void;
+    +setAdminBarras(): void;
+    +setBarras(): void;
+    +setSensores(): void;
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
+    +getReactor(): Reactor;
+}
+
+abstract class EstadoReactor {
+    #incrementoTemp: number;
+    #reactor: Reactor;
+
+    +constructor(r: Reactor);
+    +abstract calcularEnergia(temperatura: number): number;
+    +abstract encender(): void;
+    +abstract apagar(): void;
+    +abstract estaEncendido(): boolean;
+    +setReactor(reactor: Reactor): void;
+    +incrementarTemperatura(): void;
+    +abstract verificarEstado(): void;
+    +generarAlerta(): Alerta;
+}
+
+class Normal {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoCritico();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Encendiendo {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoNormal();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Emergencia {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoCritico();
+    -cambiarAEstadoChernobyl();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +generarAlerta(): Alerta;
+}
+
+class Critico {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    -cambiarAEstadoNormal();
+    -cambiarAEstadoEmergencia();
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +generarAlerta(): Alerta;
+}
+
+class Chernobyl {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+}
+
+class Apagado {
+    +calcularEnergia(temperatura: number): number;
+    +verificarEstado(): void;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +incrementarTemperatura(): void;
+    +generarAlerta(): Alerta;
+}
+
+class Energia {
+    +static calcularEnergiaTermal(temp: number): number;
+    +static calcularEnergiaNeta(energiaTermal: number): number;
+}
+
+class SensorProduccionEnergia {
+    -activo: boolean;
+    -energiaProducida: number;
+
+    +getActivo(): boolean;
+    +setActivo(value: boolean): void;
+    +setEnergiaProducida(value: number): void;
+    +obtenerValor(): number;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+}
+
+class SensorTemperatura {
+    -activo: boolean;
+    -ultimaTemperatura: number;
+
+    +get activo(): boolean};
+    +set activo(value: boolean): void;
+    +set ultimaTemperatura(value: number): void;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+    +obtenerValor(): number;
+}
+
+class Turbina {
+
+}
+
+class PlantaNuclear {
+    -reactores: Reactor[];
+    -sistema!: Sistema;
+    
+    +set sistema(sistema: Sistema): void;
+    +get reactores(): Reactor[] ;
+    +get sistema(): Sistema;
+    +cargarSistema(sistema: Sistema): void;
+    +agregarReactores(reactores: Reactor[]): void;
+}
+
+class ComprobadorSalud {
+    -estaEncendido(reactor: Reactor): boolean;
+    -tieneTemperaturaSegura(reactor: Reactor): boolean;
+    -produceEnergiaEnRango(reactor: Reactor): boolean;
+}
+
+
+'Relaciones
+EstadoBarraDeControl <|-- Eliminada
+EstadoBarraDeControl <|-- EnDesuso
+EstadoBarraDeControl <|-- Insertada
+FabricaBarra <|-- FabricaBarraCadmio
+BarraControl <|-- BarraControlCadmio
+
+Activable <|.. MecanismoDeControl
+Activable <|.. Sensor
+
+Builder <|.. BuilderReactorNormal
+
+Encendible <|.. EstadoReactor
+EstadoReactor <|-- Normal
+EstadoReactor <|-- Encendiendo
+EstadoReactor <|-- Emergencia
+EstadoReactor <|-- Critico
+EstadoReactor <|-- Chernobyl
+EstadoReactor <|-- Apagado
+
+Sensor <|.. SensorProduccionEnergia
+Sensor <|.. SensorTemperatura
+
+'Notas
+note bottom of SensorTemperatura: "Retorna la temperatura"
+note left of SensorProduccionEnergia: "Retorna la producción de energía"
+note bottom of BarraControl: "Retorna el estado de la barra"
+note bottom of BarraControl: "Retorna el tiempo de vida restante de la barra"
+note bottom of Turbina: "Retorna si la turbina está activa o no"
+note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
+note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
+
+}
+
+package Software {
+skinparam Linetype ortho
+
+interface Command {
+    +ejecutar(comando: Command): void
+}
+
+class ApagarReactor {
+    +ejecutar(comando: Command): void
+}
+
+class EncenderReactor {
+    +ejecutar(comando: Command): void
+}
+
+class InsertarBarraDeControl {
+    +ejecutar(comando: Command): void
+}
+
+class ObtenerInformacionReactor {
+    +ejecutar(comando: Command): void
+}
+
+class ReportarEstado {
+    +ejecutar(comando: Command): void
+}
+
+class SacarBarraDeControl {
+    +ejecutar(comando: Command): void
+}
+
+abstract class Alerta {
+    #tipoAlerta: TipoAlerta;
+    #date: Date;
+    #suscriptores: IEmpleado[];
+
+    +constructor(tipoAlerta: TipoAlerta)
+    +abstract obtenerMensajeDeAlerta(): String;
+    +getTipoAlerta(): TipoAlerta;
+    +setTipoAlerta(value: TipoAlerta);
+    +getDate(): Date;
+    +setDate(value: Date);
+    +toString(): String;
+    +agregarSuscriptor(suscriptor: IEmpleado): void;
+    +removerSuscriptor(suscriptor: IEmpleado): void;
+    +notificar(): void;
+}
+
+class AlertaApagado {
+    -static instance: AlertaApagado;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaApagado;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaCritica {
+    -static instance: AlertaCritica;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaCritica;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaEstandar {
+    -static instance: AlertaEstandar;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaEstandar;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+interface IGeneradorDeAlertas {
+    
+}
+
+class GeneradorAlertaApagado {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaCritica {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaEstandar {
+    +static generarAlerta(): Alerta;
+}
+
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR,
+    APAGADO,
+}
+
+interface Empleado {
+    +notificar(a: Alerta): void;
+}
+
+class Operario {
+    -nombre : String;
+    -reactor: Reactor;
+
+    +constructor(reactor: Reactor, nombre : String);
+    +realizarOperacion(comando: Command): void;
+    +notificar(a: Alerta): void;
+}
+
+class Supervisor {
+    +notificar(a: Alerta): void;
+}
+
+class Sistema {
+    -plantaNuclear: PlantaNuclear;
+
+    +constructor(plantaNuclear: PlantaNuclear);
+    +cargarPlanta(planta: PlantaNuclear): void;
+    +actualizar(r: Reactor): void;
+    +actualizarTodo(): void;
+    +init(): void;
+}
+
+
+' Relaciones
+Command <|.. ApagarReactor
+Command <|.. EncenderReactor
+Command <|.. InsertarBarraDeControl
+Command <|.u. ObtenerInformacionReactor
+Command <|.u. ReportarEstado
+Command <|.u. SacarBarraDeControl
+
+Operario ----> Command
+
+Alerta <|-- AlertaApagado
+Alerta <|-- AlertaCritica
+Alerta <|-- AlertaEstandar
+Alerta -l[hidden]- TipoAlerta
+Alerta <-- Empleado
+
+IGeneradorDeAlertas <|.u. GeneradorAlertaApagado
+IGeneradorDeAlertas <|.u. GeneradorAlertaCritica
+IGeneradorDeAlertas <|.u. GeneradorAlertaEstandar
+
+GeneradorAlertaApagado -u-> AlertaApagado
+GeneradorAlertaCritica -u-> AlertaCritica
+GeneradorAlertaEstandar -u-> AlertaEstandar
+
+Empleado <|.. Operario
+Empleado <|.. Supervisor
+Sistema -r-* PlantaNuclear
+
+@enduml

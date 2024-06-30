@@ -1,0 +1,161 @@
+@startuml Tp
+
+title "Sistema de control Central Nuclear"
+!theme reddress-darkblue
+scale 1.3
+skinparam Linetype ortho
+
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor skyBlue
+skinparam titleBackgroundColor #96a2ff
+
+
+
+interface Command {
+    +ejecutar(comando: Command): void
+}
+
+class ApagarReactor {
+    +ejecutar(comando: Command): void
+}
+
+class EncenderReactor {
+    +ejecutar(comando: Command): void
+}
+
+class InsertarBarraDeControl {
+    +ejecutar(comando: Command): void
+}
+
+class ObtenerInformacionReactor {
+    +ejecutar(comando: Command): void
+}
+
+class ReportarEstado {
+    +ejecutar(comando: Command): void
+}
+
+class SacarBarraDeControl {
+    +ejecutar(comando: Command): void
+}
+
+abstract class Alerta {
+    #tipoAlerta: TipoAlerta;
+    #date: Date;
+    #suscriptores: IEmpleado[];
+
+    +constructor(tipoAlerta: TipoAlerta)
+    +abstract obtenerMensajeDeAlerta(): String;
+    +getTipoAlerta(): TipoAlerta;
+    +setTipoAlerta(value: TipoAlerta);
+    +getDate(): Date;
+    +setDate(value: Date);
+    +toString(): String;
+    +agregarSuscriptor(suscriptor: IEmpleado): void;
+    +removerSuscriptor(suscriptor: IEmpleado): void;
+    +notificar(): void;
+}
+
+class AlertaApagado {
+    -static instance: AlertaApagado;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaApagado;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaCritica {
+    -static instance: AlertaCritica;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaCritica;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaEstandar {
+    -static instance: AlertaEstandar;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaEstandar;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+interface IGeneradorDeAlertas {
+    
+}
+
+class GeneradorAlertaApagado {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaCritica {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaEstandar {
+    +static generarAlerta(): Alerta;
+}
+
+enum TipoAlerta {
+    CRITICA,
+    ESTANDAR,
+    APAGADO,
+}
+
+interface Empleado {
+    +notificar(a: Alerta): void;
+}
+
+class Operario {
+    -nombre : String;
+    -reactor: Reactor;
+
+    +constructor(reactor: Reactor, nombre : String);
+    +realizarOperacion(comando: Command): void;
+    +notificar(a: Alerta): void;
+}
+
+class Supervisor {
+    +notificar(a: Alerta): void;
+}
+
+class Sistema {
+    -plantaNuclear: PlantaNuclear;
+
+    +constructor(plantaNuclear: PlantaNuclear);
+    +cargarPlanta(planta: PlantaNuclear): void;
+    +actualizar(r: Reactor): void;
+    +actualizarTodo(): void;
+    +init(): void;
+}
+
+
+' Relaciones
+Command <|.. ApagarReactor
+Command <|.. EncenderReactor
+Command <|.. InsertarBarraDeControl
+Command <|.u. ObtenerInformacionReactor
+Command <|.u. ReportarEstado
+Command <|.u. SacarBarraDeControl
+
+Operario ----> Command
+
+Alerta <|-- AlertaApagado
+Alerta <|-- AlertaCritica
+Alerta <|-- AlertaEstandar
+Alerta -l[hidden]- TipoAlerta
+Alerta <-- Empleado
+
+IGeneradorDeAlertas <|.u. GeneradorAlertaApagado
+IGeneradorDeAlertas <|.u. GeneradorAlertaCritica
+IGeneradorDeAlertas <|.u. GeneradorAlertaEstandar
+
+GeneradorAlertaApagado -u-> AlertaApagado
+GeneradorAlertaCritica -u-> AlertaCritica
+GeneradorAlertaEstandar -u-> AlertaEstandar
+
+Empleado <|.. Operario
+Empleado <|.. Supervisor
+
+@enduml
