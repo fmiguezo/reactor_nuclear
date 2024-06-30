@@ -7,6 +7,5 @@ export default class SacarBarrasDeControl implements Command {
   public ejecutar(r: Reactor): void {
     let barrasDeControl : BarraControl[] = r.getBarrasDeControl();
     r.getAdministradorBarras().removerBarras(barrasDeControl);
-    throw new Error("Metodo no implementado aun");
   }
 }
