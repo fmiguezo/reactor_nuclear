@@ -88,7 +88,7 @@ export default class Reactor {
     this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
   public notificarSistema(): void {
-    this._plantaNuclear.sistema.actualizar(this);
+    this._plantaNuclear.getSistema().actualizar(this);
   }
 
   public calcularTemperatura(): void {}

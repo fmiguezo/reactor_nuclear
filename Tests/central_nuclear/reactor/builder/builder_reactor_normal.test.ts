@@ -36,7 +36,7 @@ describe("Test de BuilderReactorNormal", () => {
   it("Verifica que los sensores se agreguen de forma correcta", () => {
     instance.reset();
     instance.setSensores();
-    expect(() => instance.getReactor().getSensores()).toBeInstanceOf(ISensor);
+    expect(() => instance.getReactor().getSensores()).toBeInstanceOf([]);
   })
 
   it("Verifica que la planta nuclear se agregue de forma correcta", () => {

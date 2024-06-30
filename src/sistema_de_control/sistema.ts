@@ -21,7 +21,7 @@ export default class Sistema {
   }
 
   public actualizarTodo(): void {
-    this._plantaNuclear.reactores.forEach((r) => {
+    this._plantaNuclear.getReactores().forEach((r) => {
       this.actualizar(r);
     });
   }
