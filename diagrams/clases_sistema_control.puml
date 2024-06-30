@@ -81,22 +81,54 @@ class AlertaEstandar {
     +obtenerMensajeDeAlerta(): String;
 }
 
-class GeneradorAlertaApagado {
+interface IGeneradorDeAlertas {
+    
+}
 
+class GeneradorAlertaApagado {
+    +static generarAlerta(): Alerta;
 }
 
 class GeneradorAlertaCritica {
-
+    +static generarAlerta(): Alerta;
 }
 
 class GeneradorAlertaEstandar {
-
+    +static generarAlerta(): Alerta;
 }
 
 enum TipoAlerta {
-
+    CRITICA,
+    ESTANDAR,
+    APAGADO,
 }
 
+interface Empleado {
+    +notificar(a: Alerta): void;
+}
+
+class Operario {
+    -nombre : String;
+    -reactor: Reactor;
+
+    +constructor(reactor: Reactor, nombre : String);
+    +realizarOperacion(comando: Command): void;
+    +notificar(a: Alerta): void;
+}
+
+class Supervisor {
+    +notificar(a: Alerta): void;
+}
+
+class Sistema {
+    -plantaNuclear: PlantaNuclear;
+
+    +constructor(plantaNuclear: PlantaNuclear);
+    +cargarPlanta(planta: PlantaNuclear): void;
+    +actualizar(r: Reactor): void;
+    +actualizarTodo(): void;
+    +init(): void;
+}
 
 
 ' Relaciones
@@ -107,8 +139,23 @@ Command <|.u. ObtenerInformacionReactor
 Command <|.u. ReportarEstado
 Command <|.u. SacarBarraDeControl
 
+Operario ----> Command
+
 Alerta <|-- AlertaApagado
 Alerta <|-- AlertaCritica
 Alerta <|-- AlertaEstandar
+Alerta -l[hidden]- TipoAlerta
+Alerta <-- Empleado
+
+IGeneradorDeAlertas <|.u. GeneradorAlertaApagado
+IGeneradorDeAlertas <|.u. GeneradorAlertaCritica
+IGeneradorDeAlertas <|.u. GeneradorAlertaEstandar
+
+GeneradorAlertaApagado -u-> AlertaApagado
+GeneradorAlertaCritica -u-> AlertaCritica
+GeneradorAlertaEstandar -u-> AlertaEstandar
+
+Empleado <|.. Operario
+Empleado <|.. Supervisor
 
 @enduml

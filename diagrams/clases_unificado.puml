@@ -263,122 +263,153 @@ note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de contro
 }
 
 package Software {
+skinparam Linetype ortho
 
-' Procesamiento de Datos
-class ComprobadorSaludReactor {
-    -generadorDeAlertas: GeneradorDeAlertas;
-    -setGenerador(g: GeneradorDeAlertas)
-    - estaEncendido(reactor: Reactor): boolean;
-    - tieneTemperaturaSegura(reactor: Reactor): boolean;
-    - produceEnergiaEnRango(reactor: Reactor): boolean;
-    +lanzarAlerta();
+interface Command {
+    +ejecutar(comando: Command): void
 }
 
-class SistemaDeControl
-{
-    - operadores: Operador[];
-    - compobadorSalud: ComprobadorSaludReactor;
+class ApagarReactor {
+    +ejecutar(comando: Command): void
 }
 
-' Operador
-class Operador {
+class EncenderReactor {
+    +ejecutar(comando: Command): void
 }
 
-interface Alerta {
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
+class InsertarBarraDeControl {
+    +ejecutar(comando: Command): void
 }
 
-class AlertaCritica{
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
-
+class ObtenerInformacionReactor {
+    +ejecutar(comando: Command): void
 }
 
-class AlertaEstandar{
-    + obtenerTipoDeAlerta(): enumTipoAlerta;
-    + obtenerMensajeDeAlerta(): string;
-    + obtenerTimestampDeAlerta(): Date;
+class ReportarEstado {
+    +ejecutar(comando: Command): void
 }
 
-class NotificadorDeAlerta {
-    + notificarAlerta(alerta:Alerta);
+class SacarBarraDeControl {
+    +ejecutar(comando: Command): void
+}
+
+abstract class Alerta {
+    #tipoAlerta: TipoAlerta;
+    #date: Date;
+    #suscriptores: IEmpleado[];
+
+    +constructor(tipoAlerta: TipoAlerta)
+    +abstract obtenerMensajeDeAlerta(): String;
+    +getTipoAlerta(): TipoAlerta;
+    +setTipoAlerta(value: TipoAlerta);
+    +getDate(): Date;
+    +setDate(value: Date);
+    +toString(): String;
+    +agregarSuscriptor(suscriptor: IEmpleado): void;
+    +removerSuscriptor(suscriptor: IEmpleado): void;
+    +notificar(): void;
+}
+
+class AlertaApagado {
+    -static instance: AlertaApagado;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaApagado;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaCritica {
+    -static instance: AlertaCritica;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaCritica;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+class AlertaEstandar {
+    -static instance: AlertaEstandar;
+
+    -constructor(TipoAlerta: TipoAlerta);
+    +static getInstance(): AlertaEstandar;
+    +obtenerMensajeDeAlerta(): String;
+}
+
+interface IGeneradorDeAlertas {
+    
+}
+
+class GeneradorAlertaApagado {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaCritica {
+    +static generarAlerta(): Alerta;
+}
+
+class GeneradorAlertaEstandar {
+    +static generarAlerta(): Alerta;
 }
 
 enum TipoAlerta {
     CRITICA,
-    ESTANDAR
+    ESTANDAR,
+    APAGADO,
 }
 
-interface GeneradorDeAlertas
-{
-    + generarAlerta(): IAlerta;
+interface Empleado {
+    +notificar(a: Alerta): void;
 }
 
-class GeneradorDeAlertasEstandar
-{
-    + generarAlerta(): IAlerta;
+class Operario {
+    -nombre : String;
+    -reactor: Reactor;
+
+    +constructor(reactor: Reactor, nombre : String);
+    +realizarOperacion(comando: Command): void;
+    +notificar(a: Alerta): void;
 }
 
-class GeneradorDeAlertasCritica
-{
-    + generarAlerta(): IAlerta;
+class Supervisor {
+    +notificar(a: Alerta): void;
 }
 
-' Manejo de comandos
-'enum ComandosDisponibles {
-    'BARRA_CONTROL
-    'REACTOR,
-    'REFRIGERACION,
-    'SENSOR_TEMPERATURA,
-    'SENSOR_NIVEL_AGUA,
-    'REPORTAR_ESTADO
-'}
+class Sistema {
+    -plantaNuclear: PlantaNuclear;
 
-'class InterpreteDeComandos {
-    '- lanzarAccion();
-    '+ interpretarComando();
-'}
+    +constructor(plantaNuclear: PlantaNuclear);
+    +cargarPlanta(planta: PlantaNuclear): void;
+    +actualizar(r: Reactor): void;
+    +actualizarTodo(): void;
+    +init(): void;
+}
 
-' Acciones
-'interface Accion {
-
-'}
-
-'' Barras de control
-'class ManejadorDeBarraDeControl implements Accion {
-    '+ obtenerBarrasDisponibles(): BarraDeControl[];
-    '+ insertarBarra();
-    '+ quitarBarra();
-'}
-
-'class Comando {
-
-'}
-
-' Acciones automáticas de seguridad
-'class ModuloAccionAutomaticaSeguridad {
-    '+ apagarPorEmergencia();
-'}
 
 ' Relaciones
-SistemaDeControl o-d- Operador
-SistemaDeControl o-r- ComprobadorSaludReactor
-ComprobadorSaludReactor <|.r. Alerta
-Alerta <|.r. AlertaEstandar
-Alerta <|.u. AlertaCritica
-GeneradorDeAlertas <|.. GeneradorDeAlertasEstandar
-GeneradorDeAlertas <|.. GeneradorDeAlertasCritica
-NotificadorDeAlerta <.u. Alerta
-TipoAlerta -[hidden]r- NotificadorDeAlerta
-AlertaCritica <.u. GeneradorDeAlertasCritica
-AlertaEstandar <.u.. GeneradorDeAlertasEstandar
+Command <|.. ApagarReactor
+Command <|.. EncenderReactor
+Command <|.. InsertarBarraDeControl
+Command <|.u. ObtenerInformacionReactor
+Command <|.u. ReportarEstado
+Command <|.u. SacarBarraDeControl
 
-}
+Operario ----> Command
 
+Alerta <|-- AlertaApagado
+Alerta <|-- AlertaCritica
+Alerta <|-- AlertaEstandar
+Alerta -l[hidden]- TipoAlerta
+Alerta <-- Empleado
 
-SistemaDeControl -r-* PlantaNuclear
+IGeneradorDeAlertas <|.u. GeneradorAlertaApagado
+IGeneradorDeAlertas <|.u. GeneradorAlertaCritica
+IGeneradorDeAlertas <|.u. GeneradorAlertaEstandar
+
+GeneradorAlertaApagado -u-> AlertaApagado
+GeneradorAlertaCritica -u-> AlertaCritica
+GeneradorAlertaEstandar -u-> AlertaEstandar
+
+Empleado <|.. Operario
+Empleado <|.. Supervisor
+Sistema -r-* PlantaNuclear
 
 @enduml
