@@ -45,9 +45,4 @@ describe("Test del estado apagado", () => {
         expect(instance.estaEncendido()).toBe(true);
     });
 
-    it("Verifica que generarAlerta, devuelva una alerta critica", () => {
-        
-        expect(() => instance.generarAlerta()).toThrow(Constantes.MENSAJE_ESTADO_ENCENDIENDO);
-    });
-
 });

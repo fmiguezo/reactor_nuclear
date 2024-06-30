@@ -60,7 +60,6 @@ export default class Reactor {
   }
 
   public cambiarEstado(state: EstadoReactor): void {
-    console.log("Cambiando estado");
     this._estado = state;
     this.notificarSistema();
   }

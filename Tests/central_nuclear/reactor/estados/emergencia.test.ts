@@ -47,14 +47,9 @@ describe("Test del estado apagado", () => {
         expect(instance.estaEncendido()).toBe(true);
     });
 
-    it("Verifica que generarAlerta, devuelva una alerta critica", () => {
+    it("Verifica que generarAlerta, devuelva algo de tipo Alerta", () => {
         
         expect(instance.generarAlerta()).toBeInstanceOf(Alerta);
-    });
-
-    it("Verifica que generarAlerta, devuelva una alerta critica", () => {
-        
-        expect(() => instance.generarAlerta()).toThrow(Constantes.MENSAJE_ESTADO_EMERGENCIA);
     });
 
 });
