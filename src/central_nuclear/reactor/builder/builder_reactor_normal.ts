@@ -3,6 +3,7 @@ import ISensor from "../../interfaces/isensor";
 import SensorProduccionDeEnergia from "../../sensores/sensor_produccion_energia";
 import SensorTemperatura from "../../sensores/sensor_temperatura";
 import AdministradorBarras from "../administrador/administrador_barras";
+import RApagado from "../estados_reactor/apagado";
 import Reactor from "../reactor";
 import IBuilder from "./ibuilder";
 
@@ -32,5 +33,9 @@ export default class BuilderReactorNormal implements IBuilder {
 
   public getReactor(): Reactor {
     return this._nuevoReactor;
+  }
+
+  public setEstadoIncial(): void {
+    this._nuevoReactor.setEstado(new RApagado(this._nuevoReactor));
   }
 }

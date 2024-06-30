@@ -22,7 +22,7 @@ export default class REncenciendo extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error("Ya estaba encendido");
+    throw new Error(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {
@@ -31,7 +31,7 @@ export default class REncenciendo extends EstadoReactor {
   }
 
   override estaEncendido() {
-    return false;
+    return true;
   }
 
   override toString(): string {
