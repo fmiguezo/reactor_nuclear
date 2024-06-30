@@ -3,7 +3,7 @@ import RApagado from "./apagado";
 import RCritico from "./critico";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 import Reactor from "../reactor";
-
+import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import { Constantes } from "../constantes";
 export default class RNormal extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
@@ -51,6 +51,7 @@ export default class RNormal extends EstadoReactor {
     this.eliminarTimeOut();
     let estado: EstadoReactor = new RCritico(this._reactor);
     this._reactor.cambiarEstado(estado);
+    RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   override encender() {
@@ -61,6 +62,7 @@ export default class RNormal extends EstadoReactor {
     this.eliminarTimeOut();
     let estado: EstadoReactor = new RApagado(this._reactor);
     this._reactor.cambiarEstado(estado);
+    RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   override estaEncendido() {

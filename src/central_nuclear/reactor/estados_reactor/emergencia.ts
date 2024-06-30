@@ -5,6 +5,7 @@ import Chernobyl from "./chernobyl";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
 import { Constantes } from "../constantes";
+import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 export default class REmergencia extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -22,6 +23,7 @@ export default class REmergencia extends EstadoReactor {
   private cambiarAEstadoCritico() {
     let estado: EstadoReactor = new RCritico(this._reactor);
     this._reactor.cambiarEstado(estado);
+    RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   private cambiarAEstadoChernobyl() {

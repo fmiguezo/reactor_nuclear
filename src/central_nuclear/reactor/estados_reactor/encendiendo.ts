@@ -2,6 +2,7 @@ import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
 import { Constantes } from "../constantes";
+import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 export default class REncenciendo extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;
@@ -17,6 +18,7 @@ export default class REncenciendo extends EstadoReactor {
   private cambiarAEstadoNormal() {
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
+    RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   override encender() {

@@ -6,8 +6,8 @@ import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
 import Reactor from "../reactor";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
-
 import { Constantes } from "../constantes";
+import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 export default class RCritico extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -53,6 +53,7 @@ export default class RCritico extends EstadoReactor {
     this.eliminarTimeOut();
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
+    RegistroEstados.instancia.aumentarRegistro(estado);
   }
 
   private cambiarAEstadoEmergencia() {
