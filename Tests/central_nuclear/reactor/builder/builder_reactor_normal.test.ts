@@ -3,6 +3,7 @@ import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builde
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 import ISensor from "../../../../src/central_nuclear/interfaces/isensor";
 import PlantaNuclear from "../../../../src/planta_nuclear";
+import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 
 describe("Test de BuilderReactorNormal", () => {
   let instance: BuilderReactorNormal;
@@ -39,6 +40,12 @@ describe("Test de BuilderReactorNormal", () => {
     let planta = new PlantaNuclear();
     instance.setPlantaNuclear(planta);
     expect(() => instance.getReactor().getPlantaNuclear()).toBeInstanceOf(PlantaNuclear);
+  })
+
+  it("Verifica que el estado inicial se agregue de forma correcta", () => {
+    instance.reset();
+    instance.setEstadoIncial();
+    expect(() => instance.getReactor().getEstado()).toBeInstanceOf(EstadoReactor);
   })
 
 });
