@@ -7,9 +7,7 @@ import SensorTemperatura from "../../../../src/central_nuclear/sensores/sensor_t
 import BarraControl from "../../../../src/central_nuclear/barras_control/barra_control";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import BarraControlCadmio from "../../../../src/central_nuclear/barras_control/barra_control_cadmio";
-
-jest.mock("./estados_reactor/apagado");
-jest.mock("./reaccion/energia");
+import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 
 describe("Test del reactor", () => {
   let reactor: Reactor;
@@ -22,6 +20,7 @@ describe("Test del reactor", () => {
   beforeEach(() => {
     reactor = new Reactor();
     MockApagado = new RApagado(reactor) as jest.Mocked<RApagado>;
+    reactor.setEstado(MockApagado);
   });
 
   afterEach(() => {
@@ -34,9 +33,9 @@ describe("Test del reactor", () => {
     expect(reactor.getBarrasDeControl()).toEqual([]);
   });
 
-  it("Debería encender el reactor y verificar que esté encendido y su estado sea normal", () => {
+  it("Debería encender el reactor y verificar que esté encendiendo y su estado sea normal", () => {
     reactor.encender();
-    expect(reactor.getEstado()).toBeInstanceOf(RNormal);
+    expect(reactor.getEstado()).toBeInstanceOf(REncenciendo);
     expect(reactor.estaEncendido()).toBeTruthy();
   });
 

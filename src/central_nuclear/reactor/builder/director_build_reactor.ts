@@ -19,6 +19,7 @@ export default class DirectorBuildReactor {
     this._builder.setBarras();
     this._builder.setSensores();
     this._builder.setPlantaNuclear(this._plantaNuclear);
+    this._builder.setEstadoIncial();
     return this._builder.getReactor();
   }
 
