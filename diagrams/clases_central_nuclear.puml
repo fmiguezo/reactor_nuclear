@@ -103,6 +103,58 @@ interface Sensor {
     +obtenerValor(): number;
 }
 
+class Reactor {
+    -estado: IEstadoReactor;
+    -mecanimosDeControl: IMecanismoDeControl[];
+    -barrasControl: BarraControl[];
+    -sensores: ISensor[];
+    -temperatura: number;
+    -administradorBarras: AdministradorBarras;
+    -plantaNuclear: PlantaNuclear;
+
+    +encender(): void;
+    +apagar(): void;
+    +estaEncendido(): boolean;
+    +getEstado(): IEstadoReactor;
+    +setEstado(value: IEstadoReactor);
+    +getTemperatura(): number;
+    +setTemperatura(temperatura: number): void;
+    +getBarrasDeControl(): BarraControl[];
+    +setBarrasDeControl(bc: BarraControl[]);
+    +actualizarTemperatura(): void;
+    +obtenerEnergiaTermal(): number;
+    +obtenerEnergiaNeta(): number;
+    +cambiarEstado(state: IEstadoReactor): void;
+    +agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    +eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
+    +agregarSensor(sensor: ISensor): void;
+    +eliminarSensor(sensor: ISensor): void;
+    +getSensores(): ISensor[];
+    +notificarSensores(): void;
+    +calcularTemperatura(): void;
+    +getAdministradorBarras(): AdministradorBarras;
+    +setAadministradorBarras(componente: AdministradorBarras);
+    +setPlantaNuclear(plantaNuclear: PlantaNuclear);
+}
+
+class AdministradorBarras {
+    -reactor: Reactor;
+
+    +set reactor(r: Reactor);
+    -retreiveColeccionBarras(): BarraControl[];
+    +getBarrasInsertadas(): BarraControl[];
+    +getBarrasEnDesuso(): BarraControl[];
+    +getBarrasVencidas(): BarraControl[];
+    -removerBarras(barras: BarraControl[]): void;
+    -agregarBarras(barras: BarraControl[]): void;
+    -crearBarra(material: string): BarraControl;
+    +subirBarras(cantidadInput: number = 0): void;
+    +insertarBarras(cantidadInput: number = 0): void;
+    +reemplazarBarrasVencidas(material: string);
+}
+
+
+
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
