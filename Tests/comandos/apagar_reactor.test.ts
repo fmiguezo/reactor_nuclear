@@ -7,7 +7,7 @@ import RNormal from "../../src/central_nuclear/reactor/estados_reactor/normal";
 describe("Test del comando Apagar reactor", () => {
     let reactor: Reactor;
     let apagarReactor: ApagarReactor;
-  
+    let MockEncendido 
     beforeEach(() => {
       reactor = new Reactor();
       apagarReactor = new ApagarReactor();
