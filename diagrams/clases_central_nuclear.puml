@@ -262,6 +262,61 @@ class Apagado {
     +generarAlerta(): Alerta;
 }
 
+class Energia {
+    +static calcularEnergiaTermal(temp: number): number;
+    +static calcularEnergiaNeta(energiaTermal: number): number;
+}
+
+class SensorProduccionEnergia {
+    -activo: boolean;
+    -energiaProducida: number;
+
+    +getActivo(): boolean;
+    +setActivo(value: boolean): void;
+    +setEnergiaProducida(value: number): void;
+    +obtenerValor(): number;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+}
+
+class SensorTemperatura {
+    -activo: boolean;
+    -ultimaTemperatura: number;
+
+    +get activo(): boolean};
+    +set activo(value: boolean): void;
+    +set ultimaTemperatura(value: number): void;
+    +estaActivo(): boolean;
+    +activar(): void;
+    +desactivar(): void;
+    +actualizar(reactor: Reactor): void;
+    +obtenerValor(): number;
+}
+
+class Turbina {
+
+}
+
+class PlantaNuclear {
+    -reactores: Reactor[];
+    -sistema!: Sistema;
+    
+    +set sistema(sistema: Sistema): void;
+    +get reactores(): Reactor[] ;
+    +get sistema(): Sistema;
+    +cargarSistema(sistema: Sistema): void;
+    +agregarReactores(reactores: Reactor[]): void;
+}
+
+class ComprobadorSalud {
+    -estaEncendido(reactor: Reactor): boolean;
+    -tieneTemperaturaSegura(reactor: Reactor): boolean;
+    -produceEnergiaEnRango(reactor: Reactor): boolean;
+}
+
+
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
@@ -282,8 +337,17 @@ EstadoReactor <|-- Critico
 EstadoReactor <|-- Chernobyl
 EstadoReactor <|-- Apagado
 
+Sensor <|.. SensorProduccionEnergia
+Sensor <|.. SensorTemperatura
 
 'Notas
+note bottom of SensorTemperatura: "Retorna la temperatura"
+note left of SensorProduccionEnergia: "Retorna la producción de energía"
+note bottom of BarraControl: "Retorna el estado de la barra"
+note bottom of BarraControl: "Retorna el tiempo de vida restante de la barra"
+note bottom of Turbina: "Retorna si la turbina está activa o no"
+note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
 
 @enduml
