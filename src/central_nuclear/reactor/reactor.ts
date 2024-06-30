@@ -1,5 +1,5 @@
 import RApagado from "./estados_reactor/apagado";
-import IEstadoReactor from "./estados_reactor/estadoreactor";
+import EstadoReactor from "./estados_reactor/estadoreactor";
 import IMecanismoDeControl from "../interfaces/imecanismo_control";
 import ISensor from "../interfaces/isensor";
 import BarraControl from "../barras_control/barra_control";
@@ -8,7 +8,7 @@ import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
 
 export default class Reactor {
-  private _estado: IEstadoReactor = new RApagado(this);
+  private _estado: EstadoReactor = new RApagado(this);
   private _mecanimosDeControl: IMecanismoDeControl[] = [];
   private _barrasControl: BarraControl[] = [];
   private _sensores: ISensor[] = [];
@@ -28,10 +28,10 @@ export default class Reactor {
     return this._estado.estaEncendido();
   }
 
-  public getEstado(): IEstadoReactor {
+  public getEstado(): EstadoReactor {
     return this._estado;
   }
-  public setEstado(value: IEstadoReactor) {
+  public setEstado(value: EstadoReactor) {
     this._estado = value;
   }
 
@@ -51,10 +51,6 @@ export default class Reactor {
     this._barrasControl = bc;
   }
 
-  public actualizarTemperatura(): void {
-    // TO-DO
-  }
-
   public obtenerEnergiaTermal(): number {
     return Energia.calcularEnergiaTermal(this._temperatura);
   }
@@ -63,24 +59,18 @@ export default class Reactor {
     return Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
   }
 
-  public cambiarEstado(state: IEstadoReactor): void {
+  public cambiarEstado(state: EstadoReactor): void {
     console.log("Cambiando estado");
     this._estado = state;
     this.notificarSistema();
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {

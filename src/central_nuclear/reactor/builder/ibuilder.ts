@@ -9,4 +9,5 @@ export default interface IBuilder {
   setSensores(): void;
   setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
   getReactor(): Reactor;
+  setEstadoIncial(): void;
 }
