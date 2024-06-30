@@ -11,175 +11,7 @@ skinparam titleBorderThickness 2
 skinparam titleBorderColor skyBlue
 skinparam titleBackgroundColor #96a2ff
 
-' Planta nuclear
-class PlantaNuclear {
-    - reactores: Reactor[];
-    - SistemaDeControl: software;
-}
 
-' Reactor
-class Reactor{
-    - idReactor: string;
-    - _estado: EstadoReactor;
-    - mecanimosDeControl: IMecanismoDeControl[];
-    - sensores: ISensor[];
-    - temperatura: number;
-    + getters();
-    + setters();
-    + encender(): void;
-    + apagar(): void;
-    + getTemperatura(): number;
-    + actualizarTemperatura(): void;
-    + setTemperatura(temperatura: number): void;
-    + getIdReactor(): string;
-    + getEstado();
-    + cambiarEstado(IEstadoReactor state ): void;
-    + agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
-    + eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void;
-    + agregarSensor(sensor: ISensor): void;
-    + eliminarSensor(sensor: ISensor): void;
-    + notificarSensores(): void;
-}
-
-abstract class IEstadoReactor {
-    # static readonly INCREMENTO_POR_MINUTO;
-    # contexto: Reactor;
-    + IEstadoReactor();
-    + abstract calcularEnergia(temperatura: number): number;
-    + abstract encender(): void;
-    + abstract apagar(): void;
-    + abstract estaEncendido(): boolean;
-    + cargaContexto(context): void;
-    + incrementarTemperatura(): void;
-    + abstract verificaEstado(): void;
-}
-
-class ChernobyL
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    + encender();
-    + apagar();
-    + estaEncendido();
-}
-
-class RApagado
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    + encender();
-    + apagar();
-    + estaEncendido();
-    + incrementarTemperatura(): void;
-}
-
-class RCritico
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    - pasaAEstadoNormal();
-    - pasaAEstadoEmergencia();
-    + encender();
-    + apagar();
-    + estaEncendido();
-}
-
-class REmergencia
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    - pasaAEstadoCritico();
-    - pasaAEstadoChernobyl();
-    + encender();
-    + apagar();
-    + estaEncendido();
-}
-
-class REncenciendo
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    - pasaAEstadoNormal();
-    + encender();
-    + apagar();
-    + estaEncendido();
-}
-
-class RNormal
-{
-    + calcularEnergia(temperatura: number = 0): number;
-    + verificaEstado(): void;
-    - pasaAEstadoCritico();
-    + encender();
-    + apagar();
-    + estaEncendido();
-}
-
-'Interfaces generales
-interface IEncendible {
-    + encender();
-    + apagar();
-    + estaEncendido(): boolean;
-}
-
-interface IActivable {
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
-}
-
-
-'Sensores
-interface ISensor{
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
-    + actualizar(reactor: Reactor): void;
-    + obtenerValor(): number;
-}
-
-class SensorTemperatura{
-    ' lee en °C
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
-    + actualizar(reactor: Reactor): void;
-    + obtenerValor(): number;
-}
-
-class SensorProduccionDeEnergia {
-    ' lee en watts
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
-    + actualizar(reactor: Reactor): void;
-    + obtenerValor(): number;
-}
-
-' Mecanismos de control
-interface IMecanismoDeControl{
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
-}
-
-'' Barra de control
-class BarraDeControl implements IMecanismoDeControl {
-    - _material: string;
-    - _estado: EstadoBarraDeControl;
-    - _tiempoVidaUtilTotal: number;
-    + constructor();
-    + estaActivo(): boolean;
-    'insertar barra
-    + activar();
-    ' quitar barra
-    + desactivar();
-    + getters();
-    + setters();
-    - calcPctBarra(): number;
-    - revisaSiPuedeActivar(): boolean;
-
-}
 
 abstract class EstadoBarraDeControl {
     #BarraControl: BarraControl;
@@ -211,66 +43,55 @@ class Insertada {
     +calcPctBarra(): number;
 }
 
-'' Turbina de refrigeración
-class TurbinaDeRefrigeracion implements IMecanismoDeControl {
-    + estaActivo(): boolean;
-    + activar();
-    + desactivar();
+abstract class FabricaBarra {
+    +abstract crearBarra(): BarraControl;
 }
 
+class FabricaBarraCadmio {
+    +crearBarra(): BarraControl;
+}
 
-' Easter egg...
+class SelectorFabricaBarras {
+    -mapaFabricas: Map<string, FabricaBarra>;
+    -static instancia: SelectorFabricaBarra;
 
-class Chernobyl {
-    + explotar();
+    +constructor();
+    +getFabrica(nombre: string): FabricaBarra;
+    +static getInstancia(): SelectorFabricaBarra;
+}
+
+abstract class BarraControl {
+    #estado: EstadoBarraControl;
+    #vidaUtilRestante: number;
+
+    +constructor(tiempoVidaUtilTotal: number, estado: EstadoBarraControl)
+    +estaActivo(): boolean;
+    +getPctBarra(): number;
+    +getEstado(): EstadoBarraControl;
+    +getVidaUtilRestante(): number;
+    +setVidaUtilRestante(valor: number);
+    +cambiarEstado(state: EstadoBarraControl): void;
+    +activar(): void;
+    +desactivar(): void;
+}
+
+class BarraControlCadmio {
+    +constructor(tiempoVidaUtilTotal: number, estado: EstadoBarraControl)
 }
 
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
 EstadoBarraDeControl <|-- Insertada
-Reactor -r-o PlantaNuclear
-Reactor *..... ISensor
-Reactor *...... IMecanismoDeControl
-IActivable -[hidden]r- IMecanismoDeControl
-IActivable -[hidden]l- ISensor
-IEstadoReactor o---- Reactor
-IEstadoReactor  <|-u- ChernobyL
-IEstadoReactor  <|-u- RCritico
-IEstadoReactor  <|-r- REmergencia
-IEstadoReactor  <|-u- RNormal
-IEstadoReactor  <|-u- REncenciendo
-IEstadoReactor  <|-l- RApagado
-IEncendible  <|.r. Reactor
-ISensor <|.l. SensorProduccionDeEnergia
-ISensor <|.. SensorTemperatura
-ISensor <|........ IActivable
-IMecanismoDeControl <|........ IActivable
-EstadoBarraDeControl .l.|> IMecanismoDeControl
+
+FabricaBarra <|-- FabricaBarraCadmio
+
+BarraControl <|-- BarraControlCadmio
 
 
 'Notas
-note bottom of SensorTemperatura: "Retorna la temperatura"
-note left of SensorProduccionDeEnergia: "Retorna la producción de energía"
-note bottom of BarraDeControl: "Retorna el estado de la barra"
-note bottom of BarraDeControl: "Retorna el tiempo de vida restante de la barra"
-note bottom of TurbinaDeRefrigeracion: "Retorna si la turbina está activa o no"
-note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
+
 @enduml
 
-'Cambios sugeridos en PR
-'- establecer relaciones entre clases
-'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
-'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
-'- agregar Clase operador
-' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
-@enduml
 
-'Cambios sugeridos en PR
-'- establecer relaciones entre clases
-'- cambiar nombre propiedad barra de control (remainingRodLifePct => totalRodLife), el % lo podemos resolver un método que lo calcule en base al tiempo
-'- agregar clases de turbinas, condensador y generador (y alguna otra de la base de funcionamiento si consideramos que es necesaria)
-'- agregar Clase operador
-' agregar Interface común entre los mecanismos de control (sensor de temperatura, barras de control y turbinas de refrigeración)
