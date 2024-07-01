@@ -9,10 +9,10 @@
     "clean": "npm run clean:build && npm run clean:temp",
     "clean:build": "npx rimraf ./dist",
     "clean:temp": "npx rimraf ./tmp",
-    "dev-mode": "ts-node ./src/index.ts",
+    "dev-mode": "ts-node ./src/app.ts",
     "lint": "npx eslint ./src",
-    "start": "node ./dist/index.js",
-    "start:dev": "tsc && node ./dist/index.js",
+    "start": "node ./dist/app.js",
+    "start:dev": "tsc && node ./dist/app.js",
     "test": "npx jest tests --runInBand --detectOpenHandles",
     "prebuild": "npm run clean",
     "lint-fix": "npx eslint ./src --fix"
