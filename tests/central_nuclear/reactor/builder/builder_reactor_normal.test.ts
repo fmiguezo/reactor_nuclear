@@ -1,17 +1,21 @@
 import AdministradorBarras from "../../../../src/central_nuclear/reactor/administrador/administrador_barras";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import ISensor from "../../../../src/central_nuclear/interfaces/isensor";
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
+import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 
 describe("Tests del builder de reactor normal", () => {
   let instance: BuilderReactorNormal;
   let plantaNuclear: PlantaNuclear;
+  let MockReactor: jest.Mocked<Reactor>;
+  let MockNormal: jest.Mocked<RNormal>;
 
   beforeEach(() => {
     instance = new BuilderReactorNormal();
     plantaNuclear = new PlantaNuclear();
+    instance.reset();
+    MockReactor = instance.getReactor() as jest.Mocked<Reactor>;
   });
 
   it("Verifica que la instancia sea de tipo BuilderReactorNormal", () => {
@@ -24,32 +28,26 @@ describe("Tests del builder de reactor normal", () => {
   });
 
   it("Verifica que el administrador se agregue de forma correcta", () => {
-    instance.reset();
     instance.setAdminBarras();
     expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(AdministradorBarras);
   });
 
   it("Verifica que las barras se agreguen de forma correcta", () => {
     instance.reset();
+    let reactor = instance.getReactor();
+    MockNormal = new RNormal(reactor) as jest.Mocked<RNormal>;
+    reactor.setEstado(MockNormal);
+    instance.setAdminBarras();
     instance.setBarras();
-    expect(instance.getReactor().getAdministradorBarras().getBarrasEnDesuso()).toBe(100);
+    jest.spyOn(global.console, "log");
+    expect(reactor.getBarrasDeControl().length).toBe(100);
   });
 
   it("Verifica que los sensores se agreguen de forma correcta", () => {
     instance.reset();
     instance.setSensores();
-    expect(instance.getReactor().getSensores()).toBeInstanceOf([]);
+    expect(instance.getReactor().getSensores().length).toBe(2);
   });
-
-  /*
-  it("Verifica que la planta nuclear se agregue de forma correcta", () => {
-    instance.reset();
-    let planta = new PlantaNuclear();
-    instance.setPlantaNuclear(planta);
-    expect(instance.getReactor().getPlantaNuclear()).toBeInstanceOf(PlantaNuclear);
-  });
-
-  */
 
   it("Verifica que el estado inicial se agregue de forma correcta", () => {
     instance.reset();

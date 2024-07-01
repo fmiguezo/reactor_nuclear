@@ -9,8 +9,7 @@ import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/regis
 import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 export default class RCritico extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada =
-    RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
@@ -48,6 +47,7 @@ export default class RCritico extends EstadoReactor {
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
     RegistroEstados.instancia.aumentarRegistro(estado);
+    this._reactor.desactivarMecanismosDeControl();
   }
 
   private cambiarAEstadoEmergencia() {

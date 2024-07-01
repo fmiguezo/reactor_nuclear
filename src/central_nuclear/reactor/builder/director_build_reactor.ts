@@ -15,11 +15,11 @@ export default class DirectorBuildReactor {
 
   public buildReactorNormal(): Reactor {
     this._builder.reset();
+    this._builder.setEstadoIncial();
     this._builder.setAdminBarras();
     this._builder.setBarras();
     this._builder.setSensores();
     this._builder.setPlantaNuclear(this._plantaNuclear);
-    this._builder.setEstadoIncial();
     return this._builder.getReactor();
   }
 

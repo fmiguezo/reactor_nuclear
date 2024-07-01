@@ -7,15 +7,13 @@ import RegistroEstados from "../../../sistema_de_control/registros/registroEstad
 import { Constantes } from "../constantes";
 import BarraControl from "../../barras_control/barra_control";
 export default class RNormal extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada =
-    RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
 
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
-    this._reactor.desactivarMecanismosDeControl();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
