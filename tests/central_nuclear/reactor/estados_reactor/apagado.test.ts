@@ -2,13 +2,24 @@ import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
-import Alerta from "../../../../src/sistema_de_control/alertas/alerta";
+import AlertaApagado from "../../../../src/sistema_de_control/alertas/alerta_apagado";
+import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import PlantaNuclear from "../../../../src/planta_nuclear";
+import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 
-let MockReactor: jest.Mocked<Reactor>;
 let instance: RApagado;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+  new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
+let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+MockBuilderConcreto.reset();
+MockReactor = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
-  MockReactor = new Reactor() as jest.Mocked<Reactor>;
   instance = new RApagado(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(100);
@@ -16,20 +27,14 @@ beforeEach(() => {
 
 describe("Test del estado apagado", () => {
   it("debería ser de tipo de instancia RApagado", () => {
-    expect(MockReactor).toBeInstanceOf(RApagado);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
-  it("debería calcular el valor de energía termal en 0 si el reactor está apagado", () => {
-    expect(MockReactor.obtenerEnergiaTermal()).toBe(0);
-  });
-
-  it("debería calcular el valor de energía neta en 0 si el reactor está apagado", () => {
-    expect(MockReactor.obtenerEnergiaNeta()).toBe(0);
-  });
-
-  it("debería cambiar el estado del reactor (encenderlo) si la temperatura del reactor es mayor a 0", () => {
-    instance.verificarEstado();
-    expect(MockReactor.estaEncendido()).toBe(true);
+  it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
+    expect(() => MockReactor.obtenerEnergiaTermal()).toThrow(
+      "No se alcanza la temperatura minima para generar energia"
+    );
+    expect(() => MockReactor.obtenerEnergiaNeta()).toThrow("No se alcanza la temperatura minima para generar energia");
   });
 
   it("debería mantener el estado apagado si la temperatura del reactor es igual a 0", () => {
@@ -41,6 +46,7 @@ describe("Test del estado apagado", () => {
   it("debería cambiar el estado a encendiendo si se llama al metodo encender", () => {
     instance.encender();
     expect(MockReactor.getEstado()).toBeInstanceOf(REncenciendo);
+    expect(MockReactor.estaEncendido()).toBeTruthy;
   });
 
   it("debería dar un mensaje de error si se quiere apagar un reactor apagado", () => {
@@ -57,8 +63,8 @@ describe("Test del estado apagado", () => {
     expect(valorTemperatura).toBe(MockReactor.getTemperatura());
   });
 
-  it("no debería genere una alerta si el reactor está apagado", () => {
-    expect(instance.generarAlerta()).toBeNull();
+  it("no debería generar una alerta si el reactor está apagado", () => {
+    expect(instance.generarAlerta()).toBeInstanceOf(AlertaApagado);
   });
 
   it("Verifica que to string devuelva el mensaje esperado", () => {

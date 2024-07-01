@@ -24,9 +24,7 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public incrementarTemperatura(): void {
-    this._reactor.setTemperatura(
-      this._incrementoTemp + this._reactor.getTemperatura()
-    );
+    this._reactor.setTemperatura(this._incrementoTemp + this._reactor.getTemperatura());
     this._reactor.notificarSensores();
   }
 
@@ -54,9 +52,7 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public calcValorEnfriamiento(): number {
-    const barrasInsertadas: BarraControl[] = this._reactor
-      .getAdministradorBarras()
-      .getBarrasInsertadas();
+    const barrasInsertadas: BarraControl[] = this._reactor.getAdministradorBarras().getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => {
       valorEnfriamiento += b.getPctBarra();

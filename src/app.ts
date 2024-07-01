@@ -14,6 +14,7 @@ const directorBuildReactor: DirectorBuildReactor = new DirectorBuildReactor(buil
 directorBuildReactor.cargarPlantaNuclear(plantaNuclear);
 
 const nuevoReactor = directorBuildReactor.buildReactorNormal();
+nuevoReactor.encender();
 
 reactor.push(nuevoReactor);
 

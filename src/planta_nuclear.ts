@@ -2,7 +2,7 @@ import Reactor from "./central_nuclear/reactor/reactor";
 import Sistema from "./sistema_de_control/sistema";
 export default class PlantaNuclear {
   private _reactores: Reactor[] = [];
-  private _sistema!: Sistema;
+  private _sistema: Sistema = new Sistema(this);
 
   public setSistema(sistema: Sistema) {
     this._sistema = sistema;
