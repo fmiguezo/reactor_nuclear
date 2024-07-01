@@ -2,6 +2,7 @@ import Reactor from "../reactor";
 import BarraControl from "../../barras_control/barra_control";
 import FabricaBarra from "../../barras_control/fabrica/fabrica_barra";
 import SelectorFabricaBarra from "../../barras_control/fabrica/selector_fabrica";
+import { Constantes } from "../constantes";
 
 export default class AdministradorBarras {
   private _reactor!: Reactor;
@@ -95,18 +96,22 @@ export default class AdministradorBarras {
   }
 
   public insertarBarras(cantidadInput: number = 0): void {
-    const barrasActivables: BarraControl[] = this.getBarrasEnDesuso();
-    const numBarras: number = this._reactor.getBarrasDeControl().length;
-    let cantidadAInsertar: number;
+    if (this._reactor.puedeInsertarBarras()) {
+      const barrasActivables: BarraControl[] = this.getBarrasEnDesuso();
+      const numBarras: number = this._reactor.getBarrasDeControl().length;
+      let cantidadAInsertar: number;
 
-    if (cantidadInput > 0) {
-      cantidadAInsertar = cantidadInput;
+      if (cantidadInput > 0) {
+        cantidadAInsertar = cantidadInput;
+      } else {
+        cantidadAInsertar = numBarras;
+      }
+
+      for (let i = 0; i < cantidadAInsertar; i++) {
+        barrasActivables[i].activar();
+      }
     } else {
-      cantidadAInsertar = numBarras;
-    }
-
-    for (let i = 0; i < cantidadAInsertar; i++) {
-      barrasActivables[i].activar();
+      throw new Error(Constantes.NO_PUEDE_INSERTAR_BARRA);
     }
   }
 

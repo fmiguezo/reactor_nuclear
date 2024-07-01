@@ -37,4 +37,8 @@ export default class REncenciendo extends EstadoReactor {
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_ENCENDIENDO;
   }
+
+  override puedeInsertarBarras(): boolean {
+    return false;
+  }
 }
