@@ -5,17 +5,15 @@ import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/regis
 import Reactor from "../reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import { Constantes } from "../constantes";
-import BarraControl from "../../barras_control/barra_control";
+
 export default class RNormal extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada =
-    RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
 
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
-    this._reactor.desactivarMecanismosDeControl();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -31,14 +29,12 @@ export default class RNormal extends EstadoReactor {
   }
 
   override calcularEnergia(temperatura: number = 0): number {
-    return 0;
+    return this._reactor.obtenerEnergiaNeta();
   }
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < Constantes.TEMP_MINIMA_NORMAL) {
-      this.apagar();
-    } else if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
+    if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoCritico();
     }
   }

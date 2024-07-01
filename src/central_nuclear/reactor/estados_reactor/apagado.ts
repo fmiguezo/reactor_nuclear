@@ -15,12 +15,7 @@ export default class RApagado extends EstadoReactor {
     return 0;
   }
 
-  override verificarEstado(): void {
-    const tempActual = this._reactor.getTemperatura();
-    if (tempActual > 0) {
-      this.encender();
-    }
-  }
+  override verificarEstado(): void {}
 
   override encender() {
     let estado: EstadoReactor = new REncendiendo(this._reactor);

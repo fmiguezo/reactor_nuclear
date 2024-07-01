@@ -15,7 +15,7 @@ export default class Sistema {
 
   public actualizar(r: Reactor): void {
     let alerta = r.getEstado().generarAlerta();
-    if (alerta) {
+    if (alerta != null) {
       alerta.notificar();
     }
   }

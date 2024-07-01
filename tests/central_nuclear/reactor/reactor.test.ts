@@ -1,16 +1,21 @@
-import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
-import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
-import IMecanismoDeControl from "../../../../src/central_nuclear/interfaces/imecanismo_control";
-import ISensor from "../../../../src/central_nuclear/interfaces/isensor";
-import SensorTemperatura from "../../../../src/central_nuclear/sensores/sensor_temperatura";
-import BarraControl from "../../../../src/central_nuclear/barras_control/barra_control";
-import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
-import BarraControlCadmio from "../../../../src/central_nuclear/barras_control/barra_control_cadmio";
-import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
+import Reactor from "../../../src/central_nuclear/reactor/reactor";
+import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
+import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
+import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecanismo_control";
+import ISensor from "../../../src/central_nuclear/interfaces/isensor";
+import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
+import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
+import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
+import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
+import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
+import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
+import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 
 describe("Test del reactor", () => {
-  let reactor: Reactor;
+  let MockDirector: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+    new BuilderReactorNormal()
+  ) as jest.Mocked<DirectorBuildReactor>;
+  let reactor = MockDirector.buildReactorNormal();
   let MockApagado: jest.Mocked<RApagado>;
   let MockCritico: jest.Mocked<RCritico>;
   let MockBarrasControl: jest.Mocked<BarraControl>;
@@ -18,7 +23,6 @@ describe("Test del reactor", () => {
   let MockSensor: jest.Mocked<ISensor>;
 
   beforeEach(() => {
-    reactor = new Reactor();
     MockApagado = new RApagado(reactor) as jest.Mocked<RApagado>;
     reactor.setEstado(MockApagado);
   });

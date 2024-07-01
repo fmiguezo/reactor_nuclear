@@ -9,9 +9,7 @@ const plantaNuclear: PlantaNuclear = new PlantaNuclear();
 const reactor: Reactor[] = [];
 
 const builderReactor: IBuilder = new BuilderReactorNormal();
-const directorBuildReactor: DirectorBuildReactor = new DirectorBuildReactor(
-  builderReactor
-);
+const directorBuildReactor: DirectorBuildReactor = new DirectorBuildReactor(builderReactor);
 
 directorBuildReactor.cargarPlantaNuclear(plantaNuclear);
 

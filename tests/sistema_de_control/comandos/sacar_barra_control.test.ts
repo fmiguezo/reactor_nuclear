@@ -14,12 +14,12 @@ describe("Test del comando sacar barras de control del reactor", () => {
 
   it("Se verifica primero que haya barras activadas", () => {
     let barrasActivas: number = reactor.getAdministradorBarras().getBarrasInsertadas().length;
-    expect(barrasActivas).toBeGreatherThan(0);
+    expect(barrasActivas).toBeGreaterThan(0);
   });
 
   it("Deberia verificar que haya sacado desactivado las barras de control", () => {
     sacarBarras.ejecutar(reactor);
     let barrasActivas: number = reactor.getAdministradorBarras().getBarrasInsertadas().length;
-    expect(barrasActivas).toBeEquals(0);
+    expect(barrasActivas).toEqual(0);
   });
 });

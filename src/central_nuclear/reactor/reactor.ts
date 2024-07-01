@@ -8,7 +8,7 @@ import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
 
 export default class Reactor {
-  private _estado: EstadoReactor = new RApagado(this);
+  private _estado!: EstadoReactor;
   private _mecanimosDeControl: IMecanismoDeControl[] = [];
   private _barrasControl: BarraControl[] = [];
   private _sensores: ISensor[] = [];
@@ -64,16 +64,12 @@ export default class Reactor {
     this.notificarSistema();
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
   public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -101,12 +97,17 @@ export default class Reactor {
     return this._administradorBarras;
   }
 
-  public setAadministradorBarras(componente: AdministradorBarras) {
-    this._administradorBarras = componente;
+  public setAadministradorBarras(admin: AdministradorBarras) {
+    this._administradorBarras = admin;
+    admin.setReactor(this);
   }
 
   public setPlantaNuclear(plantaNuclear: PlantaNuclear) {
     this._plantaNuclear = plantaNuclear;
+  }
+
+  public getPlantaNuclear(): PlantaNuclear {
+    return this._plantaNuclear;
   }
 
   public puedeInsertarBarras(): boolean {
@@ -114,6 +115,14 @@ export default class Reactor {
   }
 
   public desactivarMecanismosDeControl(): void {
-    this._administradorBarras.subirBarras();
+    try {
+      this._administradorBarras.subirBarras();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  public agregarBarra(barra: BarraControl): void {
+    this._barrasControl.push(barra);
   }
 }

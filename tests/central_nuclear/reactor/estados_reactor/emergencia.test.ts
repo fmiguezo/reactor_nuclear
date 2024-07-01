@@ -5,51 +5,63 @@ import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/cr
 import Chernobyl from "../../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import Alerta from "../../../../src/sistema_de_control/alertas/alerta";
+import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import PlantaNuclear from "../../../../src/planta_nuclear";
+import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
+import Sistema from "../../../../src/sistema_de_control/sistema";
+import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
+
 let instance: REmergencia;
-let instanceReactor: Reactor;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+MockPlanta.cargarSistema(MockSistema);
+let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+  new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
+MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+MockBuilderConcreto.reset();
+MockReactor = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
-    instance = new REmergencia(instanceReactor);
-    instanceReactor = new Reactor();
-    instanceReactor.setEstado(instance);
-    instanceReactor.setTemperatura(0);
+  instance = new REmergencia(MockReactor);
+  MockReactor.setEstado(instance);
+  MockReactor.setTemperatura(332);
 });
 
 describe("Test del estado apagado", () => {
-    
-    it("verifica que la instancia sea de tipo RApagado", () => {
-        expect(instance).toBeInstanceOf(REmergencia);
-    });
+  it("debería ser una instancia de REmergencia", () => {
+    expect(instance).toBeInstanceOf(REmergencia);
+  });
 
-    it("Verifica que verificarEstado cambie al estado a critico", () => {
-        instanceReactor.setTemperatura(390);
-        instance.verificarEstado();
-        expect(instanceReactor.getEstado()).toBeInstanceOf(RCritico);
-    });
+  it("debería cambiar a estado crítico si la temperatura es 390", () => {
+    MockReactor.setTemperatura(390);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+  });
 
-    it("Verifica que verificarEstado cambie al estado a critico", () => {
-        instanceReactor.setTemperatura(420);
-        instance.verificarEstado();
-        expect(instanceReactor.getEstado()).toBeInstanceOf(Chernobyl);
-    });
+  it("debería cambiar a estado crítico si la temperatura es 420", () => {
+    MockReactor.setTemperatura(420);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
+  });
 
-    it("Verifica que encender que tire el Error correcto", () => {
-        expect(() => instance.encender()).toThrow(new Error(Constantes.MENSAJE_ENCENDIDO));
-    });
+  it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
+    expect(() => instance.encender()).toThrow(new Error(Constantes.MENSAJE_ENCENDIDO));
+  });
 
-    it("Verifica que apagar cambie de estado correctamente", () => {
-        instance.apagar()
-        expect(instanceReactor.getEstado()).toBeInstanceOf(RApagado);
-    });
+  it("debería cambiar a estado apagado si se llama al método apagar", () => {
+    instance.apagar();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
+  });
 
-    it("Verifica que estaEncendido, tire true", () => {
-        
-        expect(instance.estaEncendido()).toBe(true);
-    });
+  it("debería confirmar que el reactor está encendido si el estado es emergencia", () => {
+    expect(instance.estaEncendido()).toBe(true);
+  });
 
-    it("Verifica que generarAlerta, devuelva algo de tipo Alerta", () => {
-        
-        expect(instance.generarAlerta()).toBeInstanceOf(Alerta);
-    });
-
+  it("verifica que generar alerta genere la alerta de tipo Critica", () => {
+    expect(instance.generarAlerta()).toBeInstanceOf(AlertaCritica);
+  });
 });
