@@ -41,7 +41,9 @@ export default class AdministradorBarras {
     const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
     let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
-      this.reactor.setBarrasDeControl(this.reactor.getBarrasDeControl().filter((r) => r !== b));
+      this.reactor.setBarrasDeControl(
+        this.reactor.getBarrasDeControl().filter((r) => r !== b)
+      );
     });
     this.reactor.setBarrasDeControl(nuevaColeccion);
   }
@@ -55,27 +57,29 @@ export default class AdministradorBarras {
     this.reactor.setBarrasDeControl(coleccionModificada);
   }
 
-  private crearBarra(material: string): BarraControl | null {
-    const selectorDeFabrica: SelectorFabricaBarra = SelectorFabricaBarra.getInstancia();
-
-    let fabricaBarra: FabricaBarra | null = null;
+  private crearBarra(material: string): BarraControl {
+    const selectorDeFabrica: SelectorFabricaBarra =
+      SelectorFabricaBarra.getInstancia();
 
     try {
+      let fabricaBarra: FabricaBarra;
       fabricaBarra = selectorDeFabrica.getFabrica(material);
+      let barra = fabricaBarra.crearBarra();
+     return barra;
     } catch (error) {
-      error.message;
+      console.log(error.message);
     }
-    return fabricaBarra ? fabricaBarra.crearBarra() : null;
+return null
+   
   }
 
   public cargarBarras(cantBarras: number): void {
     for (let i = 0; i < cantBarras; i++) {
       let nuevasBarras: BarraControl[] = [];
       let nuevaBarra = this.crearBarra("cadmio");
-      if (nuevaBarra !== null) {
-        nuevasBarras.push(nuevaBarra);
-        this.agregarBarras(nuevasBarras);
-      }
+
+      nuevasBarras.push(nuevaBarra);
+      this.agregarBarras(nuevasBarras);
     }
   }
 
@@ -84,17 +88,17 @@ export default class AdministradorBarras {
     const numBarras: number = this._reactor.getBarrasDeControl().length;
     let cantidadASubir: number;
     let cantidadBarrasInsertadas: number = this.getBarrasInsertadas().length;
-  if (cantidadBarrasInsertadas > 0) {
-    if (cantidadInput > 0) {
-      cantidadASubir = cantidadInput;
-    } else {
-      cantidadASubir = numBarras;
-    }
+    if (cantidadBarrasInsertadas > 0) {
+      if (cantidadInput > 0) {
+        cantidadASubir = cantidadInput;
+      } else {
+        cantidadASubir = numBarras;
+      }
 
-    for (let i = 0; i < cantidadASubir; i++) {
-      barrasRemovibles[i].desactivar();
+      for (let i = 0; i < cantidadASubir; i++) {
+        barrasRemovibles[i].desactivar();
+      }
     }
-  }
   }
 
   public insertarBarras(cantidadInput: number = 0): void {

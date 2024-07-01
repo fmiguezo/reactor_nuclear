@@ -31,6 +31,7 @@ describe("Tests del builder de reactor normal", () => {
 
   it("Verifica que las barras se agreguen de forma correcta", () => {
     instance.reset();
+    instance.setAdminBarras();
     instance.setBarras();
     expect(instance.getReactor().getAdministradorBarras().getBarrasEnDesuso()).toBe(100);
   });
