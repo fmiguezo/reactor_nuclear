@@ -26,4 +26,12 @@ export default class DirectorBuildReactor {
   public cambiarBuilder(builder: IBuilder): void {
     this._builder = builder;
   }
+
+  public getBuilder(): IBuilder {
+    return this._builder;
+  }
+
+  public getPlantaNuclear(): PlantaNuclear {
+    return this._plantaNuclear;
+  }
 }

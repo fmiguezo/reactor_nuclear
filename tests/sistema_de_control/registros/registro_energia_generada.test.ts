@@ -1,59 +1,58 @@
-import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
+import RegistroEnergiaGenerada from "../../../src/sistema_de_control/registros/registro_energia_generada";
 
 describe("Test de la clase registro_energia_generada.ts", () => {
+  let registro: RegistroEnergiaGenerada;
 
-    let registro: RegistroEnergiaGenerada;
+  beforeEach(() => {
+    // Restablecer la instancia singleton antes de cada prueba
+    (RegistroEnergiaGenerada as any)._instancia = null;
+    registro = RegistroEnergiaGenerada.instancia;
+  });
 
-    beforeEach(() => {
-        // Restablecer la instancia singleton antes de cada prueba
-        (RegistroEnergiaGenerada as any)._instancia = null;
-        registro = RegistroEnergiaGenerada.instancia;
-    });
+  it("Verifica que el registro sea de la instancia RegistroEnergiaGenerada", () => {
+    expect(registro).toBeInstanceOf(RegistroEnergiaGenerada);
+  });
 
-    it("Verifica que el registro sea de la instancia RegistroEnergiaGenerada", () => {
-        expect(registro).toBeInstanceOf(RegistroEnergiaGenerada);
-    });
+  it("Verifica que al tener dos instancias de RegistroEnergiaGenerada, sean la misma", () => {
+    const instance1 = RegistroEnergiaGenerada.instancia;
+    const instance2 = RegistroEnergiaGenerada.instancia;
 
-    it("Verifica que al tener dos instancias de RegistroEnergiaGenerada, sean la misma", () => {
-        const instance1 = RegistroEnergiaGenerada.instancia;
-        const instance2 = RegistroEnergiaGenerada.instancia;
+    expect(instance1).toBe(instance2);
+  });
 
-        expect(instance1).toBe(instance2);
-    });
+  it("Verifica que debería crear una instancia si no fue creada con anterioridad", () => {
+    const instance = RegistroEnergiaGenerada.instancia;
 
-    it("Verifica que debería crear una instancia si no fue creada con anterioridad", () => {
-        const instance = RegistroEnergiaGenerada.instancia;
+    expect(instance).not.toBeNull();
+    expect(RegistroEnergiaGenerada.instancia).toBe(instance);
+  });
 
-        expect(instance).not.toBeNull();
-        expect(RegistroEnergiaGenerada.instancia).toBe(instance);
-    });
+  it("Debería insertar un registro correctamente", () => {
+    const energiaProducida = 5;
 
-    it("Debería insertar un registro correctamente", () => {
-        const energiaProducida = 5;
-        
-        registro.insertarRegistro(energiaProducida);
+    registro.insertarRegistro(energiaProducida);
 
-        const registros = registro.obtenerRegistros();
-        const [fecha, valor] = Array.from(registros.entries())[0];
+    const registros = registro.obtenerRegistros();
+    const [fecha, valor] = Array.from(registros.entries())[0];
 
-        expect(registros.size).toBe(1);
-        expect(valor).toBe(energiaProducida);
-        expect(fecha).toBeInstanceOf(Date);
-    });
+    expect(registros.size).toBe(1);
+    expect(valor).toBe(energiaProducida);
+    expect(fecha).toBeInstanceOf(Date);
+  });
 
-    it("Debería obtener los registros correctamente", () => {
-        const energiaProducida1 = 5;
-        const energiaProducida2 = 10;
+  it("Debería obtener los registros correctamente", () => {
+    const energiaProducida1 = 5;
+    const energiaProducida2 = 10;
 
-        registro.insertarRegistro(energiaProducida1);
-        registro.insertarRegistro(energiaProducida2);
+    registro.insertarRegistro(energiaProducida1);
+    registro.insertarRegistro(energiaProducida2);
 
-        const registros = registro.obtenerRegistros();
+    const registros = registro.obtenerRegistros();
 
-        expect(registros.size).toBe(2);
+    expect(registros.size).toBe(2);
 
-        const valores = Array.from(registros.values());
-        expect(valores).toContain(energiaProducida1);
-        expect(valores).toContain(energiaProducida2);
-    });
+    const valores = Array.from(registros.values());
+    expect(valores).toContain(energiaProducida1);
+    expect(valores).toContain(energiaProducida2);
+  });
 });

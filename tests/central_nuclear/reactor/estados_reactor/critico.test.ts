@@ -7,22 +7,21 @@ import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registro
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 let instance: RCritico;
 let instanceReactor: Reactor;
-let _timerGeneracion: NodeJS.Timeout | null = null; 
+let _timerGeneracion: NodeJS.Timeout | null = null;
+
 beforeEach(() => {
-    instanceReactor = new Reactor();
-    instance = new RCritico(instanceReactor);
-    instanceReactor.setEstado(instance);
-    instanceReactor.setTemperatura(0);
+  instanceReactor = new Reactor();
+  instance = new RCritico(instanceReactor);
+  instanceReactor.setEstado(instance);
+  instanceReactor.setTemperatura(0);
 });
 
 describe("Test del estado apagado", () => {
-    
-    it("verifica que la instancia sea de tipo RApagado", () => {
-        expect(instance).toBeInstanceOf(RCritico);
-    });
+  it("verifica que la instancia sea de tipo RApagado", () => {
+    expect(instance).toBeInstanceOf(RCritico);
+  });
 
-    it("Verifica que calcularEnergia de el valor esperado", () => {
-        expect(instance.calcularEnergia()).toBe(0);
-    });
-    
+  it("Verifica que calcularEnergia de el valor esperado", () => {
+    expect(instance.calcularEnergia()).toBe(0);
+  });
 });
