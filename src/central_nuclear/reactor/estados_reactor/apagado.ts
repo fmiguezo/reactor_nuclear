@@ -8,6 +8,7 @@ export default class RApagado extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.eliminarTimeOut(this._timerTemp);
+    this._reactor.desactivarMecanismosDeControl();
   }
 
   override calcularEnergia(temperatura: number = 0): number {
@@ -42,5 +43,9 @@ export default class RApagado extends EstadoReactor {
 
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_APAGADO;
+  }
+
+  override puedeInsertarBarras(): boolean {
+    return false;
   }
 }

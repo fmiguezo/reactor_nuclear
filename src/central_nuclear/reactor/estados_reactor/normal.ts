@@ -15,6 +15,7 @@ export default class RNormal extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
+    this._reactor.desactivarMecanismosDeControl();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -70,5 +71,9 @@ export default class RNormal extends EstadoReactor {
   }
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_NORMAL;
+  }
+
+  override puedeInsertarBarras(): boolean {
+    return false;
   }
 }

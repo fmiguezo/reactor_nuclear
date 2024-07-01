@@ -71,4 +71,8 @@ export default abstract class EstadoReactor implements IEncendible {
     nuevaTemp -= this.calcValorEnfriamiento();
     this._reactor.setTemperatura(nuevaTemp);
   }
+
+  public puedeInsertarBarras(): boolean {
+    return true;
+  }
 }

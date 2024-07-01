@@ -10,7 +10,10 @@ export default class REncenciendo extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual >= Constantes.TEMP_MINIMA_NORMAL && tempActual < Constantes.TEMP_MAXIMA_NORMAL) {
+    if (
+      tempActual >= Constantes.TEMP_MINIMA_NORMAL &&
+      tempActual < Constantes.TEMP_MAXIMA_NORMAL
+    ) {
       this.cambiarAEstadoNormal();
     }
   }
@@ -36,5 +39,9 @@ export default class REncenciendo extends EstadoReactor {
 
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_ENCENDIENDO;
+  }
+
+  override puedeInsertarBarras(): boolean {
+    return false;
   }
 }

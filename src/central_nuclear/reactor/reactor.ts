@@ -64,12 +64,18 @@ export default class Reactor {
     this.notificarSistema();
   }
 
-  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+  public agregarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+  public eliminarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter(
+      (mecanismo) => mecanismo !== mecanismoDeControl
+    );
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -103,5 +109,13 @@ export default class Reactor {
 
   public setPlantaNuclear(plantaNuclear: PlantaNuclear) {
     this._plantaNuclear = plantaNuclear;
+  }
+
+  public puedeInsertarBarras(): boolean {
+    return this._estado.puedeInsertarBarras();
+  }
+
+  public desactivarMecanismosDeControl(): void {
+    this._administradorBarras.subirBarras();
   }
 }
