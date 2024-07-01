@@ -41,9 +41,7 @@ export default class AdministradorBarras {
     const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
     let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
-      this.reactor.setBarrasDeControl(
-        this.reactor.getBarrasDeControl().filter((r) => r !== b)
-      );
+      this.reactor.setBarrasDeControl(this.reactor.getBarrasDeControl().filter((r) => r !== b));
     });
     this.reactor.setBarrasDeControl(nuevaColeccion);
   }
@@ -58,8 +56,7 @@ export default class AdministradorBarras {
   }
 
   private crearBarra(material: string): BarraControl | null {
-    const selectorDeFabrica: SelectorFabricaBarra =
-      SelectorFabricaBarra.getInstancia();
+    const selectorDeFabrica: SelectorFabricaBarra = SelectorFabricaBarra.getInstancia();
 
     let fabricaBarra: FabricaBarra | null = null;
 

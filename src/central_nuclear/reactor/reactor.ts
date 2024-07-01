@@ -70,9 +70,7 @@ export default class Reactor {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this._mecanimosDeControl = this._mecanimosDeControl.filter(
       (mecanismo) => mecanismo !== mecanismoDeControl
     );
