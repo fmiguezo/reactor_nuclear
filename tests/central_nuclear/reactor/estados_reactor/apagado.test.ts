@@ -9,18 +9,18 @@ import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builde
 import Sistema from "../../../../src/sistema_de_control/sistema";
 
 let instance: RApagado;
+
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
 let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+MockPlanta.cargarSistema(MockSistema);
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
 let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
   MockBuilderConcreto
 ) as jest.Mocked<DirectorBuildReactor>;
-let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-MockPlanta.cargarSistema(MockSistema);
 MockBuilderConcreto.reset();
-MockReactor = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   instance = new RApagado(MockReactor);
