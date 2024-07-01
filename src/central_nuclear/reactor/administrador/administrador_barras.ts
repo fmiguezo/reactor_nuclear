@@ -84,17 +84,17 @@ export default class AdministradorBarras {
     const numBarras: number = this._reactor.getBarrasDeControl().length;
     let cantidadASubir: number;
     let cantidadBarrasInsertadas: number = this.getBarrasInsertadas().length;
-  if (cantidadBarrasInsertadas > 0) {
-    if (cantidadInput > 0) {
-      cantidadASubir = cantidadInput;
-    } else {
-      cantidadASubir = numBarras;
-    }
+    if (cantidadBarrasInsertadas > 0) {
+      if (cantidadInput > 0) {
+        cantidadASubir = cantidadInput;
+      } else {
+        cantidadASubir = numBarras;
+      }
 
-    for (let i = 0; i < cantidadASubir; i++) {
-      barrasRemovibles[i].desactivar();
+      for (let i = 0; i < cantidadASubir; i++) {
+        barrasRemovibles[i].desactivar();
+      }
     }
-  }
   }
 
   public insertarBarras(cantidadInput: number = 0): void {
