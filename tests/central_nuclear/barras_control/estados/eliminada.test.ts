@@ -1,8 +1,8 @@
-import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
-import EstadoBarraControl from "../../../src/central_nuclear/barras_control/estados/estado_barra_control";
-import Eliminada from "../../../src/central_nuclear/barras_control/estados/eliminada";
-import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
-import { Constantes } from "../../../src/central_nuclear/barras_control/constantes";
+import BarraControl from "../../../../src/central_nuclear/barras_control/barra_control";
+import EstadoBarraControl from "../../../../src/central_nuclear/barras_control/estados/estado_barra_control";
+import Eliminada from "../../../../src/central_nuclear/barras_control/estados/eliminada";
+import BarraControlCadmio from "../../../../src/central_nuclear/barras_control/barra_control_cadmio";
+import { Constantes } from "../../../../src/central_nuclear/barras_control/constantes";
 
 describe("Test de Estado Barra de Control: Eliminada", () => {
   let rodInstance: BarraControl;
