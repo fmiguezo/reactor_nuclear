@@ -8,7 +8,7 @@ import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
 
 export default class Reactor {
-  private _estado: EstadoReactor = new RApagado(this);
+  private _estado!: EstadoReactor;
   private _mecanimosDeControl: IMecanismoDeControl[] = [];
   private _barrasControl: BarraControl[] = [];
   private _sensores: ISensor[] = [];
