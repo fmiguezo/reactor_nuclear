@@ -109,6 +109,10 @@ export default class Reactor {
     this._plantaNuclear = plantaNuclear;
   }
 
+  public getPlantaNuclear(): PlantaNuclear {
+    return this._plantaNuclear;
+  }
+
   public puedeInsertarBarras(): boolean {
     return this._estado.puedeInsertarBarras();
   }

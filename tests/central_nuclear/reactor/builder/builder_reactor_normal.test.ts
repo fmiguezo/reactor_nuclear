@@ -15,42 +15,42 @@ describe("Tests del builder de reactor normal", () => {
   });
 
   it("Verifica que la instancia sea de tipo BuilderReactorNormal", () => {
-    expect(() => instance).toBeInstanceOf(BuilderReactorNormal);
+    expect(instance).toBeInstanceOf(BuilderReactorNormal);
   });
 
   it("Verifica que el reset() devuelva un nuevo Reactor", () => {
     instance.reset();
-    expect(() => instance.getReactor).toBeInstanceOf(Reactor);
+    expect(instance.getReactor()).toBeInstanceOf(Reactor);
   });
 
   it("Verifica que el administrador se agregue de forma correcta", () => {
     instance.reset();
     instance.setAdminBarras();
-    expect(() => instance.getReactor().getAdministradorBarras()).toBeInstanceOf(AdministradorBarras);
+    expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(AdministradorBarras);
   });
 
   it("Verifica que las barras se agreguen de forma correcta", () => {
     instance.reset();
     instance.setBarras();
-    expect(() => instance.getReactor().getAdministradorBarras().getBarrasEnDesuso()).toBe(100);
+    expect(instance.getReactor().getAdministradorBarras().getBarrasEnDesuso()).toBe(100);
   });
 
   it("Verifica que los sensores se agreguen de forma correcta", () => {
     instance.reset();
     instance.setSensores();
-    expect(() => instance.getReactor().getSensores()).toBeInstanceOf([]);
+    expect(instance.getReactor().getSensores()).toBeInstanceOf([]);
   });
 
   it("Verifica que la planta nuclear se agregue de forma correcta", () => {
     instance.reset();
     let planta = new PlantaNuclear();
     instance.setPlantaNuclear(planta);
-    expect(() => instance.getReactor().getPlantaNuclear()).toBeInstanceOf(PlantaNuclear);
+    expect(instance.getReactor().getPlantaNuclear()).toBeInstanceOf(PlantaNuclear);
   });
 
   it("Verifica que el estado inicial se agregue de forma correcta", () => {
     instance.reset();
     instance.setEstadoIncial();
-    expect(() => instance.getReactor().getEstado()).toBeInstanceOf(EstadoReactor);
+    expect(instance.getReactor().getEstado()).toBeInstanceOf(EstadoReactor);
   });
 });
