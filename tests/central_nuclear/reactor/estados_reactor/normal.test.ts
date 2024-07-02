@@ -25,6 +25,10 @@ beforeEach(() => {
   MockReactor.setTemperatura(280);
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("Test del estado normal", () => {
   it("verifica que la instancia sea de tipo normal", () => {
     expect(instance).toBeInstanceOf(RNormal);

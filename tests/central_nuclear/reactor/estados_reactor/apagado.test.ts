@@ -26,6 +26,10 @@ beforeEach(() => {
   MockReactor.setTemperatura(0);
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("Test del estado apagado", () => {
   it("debería ser de tipo de instancia RApagado", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
