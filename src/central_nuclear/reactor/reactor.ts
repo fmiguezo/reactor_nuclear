@@ -73,7 +73,9 @@ export default class Reactor {
 
   public cambiarEstado(state: EstadoReactor): void {
     this._estado = state;
-    this.notificarSistema();
+    if (this._plantaNuclear.getSistema() != null) {
+      this.notificarSistema();
+    }
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
@@ -100,7 +102,9 @@ export default class Reactor {
     this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
   public notificarSistema(): void {
-    this._plantaNuclear.getSistema().actualizar(this);
+    if (this._plantaNuclear.getSistema() != null) {
+      this._plantaNuclear.getSistema().actualizar(this);
+    }
   }
 
   public calcularTemperatura(): void {}

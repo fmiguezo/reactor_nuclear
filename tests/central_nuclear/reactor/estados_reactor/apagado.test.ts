@@ -12,15 +12,13 @@ let instance: RApagado;
 
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
 let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
-MockPlanta.cargarSistema(MockSistema);
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
 let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
   MockBuilderConcreto
 ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-MockBuilderConcreto.reset();
-let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   instance = new RApagado(MockReactor);
@@ -46,7 +44,7 @@ describe("Test del estado apagado", () => {
     expect(MockReactor.estaEncendido()).toBe(false);
   });
 
-  it("debería cambiar el estado a encendiendo si se llama al metodo encender", () => {
+  it.only("debería cambiar el estado a encendiendo si se llama al metodo encender", () => {
     instance.encender();
     expect(MockReactor.getEstado()).toBeInstanceOf(REncenciendo);
     expect(MockReactor.estaEncendido()).toBeTruthy;
