@@ -34,4 +34,8 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     estado = rodInstance.estaActivo();
     expect(estado).toBe(true);
   });
+
+   afterEach(() => {
+     jest.clearAllTimers();
+   });
 });
