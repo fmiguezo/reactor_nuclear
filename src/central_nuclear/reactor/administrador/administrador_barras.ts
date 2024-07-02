@@ -3,8 +3,10 @@ import BarraControl from "../../barras_control/barra_control";
 import FabricaBarra from "../../barras_control/fabrica/fabrica_barra";
 import SelectorFabricaBarra from "../../barras_control/fabrica/selector_fabrica";
 import { Constantes } from "../constantes";
-import SubirBarrasError from "../../../errores/errores_del_reactor/subir_barras_error";
-import getFabricaError from "../../../errores/errores_del_administrador_de_barras/get_fabrica_error";
+import SubirBarrasError from "../../../errores/errores_del_administrador_de_barras/subir_barras_error";
+import getFabricaError from "../../../errores/errores_selector_fabrica/get_fabrica_error";
+import InsertarBarrasError from "../../../errores/errores_del_administrador_de_barras/insertar_barras_error";
+import RemplazarBarrasBencidasError from "../../../errores/errores_del_administrador_de_barras/remplazar_barras_vencidas";
 
 export default class AdministradorBarras {
   private _reactor!: Reactor;
@@ -91,9 +93,9 @@ export default class AdministradorBarras {
       return barra;
     } catch (error) {
       if (error instanceof getFabricaError) {
-        console.log('Error específico de la obtencion de la fabrica:', error.message);
+        console.log(error.message);
       } else {
-        console.log('Error genérico:', error.message);
+        console.log(error.message);
       }
     }
     return null;
@@ -104,7 +106,11 @@ export default class AdministradorBarras {
       let nuevasBarras = this.crearBarras(cantBarras, tipo);
       nuevasBarras.forEach((b) => this._reactor.agregarBarra(b));
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof getFabricaError) {
+        console.log(error.message);
+      } else {
+        console.log(error.message);
+      }
     }
   }
 
@@ -125,7 +131,7 @@ export default class AdministradorBarras {
         barrasRemovibles[i].desactivar();
       }
     } else {
-      throw new SubirBarrasError("No hay barras insertadas.");
+      throw new SubirBarrasError(Constantes.NO_PUEDE_SUBIR_BARRA);
     }
   }
 
@@ -145,7 +151,7 @@ export default class AdministradorBarras {
         barrasActivables[i].activar();
       }
     } else {
-      throw new Error(Constantes.NO_PUEDE_INSERTAR_BARRA);
+      throw new InsertarBarrasError(Constantes.NO_PUEDE_INSERTAR_BARRA);
     }
   }
 
@@ -159,7 +165,7 @@ export default class AdministradorBarras {
       if (nuevaBarra) {
         nuevasBarras.push(nuevaBarra);
       } else {
-        console.log(`No se pudo crear una nueva barra de tipo: ${material}`);
+        throw new RemplazarBarrasBencidasError(Constantes.NO_PUDE_REMPLAZAR_BARRA);
       }
     }
 

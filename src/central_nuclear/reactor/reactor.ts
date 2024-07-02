@@ -8,7 +8,7 @@ import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
 import EnergiaNetaCalculationError from "../../../../reactor_nuclear/src/errores/errores_del_reactor/energia_neta_calculation_error";
 import EnergiaTermalCalculationError from "../../../../reactor_nuclear/src/errores/errores_del_reactor/energia_termal_calculation_error";
-import SubirBarrasError from "../../errores/errores_del_reactor/subir_barras_error";
+import SubirBarrasError from "../../errores/errores_del_administrador_de_barras/subir_barras_error";
 
 export default class Reactor {
   private _estado!: EstadoReactor;
