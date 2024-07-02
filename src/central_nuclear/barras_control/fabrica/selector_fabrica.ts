@@ -1,3 +1,4 @@
+import getFabricaError from "../../../errores/errores_del_administrador_de_barras/get_fabrica_error";
 import FabricaBarra from "./fabrica_barra";
 import FabricaBarraCadmio from "./fabrica_barra_cadmio";
 
@@ -13,7 +14,7 @@ export default class SelectorFabricaBarra {
   public getFabrica(nombre: string): FabricaBarra {
     const fabricaElegida = this._mapaFabricas.get(nombre);
     if (!fabricaElegida) {
-      throw new Error("No existe la fabrica");
+      throw new getFabricaError("No existe la fabrica");
     }
     return fabricaElegida;
   }

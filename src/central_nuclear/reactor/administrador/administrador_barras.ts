@@ -4,6 +4,7 @@ import FabricaBarra from "../../barras_control/fabrica/fabrica_barra";
 import SelectorFabricaBarra from "../../barras_control/fabrica/selector_fabrica";
 import { Constantes } from "../constantes";
 import SubirBarrasError from "../../../errores/errores_del_reactor/subir_barras_error";
+import getFabricaError from "../../../errores/errores_del_administrador_de_barras/get_fabrica_error";
 
 export default class AdministradorBarras {
   private _reactor!: Reactor;
@@ -89,7 +90,11 @@ export default class AdministradorBarras {
       let barra = fabricaBarra.crearBarra();
       return barra;
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof getFabricaError) {
+        console.log('Error específico de la obtencion de la fabrica:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
     return null;
   }
