@@ -11,20 +11,22 @@ let instance: RNormal;
 
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
 let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
-MockPlanta.cargarSistema(MockSistema);
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
 let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
   MockBuilderConcreto
 ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-MockBuilderConcreto.reset();
-let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   instance = new RNormal(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(280);
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("Test del estado normal", () => {

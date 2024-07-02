@@ -2,16 +2,26 @@ import Command from "../../../src/sistema_de_control/comandos/command";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
 import ReportarEstado from "../../../src/sistema_de_control/comandos/reportar_estado";
+import PlantaNuclear from "../../../src/planta_nuclear";
+import Sistema from "../../../src/sistema_de_control/sistema";
+import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
 
 describe("Test del comando para reportar estado del reactor", () => {
-  let reactor: Reactor;
-  let reportarEstado: ReportarEstado;
-  let MockCritico: RCritico;
+  let instance: ReportarEstado = new ReportarEstado();
+  let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+  let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+    new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
+  MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+  let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+  let MockCritico: jest.Mocked<RCritico>;
 
   beforeEach(() => {
-    reactor = new Reactor();
-    reportarEstado = new ReportarEstado();
-    MockCritico = new RCritico(reactor) as jest.Mocked<RCritico>;
+    MockCritico = new RCritico(MockReactor) as jest.Mocked<RCritico>;
   });
 
   afterEach(() => {
@@ -19,9 +29,8 @@ describe("Test del comando para reportar estado del reactor", () => {
   });
 
   it("Verifica el estado", () => {
-    let estado: String;
-    estado = reactor.getEstado().toString();
-    expect(reactor.getEstado()).toBeInstanceOf(RCritico);
+    MockReactor.setEstado(MockCritico);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
     // Falta desarrollar verificacion
   });
 

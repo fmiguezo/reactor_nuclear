@@ -16,6 +16,10 @@ beforeEach(() => {
   instanceReactor.setTemperatura(0);
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("Test del estado apagado", () => {
   it("verifica que la instancia sea de tipo RApagado", () => {
     expect(instance).toBeInstanceOf(RCritico);

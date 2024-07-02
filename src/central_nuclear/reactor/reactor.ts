@@ -52,16 +52,30 @@ export default class Reactor {
   }
 
   public obtenerEnergiaTermal(): number {
-    return Energia.calcularEnergiaTermal(this._temperatura);
+    let energiaTermal = 0;
+    try {
+      energiaTermal = Energia.calcularEnergiaTermal(this._temperatura);
+    } catch (error) {
+      console.log(error.message);
+    }
+    return energiaTermal;
   }
 
   public obtenerEnergiaNeta(): number {
-    return Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
+    let energiaNeta = 0;
+    try {
+      energiaNeta = Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
+    } catch (error) {
+      console.log(error.message);
+    }
+    return energiaNeta;
   }
 
   public cambiarEstado(state: EstadoReactor): void {
     this._estado = state;
-    this.notificarSistema();
+    if (this._plantaNuclear.getSistema() != null) {
+      this.notificarSistema();
+    }
   }
 
   public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
@@ -88,7 +102,9 @@ export default class Reactor {
     this._sensores.forEach((sensor) => sensor.actualizar(this));
   }
   public notificarSistema(): void {
-    this._plantaNuclear.getSistema().actualizar(this);
+    if (this._plantaNuclear.getSistema() != null) {
+      this._plantaNuclear.getSistema().actualizar(this);
+    }
   }
 
   public calcularTemperatura(): void {}

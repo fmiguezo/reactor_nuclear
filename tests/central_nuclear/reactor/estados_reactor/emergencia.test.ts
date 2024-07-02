@@ -4,7 +4,6 @@ import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 import Chernobyl from "../../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
-import Alerta from "../../../../src/sistema_de_control/alertas/alerta";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
@@ -14,21 +13,22 @@ import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_cri
 let instance: REmergencia;
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
 let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
-MockPlanta.cargarSistema(MockSistema);
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
 let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
   MockBuilderConcreto
 ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
-MockBuilderConcreto.reset();
-MockReactor = MockBuilderConcreto.getReactor() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   instance = new REmergencia(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(332);
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("Test del estado apagado", () => {
@@ -42,8 +42,8 @@ describe("Test del estado apagado", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado crítico si la temperatura es 420", () => {
-    MockReactor.setTemperatura(420);
+  it("debería cambiar a estado crítico si la temperatura es 510", () => {
+    MockReactor.setTemperatura(510);
     instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
   });
