@@ -1,5 +1,5 @@
-import EnergiaNetaCalculationError from "../../../errores/errores_del_reactor/energia_neta_calculation_error";
-import EnergiaTermalCalculationError from "../../../errores/errores_del_reactor/energia_termal_calculation_error";
+import EnergiaNetaCalculationError from "../../../errores/errores_energia/energia_neta_calculation_error";
+import EnergiaTermalCalculationError from "../../../errores/errores_energia/energia_termal_calculation_error";
 import { Constantes } from "./constantes_formula_energia";
 export default class Energia {
   public static calcularEnergiaTermal(temp: number): number {
