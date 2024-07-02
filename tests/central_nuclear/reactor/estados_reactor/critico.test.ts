@@ -18,6 +18,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.clearAllMocks();
+  jest.clearAllTimers();
 });
 
 describe("Test del estado apagado", () => {

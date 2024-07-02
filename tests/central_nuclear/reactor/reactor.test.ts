@@ -29,6 +29,7 @@ describe("Test del reactor", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Debería inicializar el reactor con los valores correctos por defecto", () => {

@@ -34,4 +34,8 @@ describe("Test de Estado Barra de Control: Eliminada", () => {
     estado = rodInstance.estaActivo();
     expect(estado).toBe(false);
   });
+
+   afterEach(() => {
+     jest.clearAllTimers();
+   });
 });

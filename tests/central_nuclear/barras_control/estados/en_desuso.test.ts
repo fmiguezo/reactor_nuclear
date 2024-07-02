@@ -29,4 +29,8 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     let estado: boolean = rodInstance.estaActivo();
     expect(estado).toBe(false);
   });
+
+   afterEach(() => {
+     jest.clearAllTimers();
+   });
 });
