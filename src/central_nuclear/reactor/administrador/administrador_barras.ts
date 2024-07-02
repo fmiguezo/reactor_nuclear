@@ -3,6 +3,7 @@ import BarraControl from "../../barras_control/barra_control";
 import FabricaBarra from "../../barras_control/fabrica/fabrica_barra";
 import SelectorFabricaBarra from "../../barras_control/fabrica/selector_fabrica";
 import { Constantes } from "../constantes";
+import SubirBarrasError from "../../../errores/errores_del_reactor/subir_barras_error";
 
 export default class AdministradorBarras {
   private _reactor!: Reactor;
@@ -119,7 +120,7 @@ export default class AdministradorBarras {
         barrasRemovibles[i].desactivar();
       }
     } else {
-      throw new Error("No hay barras insertadas.");
+      throw new SubirBarrasError("No hay barras insertadas.");
     }
   }
 

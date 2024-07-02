@@ -6,6 +6,9 @@ import BarraControl from "../barras_control/barra_control";
 import AdministradorBarras from "./administrador/administrador_barras";
 import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
+import EnergiaNetaCalculationError from "../../../../reactor_nuclear/src/errores/errores_del_reactor/energia_neta_calculation_error";
+import EnergiaTermalCalculationError from "../../../../reactor_nuclear/src/errores/errores_del_reactor/energia_termal_calculation_error";
+import SubirBarrasError from "../../errores/errores_del_reactor/subir_barras_error";
 
 export default class Reactor {
   private _estado!: EstadoReactor;
@@ -56,20 +59,30 @@ export default class Reactor {
     try {
       energiaTermal = Energia.calcularEnergiaTermal(this._temperatura);
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof EnergiaTermalCalculationError) {
+        console.log('Error específico de energía termal:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
     return energiaTermal;
   }
+
 
   public obtenerEnergiaNeta(): number {
     let energiaNeta = 0;
     try {
       energiaNeta = Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof EnergiaNetaCalculationError) {
+        console.log('Error específico de energía neta:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
     return energiaNeta;
   }
+
 
   public cambiarEstado(state: EstadoReactor): void {
     this._estado = state;
@@ -107,7 +120,7 @@ export default class Reactor {
     }
   }
 
-  public calcularTemperatura(): void {}
+  public calcularTemperatura(): void { }
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
@@ -134,7 +147,11 @@ export default class Reactor {
     try {
       this._administradorBarras.subirBarras();
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof SubirBarrasError) {
+        console.log('Error específico de subir barras:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
   }
 
