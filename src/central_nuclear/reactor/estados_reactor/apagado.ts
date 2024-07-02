@@ -4,6 +4,7 @@ import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/generador_alerta_apagado";
 import { Constantes } from "../constantes";
 import Reactor from "../reactor";
+import ApagarError from "../../../errores/errores_de_los_estados/error_estado_apagado/apagar_error";
 export default class RApagado extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
@@ -23,7 +24,7 @@ export default class RApagado extends EstadoReactor {
   }
 
   override apagar() {
-    throw new Error(Constantes.MENSAJE_APAGADO);
+    throw new ApagarError(Constantes.MENSAJE_APAGADO);
   }
 
   override estaEncendido() {
