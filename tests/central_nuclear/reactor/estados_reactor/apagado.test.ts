@@ -36,6 +36,13 @@ describe("Test del estado apagado", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
+  it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
+    expect(() => MockReactor.obtenerEnergiaTermal()).toThrow(
+      "No se alcanza la temperatura minima para generar energia"
+    );
+    expect(() => MockReactor.obtenerEnergiaNeta()).toThrow("No se alcanza la temperatura minima para generar energia");
+  });
+
   it("debería mantener el estado apagado si la temperatura del reactor es igual a 0", () => {
     MockReactor.setTemperatura(0);
     instance.verificarEstado();
