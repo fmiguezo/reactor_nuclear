@@ -3,6 +3,7 @@ import Eliminada from "./eliminada";
 import EstadoBarraControl from "./estado_barra_control";
 import BarraControl from "../barra_control";
 import { Constantes } from "../constantes";
+import ActivarError from "../../../errores/errores_barras_de_control/error_estado_insertada/activar_error";
 
 export default class Insertada extends EstadoBarraControl {
   private fechaInsertada: Date;
@@ -24,7 +25,7 @@ export default class Insertada extends EstadoBarraControl {
   }
 
   override activar(): void {
-    throw new Error(Constantes.MENSAJE_BARRA_INSERTADA);
+    throw new ActivarError(Constantes.MENSAJE_BARRA_INSERTADA);
   }
 
   override desactivar(): void {
