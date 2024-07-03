@@ -1,7 +1,7 @@
 import Reactor from "../reactor/reactor";
 import ISensor from "../interfaces/isensor";
 import { Constantes } from "./constantes";
-import ActualizarError from "../../errores/errores_sensores/error_sensor_produccion_energia/actualizar_error";
+import ActualizarError from "../../errores/errores_central_nuclear/errores_sensores/error_sensor_produccion_energia/actualizar_error";
 
 export default class SensorProduccionDeEnergia implements ISensor {
   private _activo: boolean = true;
@@ -44,10 +44,6 @@ export default class SensorProduccionDeEnergia implements ISensor {
   }
 
   public toString(): string {
-    try {
-      return Constantes.MENSAJE_SENSOR_ENERGIA + this._energiaProducida;
-    } catch (error) {
-      return error.message;
-    }
+    return Constantes.MENSAJE_SENSOR_ENERGIA + this._energiaProducida;
   }
 }

@@ -1,4 +1,4 @@
-import getFabricaError from "../../../errores/errores_selector_fabrica/get_fabrica_error";
+import getFabricaError from "../../../errores/errores_central_nuclear/errores_selector_fabrica/get_fabrica_error";
 import FabricaBarra from "./fabrica_barra";
 import FabricaBarraCadmio from "./fabrica_barra_cadmio";
 

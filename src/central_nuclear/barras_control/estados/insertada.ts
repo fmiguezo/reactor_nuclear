@@ -3,7 +3,7 @@ import Eliminada from "./eliminada";
 import EstadoBarraControl from "./estado_barra_control";
 import BarraControl from "../barra_control";
 import { Constantes } from "../constantes";
-import ActivarError from "../../../errores/errores_barras_de_control/error_estado_insertada/activar_error";
+import ActivarError from "../../../errores/errores_central_nuclear/errores_barras_de_control/error_estado_insertada/activar_error";
 
 export default class Insertada extends EstadoBarraControl {
   private fechaInsertada: Date;
