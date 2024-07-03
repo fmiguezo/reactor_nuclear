@@ -6,7 +6,7 @@ import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
 import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
-import EncenderError from "../../../errores/errores_de_los_estados/error_estado_emergencia/error_encender";
+import EncenderError from "../../../errores/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 export default class REmergencia extends EstadoReactor {
   override calcularEnergia(temperatura: number = 0): number {
     return 0;

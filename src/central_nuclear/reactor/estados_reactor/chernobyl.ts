@@ -1,9 +1,9 @@
 import EstadoReactor from "./estadoreactor";
 import Reactor from "../reactor";
 import { Constantes } from "../constantes";
-import VerificarEstadoError from "../../../errores/errores_de_los_estados/error_estado_chernobyl/verificar_estado_error";
-import EncenderError from "../../../errores/errores_de_los_estados/error_estado_chernobyl/encender_error";
-import ApagarError from "../../../errores/errores_de_los_estados/error_estado_chernobyl/apagar_error";
+import VerificarEstadoError from "../../../errores/errores_de_los_estados_del_reactor/error_estado_chernobyl/verificar_estado_error";
+import EncenderError from "../../../errores/errores_de_los_estados_del_reactor/error_estado_chernobyl/encender_error";
+import ApagarError from "../../../errores/errores_de_los_estados_del_reactor/error_estado_chernobyl/apagar_error";
 export default class Chernobyl extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
