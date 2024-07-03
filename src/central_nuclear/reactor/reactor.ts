@@ -6,8 +6,8 @@ import BarraControl from "../barras_control/barra_control";
 import AdministradorBarras from "./administrador/administrador_barras";
 import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
-import EnergiaNetaCalculationError from "../../errores/errores_energia/energia_neta_calculation_error";
-import EnergiaTermalCalculationError from "../../errores/errores_energia/energia_termal_calculation_error";
+import EnergiaNetaCalculationError from "../../errores/errores_reaccion/error_energia/energia_neta_calculation_error";
+import EnergiaTermalCalculationError from "../../errores/errores_reaccion/error_energia/energia_termal_calculation_error";
 import SubirBarrasError from "../../errores/errores_del_administrador_de_barras/subir_barras_error";
 
 export default class Reactor {

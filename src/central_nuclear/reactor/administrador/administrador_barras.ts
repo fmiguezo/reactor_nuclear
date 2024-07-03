@@ -6,7 +6,7 @@ import { Constantes } from "../constantes";
 import SubirBarrasError from "../../../errores/errores_del_administrador_de_barras/subir_barras_error";
 import getFabricaError from "../../../errores/errores_selector_fabrica/get_fabrica_error";
 import InsertarBarrasError from "../../../errores/errores_del_administrador_de_barras/insertar_barras_error";
-import RemplazarBarrasBencidasError from "../../../errores/errores_del_administrador_de_barras/remplazar_barras_vencidas";
+import RemplazarBarrasBencidasError from "../../../errores/errores_del_administrador_de_barras/remplazar_barras_vencidas_error";
 
 export default class AdministradorBarras {
   private _reactor!: Reactor;
