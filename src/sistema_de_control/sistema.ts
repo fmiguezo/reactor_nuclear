@@ -1,6 +1,8 @@
 import * as readline from "readline";
 import PlantaNuclear from "../planta_nuclear";
 import Reactor from "../central_nuclear/reactor/reactor";
+import { Constantes } from "./constantes";
+import RegistroComandosDisponibles from "./registros/registro_comandos_disponibles";
 
 export default class Sistema {
   private _plantaNuclear: PlantaNuclear;
@@ -11,6 +13,11 @@ export default class Sistema {
 
   public cargarPlanta(planta: PlantaNuclear): void {
     this._plantaNuclear = planta;
+  }
+
+  public cargarReactores(reactores:Reactor[]): void
+  {
+    this._plantaNuclear.agregarReactores(reactores);
   }
 
   public actualizar(r: Reactor): void {
@@ -27,7 +34,7 @@ export default class Sistema {
   }
 
   public init(): void {
-    console.log("Bienvenido al Sistema de Control de Plantas Nucleares\n");
+    console.log(Constantes.MENSAJE_BIENVENIDA);
 
     const rl = readline.createInterface({
       input: process.stdin,
@@ -35,13 +42,13 @@ export default class Sistema {
     });
 
     const promptUser = (): void => {
-      rl.question('Ingrese un comando (o "exit" para salir): ', (input) => {
-        if (input === "exit") {
-          console.log("Usuario deslogueado");
+      rl.question(Constantes.MENSAJE_QUESTION_INPUT, (input) => {
+        if (input === Constantes.MENSAJE_EXIT) {
+          console.log(Constantes.MENSAJE_USUARIO_DESLOGUEADO);
           rl.close();
         } else {
-          console.log(`Comando recibido: ${input}`);
-          // FUNCIONALIDAD
+          console.log( Constantes.MENSAJE_COMANDO_RECIBIDO + {input});
+          RegistroComandosDisponibles.instancia.obtenerCommands().get(input)?.ejecutar();
           promptUser();
         }
       });
