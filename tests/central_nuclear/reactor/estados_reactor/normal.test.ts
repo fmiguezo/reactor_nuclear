@@ -6,6 +6,7 @@ import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builde
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 
 let instance: RNormal;
 
@@ -40,7 +41,7 @@ describe("Test del estado normal", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado normal", () => {
-    expect(() => instance.encender()).toThrow(new Error(Constantes.MENSAJE_ENCENDIDO));
+    expect(() => instance.encender()).toThrow(new EncenderError);
   });
 
   it("debería cambiar el estado a apagado si se llama a la funcion apagar", () => {

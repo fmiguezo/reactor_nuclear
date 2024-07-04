@@ -7,6 +7,8 @@ import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builde
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_enciendo/error_encender";
+
 
 let instance: REncenciendo;
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
@@ -48,7 +50,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("Verifica que encender que tire el Error correcto", () => {
-    expect(() => instance.encender()).toThrow(new Error(Constantes.MENSAJE_ENCENDIDO));
+    expect(() => instance.encender()).toThrow(new EncenderError);
   });
 
   it("Verifica que apagar cambie de estado correctamente", () => {

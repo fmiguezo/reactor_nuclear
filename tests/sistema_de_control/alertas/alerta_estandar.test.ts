@@ -1,5 +1,5 @@
 import AlertaEstandar from "../../../src/sistema_de_control/alertas/alerta_estandar";
-import { Constantes } from "../../../src/sistema_de_control/constantes";
+import { Constantes } from "../../../src/sistema_de_control/alertas/constantes";
 import { TipoAlerta } from "../../../src/sistema_de_control/alertas/tipo_alerta";
 
 describe("Test de la clase AlertaEstandar", () => {

@@ -1,5 +1,4 @@
 import AlertaApagado from "../../../src/sistema_de_control/alertas/alerta_apagado";
-import AlertaCritica from "../../../src/sistema_de_control/alertas/alerta_critica";
 import GeneradorDeAlertaApagado from "../../../src/sistema_de_control/alertas/generador_alerta_apagado";
 
 describe("Test de la clase GeneradorDeAlertasCriticas", () => {

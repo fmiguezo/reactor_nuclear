@@ -1,4 +1,3 @@
-import Command from "../../../src/sistema_de_control/comandos/command";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import InsertarBarraDeControl from "../../../src/sistema_de_control/comandos/insertar_barra_control";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";

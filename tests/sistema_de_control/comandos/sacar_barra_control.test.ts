@@ -1,7 +1,5 @@
-import Command from "../../../src/sistema_de_control/comandos/command";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import SacarBarrasDeControl from "../../../src/sistema_de_control/comandos/sacar_barra_control";
-import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
 
 describe("Test del comando sacar barras de control del reactor", () => {
   let reactor: Reactor;
