@@ -18,7 +18,15 @@ export default class Reactor {
   private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
   private _plantaNuclear!: PlantaNuclear;
+  private _id: number = 0;
 
+  public get id(): number {
+    return this._id;
+  }
+  public set id(value: number) {
+    this._id = value;
+  }
+  
   public encender(): void {
     this._estado.encender();
   }
