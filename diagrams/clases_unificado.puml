@@ -521,14 +521,14 @@ class RegistroBarrasUsadas {
 }
 
 ' Relaciones
-Command <|.. ApagarReactor
-Command <|.. EncenderReactor
-Command <|.. InsertarBarraDeControl
-Command <|.u. ObtenerInformacionReactor
-Command <|.u. ReportarEstado
-Command <|.u. SacarBarraDeControl
+Command <|.l. ApagarReactor
+Command <|.l. EncenderReactor
+Command <|.l. InsertarBarraDeControl
+Command <|.l. ObtenerInformacionReactor
+Command <|.l. ReportarEstado
+Command <|.l. SacarBarraDeControl
 
-Operario ----> Command
+Operario ---> Command
 
 Alerta <|-- AlertaApagado
 Alerta <|-- AlertaCritica
