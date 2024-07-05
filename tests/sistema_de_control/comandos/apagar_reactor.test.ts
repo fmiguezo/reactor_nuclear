@@ -1,4 +1,3 @@
-import Command from "../../../src/sistema_de_control/comandos/command";
 import ApagarReactor from "../../../src/sistema_de_control/comandos/apagar_reactor";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";

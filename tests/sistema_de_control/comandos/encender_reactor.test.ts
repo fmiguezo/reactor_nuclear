@@ -1,4 +1,3 @@
-import Command from "../../../src/sistema_de_control/comandos/command";
 import EncenderReactor from "../../../src/sistema_de_control/comandos/encender_reactor";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";

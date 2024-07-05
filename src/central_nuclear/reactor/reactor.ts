@@ -6,6 +6,9 @@ import BarraControl from "../barras_control/barra_control";
 import AdministradorBarras from "./administrador/administrador_barras";
 import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
+import EnergiaNetaCalculationError from "../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
+import EnergiaTermalCalculationError from "../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
+import SubirBarrasError from "../../errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
 
 export default class Reactor {
   private _estado!: EstadoReactor;
@@ -15,7 +18,15 @@ export default class Reactor {
   private _temperatura: number = 0;
   private _administradorBarras!: AdministradorBarras;
   private _plantaNuclear!: PlantaNuclear;
+  private _id: number = 0;
 
+  public get id(): number {
+    return this._id;
+  }
+  public set id(value: number) {
+    this._id = value;
+  }
+  
   public encender(): void {
     this._estado.encender();
   }
@@ -56,20 +67,30 @@ export default class Reactor {
     try {
       energiaTermal = Energia.calcularEnergiaTermal(this._temperatura);
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof EnergiaTermalCalculationError) {
+        console.log('Error específico de energía termal:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
     return energiaTermal;
   }
+
 
   public obtenerEnergiaNeta(): number {
     let energiaNeta = 0;
     try {
       energiaNeta = Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof EnergiaNetaCalculationError) {
+        console.log('Error específico de energía neta:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
     return energiaNeta;
   }
+
 
   public cambiarEstado(state: EstadoReactor): void {
     this._estado = state;
@@ -107,7 +128,7 @@ export default class Reactor {
     }
   }
 
-  public calcularTemperatura(): void {}
+  public calcularTemperatura(): void { }
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
@@ -134,7 +155,11 @@ export default class Reactor {
     try {
       this._administradorBarras.subirBarras();
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof SubirBarrasError) {
+        console.log('Error específico de subir barras:', error.message);
+      } else {
+        console.log('Error genérico:', error.message);
+      }
     }
   }
 

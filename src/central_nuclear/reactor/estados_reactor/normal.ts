@@ -5,6 +5,7 @@ import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/regis
 import Reactor from "../reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import { Constantes } from "../constantes";
+import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 
 export default class RNormal extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
@@ -47,7 +48,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error(Constantes.MENSAJE_ENCENDIDO);
+    throw new EncenderError(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {

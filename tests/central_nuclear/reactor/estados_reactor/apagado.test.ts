@@ -7,6 +7,7 @@ import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builde
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
+import ApagarError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_apagado/apagar_error";
 
 let instance: RApagado;
 
@@ -49,14 +50,14 @@ describe("Test del estado apagado", () => {
     expect(MockReactor.estaEncendido()).toBe(false);
   });
 
-  it.only("debería cambiar el estado a encendiendo si se llama al metodo encender", () => {
+  it("debería cambiar el estado a encendiendo si se llama al metodo encender", () => {
     instance.encender();
     expect(MockReactor.getEstado()).toBeInstanceOf(REncenciendo);
     expect(MockReactor.estaEncendido()).toBeTruthy;
   });
 
   it("debería dar un mensaje de error si se quiere apagar un reactor apagado", () => {
-    expect(() => instance.apagar()).toThrow(new Error(Constantes.MENSAJE_APAGADO));
+    expect(() => instance.apagar()).toThrow(new ApagarError);
   });
 
   it("debería tener un estado de encendido falso si el reactor está apagado", () => {

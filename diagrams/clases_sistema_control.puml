@@ -82,7 +82,7 @@ class AlertaEstandar {
 }
 
 interface IGeneradorDeAlertas {
-    
+
 }
 
 class GeneradorAlertaApagado {
@@ -165,12 +165,6 @@ class RegistroBarrasUsadas {
 }
 
 ' Relaciones
-Command <|.. ApagarReactor
-Command <|.. EncenderReactor
-Command <|.. InsertarBarraDeControl
-Command <|.u. ObtenerInformacionReactor
-Command <|.u. ReportarEstado
-Command <|.u. SacarBarraDeControl
 
 Operario ----> Command
 
@@ -179,6 +173,13 @@ Alerta <|-- AlertaCritica
 Alerta <|-- AlertaEstandar
 Alerta -l[hidden]- TipoAlerta
 Alerta <-- Empleado
+
+Command <|.. ApagarReactor
+Command <|.. EncenderReactor
+Command <|.. InsertarBarraDeControl
+Command <|.. ObtenerInformacionReactor
+Command <|.. ReportarEstado
+Command <|.. SacarBarraDeControl
 
 IGeneradorDeAlertas <|.u. GeneradorAlertaApagado
 IGeneradorDeAlertas <|.u. GeneradorAlertaCritica
