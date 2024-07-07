@@ -20,7 +20,6 @@ export default class EncenderReactor implements Command {
       } else {
         console.log(error.message);
       }
-
     }
   }
 }
