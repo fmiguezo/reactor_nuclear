@@ -12,9 +12,10 @@ import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/d
 import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 
 describe("Test del reactor", () => {
-  let MockDirector: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-    new BuilderReactorNormal()
-  ) as jest.Mocked<DirectorBuildReactor>;
+  let MockDirector: jest.Mocked<DirectorBuildReactor> =
+    new DirectorBuildReactor(
+      new BuilderReactorNormal()
+    ) as jest.Mocked<DirectorBuildReactor>;
   let reactor = MockDirector.buildReactorNormal();
   let MockApagado: jest.Mocked<RApagado>;
   let MockCritico: jest.Mocked<RCritico>;
@@ -23,11 +24,14 @@ describe("Test del reactor", () => {
   let MockSensor: jest.Mocked<ISensor>;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     MockApagado = new RApagado(reactor) as jest.Mocked<RApagado>;
     reactor.setEstado(MockApagado);
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
     jest.clearAllMocks();
     jest.clearAllTimers();
   });
@@ -57,14 +61,16 @@ describe("Test del reactor", () => {
 
   it("Debería setteear y obtener las barras de control correctamente", () => {
     let BarrasDeControl = new Array<BarraControlCadmio>();
-    MockBarrasControl = new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
+    MockBarrasControl =
+      new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
     BarrasDeControl.push(MockBarrasControl);
     reactor.setBarrasDeControl(BarrasDeControl);
     expect(reactor.getBarrasDeControl()).toEqual(BarrasDeControl);
   });
 
   it("Debería agregar y eliminar mecanismos de control correctamente", () => {
-    MockMecanismosControl = new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
+    MockMecanismosControl =
+      new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
 
     reactor.agregarMecanismoDeControl(MockMecanismosControl);
     expect(reactor["_mecanimosDeControl"]).toContain(MockMecanismosControl);

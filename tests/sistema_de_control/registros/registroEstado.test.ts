@@ -11,12 +11,20 @@ describe("RegistroEstados", () => {
   let reactor: Reactor;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     // Reiniciamos la instancia entre tests para asegurar que cada test es independiente
     (RegistroEstados as any)._instancia = null;
     registro = RegistroEstados.instancia;
     reactor = new Reactor();
     estado = new RApagado(reactor);
     reactor.setEstado(estado);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   test("debería retornar la misma instancia", () => {

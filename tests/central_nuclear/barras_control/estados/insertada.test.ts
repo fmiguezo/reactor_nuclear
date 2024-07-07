@@ -8,8 +8,16 @@ describe("Test de Estado Barra de Control: Insertada", () => {
   let stateInstance: EstadoBarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     stateInstance = new Insertada();
     rodInstance = new BarraControlCadmio(200, stateInstance);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que esté activo", () => {
@@ -35,7 +43,7 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     expect(estado).toBe(true);
   });
 
-   afterEach(() => {
-     jest.clearAllTimers();
-   });
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
 });

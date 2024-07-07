@@ -8,8 +8,16 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
   let stateInstance: EstadoBarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     stateInstance = new EnDesuso();
     rodInstance = new BarraControlCadmio(200, stateInstance);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que no esté activo", () => {
@@ -30,7 +38,7 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     expect(estado).toBe(false);
   });
 
-   afterEach(() => {
-     jest.clearAllTimers();
-   });
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
 });

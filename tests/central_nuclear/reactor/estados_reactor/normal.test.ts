@@ -10,23 +10,31 @@ import EncenderError from "../../../../src/errores/errores_central_nuclear/error
 
 let instance: RNormal;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-  MockBuilderConcreto
-) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   instance = new RNormal(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(280);
 });
 
 afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
   jest.clearAllMocks();
   jest.clearAllTimers();
 });
@@ -41,7 +49,7 @@ describe("Test del estado normal", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado normal", () => {
-    expect(() => instance.encender()).toThrow(new EncenderError);
+    expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
   it("debería cambiar el estado a apagado si se llama a la funcion apagar", () => {
