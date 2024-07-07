@@ -1,5 +1,6 @@
+import { Constantes } from "../../../../central_nuclear/reactor/constantes";
 export default class ApagarError extends Error {
-    constructor(message: string = "No se pudo apagar el reactor en cuestion dado que: el reactor ya se encuentra apagado") {
+    constructor(message: string = Constantes.MENSAJE_APAGADO) {
         super(message);
         this.name = "apagarError";
     }
