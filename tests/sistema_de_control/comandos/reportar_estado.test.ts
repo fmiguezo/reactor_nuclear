@@ -1,4 +1,3 @@
-import Command from "../../../src/sistema_de_control/comandos/command";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
 import ReportarEstado from "../../../src/sistema_de_control/comandos/reportar_estado";

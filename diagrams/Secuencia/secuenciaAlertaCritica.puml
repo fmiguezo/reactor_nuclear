@@ -3,6 +3,7 @@
 scale 1.3
 
 autonumber
+title *Diagrama de secuencia: informar alerta critica*
 
 GeneradorAlertaCritica -> AlertaCritica: generarAlerta(a: Alerta)
 AlertaCritica -> Operario: notificar()

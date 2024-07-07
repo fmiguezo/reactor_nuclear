@@ -1,5 +1,4 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 import Chernobyl from "../../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
@@ -8,6 +7,7 @@ import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builde
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
 
 let instance: REmergencia;
@@ -50,7 +50,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
-    expect(() => instance.encender()).toThrow(new Error(Constantes.MENSAJE_ENCENDIDO));
+    expect(() => instance.encender()).toThrow(new EncenderError);
   });
 
   it("debería cambiar a estado apagado si se llama al método apagar", () => {

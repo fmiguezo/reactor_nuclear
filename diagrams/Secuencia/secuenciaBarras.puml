@@ -1,5 +1,7 @@
 @startuml SecuenciaBarras
 
+!theme reddress-darkblue
+scale 1.3
 title *Diagrama de secuencia: creación de barras*
 
    participant BuilderReactorNormal

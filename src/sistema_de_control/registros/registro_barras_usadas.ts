@@ -1,4 +1,4 @@
-import Registro from "./registro";
+import Registro from "./interfaces/registro";
 
 export default class RegistroBarrasUsadas implements Registro {
   private static _instancia: RegistroBarrasUsadas;

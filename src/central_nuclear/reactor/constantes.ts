@@ -14,6 +14,8 @@ const MENSAJE_ESTADO_CHERNOBYL_EXPLOTO = "El reactor explotó";
 const MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO = "No se puede encender: el reactor explotó";
 const MENSAJE_ESTADO_CHERNOBYL_NO_APAGO = "No se puede apagar: el reactor explotó";
 const NO_PUEDE_INSERTAR_BARRA = "El estado del reactor no admite insertar barras";
+const NO_PUEDE_SUBIR_BARRA = "No hay barras insertadas."
+const NO_PUDE_REMPLAZAR_BARRA = "No se pudo crear una nueva barra de tipo"
 
 export const Constantes = {
   TEMP_MINIMA_NORMAL,
@@ -32,4 +34,6 @@ export const Constantes = {
   MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO,
   MENSAJE_ESTADO_CHERNOBYL_NO_APAGO,
   NO_PUEDE_INSERTAR_BARRA,
+  NO_PUEDE_SUBIR_BARRA,
+  NO_PUDE_REMPLAZAR_BARRA
 };

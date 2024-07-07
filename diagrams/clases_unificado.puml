@@ -318,6 +318,7 @@ EstadoBarraDeControl <|-- EnDesuso
 EstadoBarraDeControl <|-- Insertada
 EstadoBarraDeControl .l.|> MecanismoDeControl
 FabricaBarra <|-- FabricaBarraCadmio
+Energia o-[hidden]r- FabricaBarra
 BarraControl <|-l- BarraControlCadmio
 FabricaBarraCadmio --> BarraControlCadmio
 SelectorFabricaBarras -l-> FabricaBarra
@@ -329,18 +330,18 @@ Activable <|.. Sensor
 Builder <|.. BuilderReactorNormal
 DirectorBuildReactor --> Builder
 
-EstadoReactor <|-u- Normal
-EstadoReactor <|-u- Encendiendo
-EstadoReactor <|-r- Emergencia
-EstadoReactor <|-u- Critico
-EstadoReactor <|-u- Chernobyl
-EstadoReactor <|-l- Apagado
+EstadoReactor <|- Normal
+EstadoReactor <|- Encendiendo
+EstadoReactor <|- Emergencia
+EstadoReactor <|- Critico
+EstadoReactor <|- Chernobyl
+EstadoReactor <|- Apagado
 
 Sensor <|.u. SensorProduccionEnergia
 Sensor <|.l. SensorTemperatura
 
 Reactor -r-o PlantaNuclear
-Reactor *..... Sensor
+Reactor *... Sensor
 Reactor *...... MecanismoDeControl
 EstadoReactor ----o Reactor
 Encendible  <|.r. Reactor
@@ -355,11 +356,10 @@ Activable -[hidden]l- Sensor
 
 'Notas
 note bottom of SensorTemperatura: "Retorna la temperatura"
-note left of SensorProduccionEnergia: "Retorna la producción de energía"
+note top of SensorProduccionEnergia: "Retorna la producción de energía"
 note bottom of BarraControl: "Retorna el estado de la barra"
 note bottom of BarraControl: "Retorna el tiempo de vida restante de la barra"
-note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
+note bottom of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
 
 
@@ -438,7 +438,7 @@ class AlertaEstandar {
 }
 
 interface IGeneradorDeAlertas {
-    
+
 }
 
 class GeneradorAlertaApagado {
@@ -521,14 +521,14 @@ class RegistroBarrasUsadas {
 }
 
 ' Relaciones
-Command <|.. ApagarReactor
-Command <|.. EncenderReactor
-Command <|.. InsertarBarraDeControl
-Command <|.u. ObtenerInformacionReactor
-Command <|.u. ReportarEstado
-Command <|.u. SacarBarraDeControl
+Command <|.l. ApagarReactor
+Command <|.l. EncenderReactor
+Command <|.l. InsertarBarraDeControl
+Command <|.l. ObtenerInformacionReactor
+Command <|.l. ReportarEstado
+Command <|.l. SacarBarraDeControl
 
-Operario ----> Command
+Operario ---> Command
 
 Alerta <|-- AlertaApagado
 Alerta <|-- AlertaCritica
