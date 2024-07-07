@@ -1,5 +1,7 @@
+import { Constantes } from "../../../../central_nuclear/reactor/constantes";
+
 export default class ApagarError extends Error {
-    constructor(message: string = "No fue posible apagar el reactor dado que: el reactor exploto por los aires") {
+    constructor(message: string = Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_APAGO) {
         super(message);
         this.name = "ApagarError";
     }

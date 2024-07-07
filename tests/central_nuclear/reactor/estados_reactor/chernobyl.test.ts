@@ -27,15 +27,15 @@ describe("Test del estado apagado", () => {
   });
 
   it("Verifica que verificarEstado este lanzando el mensaje correcto", () => {
-    expect(instance.verificarEstado()).toThrow(new VerificarEstadoError());
+    expect(() => instance.verificarEstado()).toThrow(new VerificarEstadoError());
   });
 
   it("Verifica que encender este lanzando el mensaje correcto", () => {
-    expect(instance.encender()).toThrow(new EncenderError());
+    expect(() =>instance.encender()).toThrow(new EncenderError());
   });
 
   it("Verifica que encender este lanzando el mensaje correcto", () => {
-    expect(instance.apagar()).toThrow(new ApagarError());
+    expect(() =>instance.apagar()).toThrow(new ApagarError());
   });
 
   it("Verifica que estaEncendido, devuelva false", () => {
