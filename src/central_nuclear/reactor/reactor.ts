@@ -26,7 +26,7 @@ export default class Reactor {
   public set id(value: number) {
     this._id = value;
   }
-  
+
   public encender(): void {
     this._estado.encender();
   }
@@ -68,14 +68,13 @@ export default class Reactor {
       energiaTermal = Energia.calcularEnergiaTermal(this._temperatura);
     } catch (error) {
       if (error instanceof EnergiaTermalCalculationError) {
-        console.log('Error específico de energía termal:', error.message);
+        console.log("Error específico de energía termal:", error.message);
       } else {
-        console.log('Error genérico:', error.message);
+        console.log("Error genérico:", error.message);
       }
     }
     return energiaTermal;
   }
-
 
   public obtenerEnergiaNeta(): number {
     let energiaNeta = 0;
@@ -83,14 +82,13 @@ export default class Reactor {
       energiaNeta = Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
     } catch (error) {
       if (error instanceof EnergiaNetaCalculationError) {
-        console.log('Error específico de energía neta:', error.message);
+        console.log("Error específico de energía neta:", error.message);
       } else {
-        console.log('Error genérico:', error.message);
+        console.log("Error genérico:", error.message);
       }
     }
     return energiaNeta;
   }
-
 
   public cambiarEstado(state: EstadoReactor): void {
     this._estado = state;
@@ -99,12 +97,18 @@ export default class Reactor {
     }
   }
 
-  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+  public agregarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+  public eliminarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter(
+      (mecanismo) => mecanismo !== mecanismoDeControl
+    );
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -128,7 +132,7 @@ export default class Reactor {
     }
   }
 
-  public calcularTemperatura(): void { }
+  public calcularTemperatura(): void {}
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
@@ -152,13 +156,15 @@ export default class Reactor {
   }
 
   public desactivarMecanismosDeControl(): void {
-    try {
-      this._administradorBarras.subirBarras();
-    } catch (error) {
-      if (error instanceof SubirBarrasError) {
-        console.log('Error específico de subir barras:', error.message);
-      } else {
-        console.log('Error genérico:', error.message);
+    if (this._administradorBarras.getBarrasInsertadas.length > 0) {
+      try {
+        this._administradorBarras.subirBarras();
+      } catch (error) {
+        if (error instanceof SubirBarrasError) {
+          console.log("Error específico de subir barras:", error.message);
+        } else {
+          console.log("Error genérico:", error.message);
+        }
       }
     }
   }

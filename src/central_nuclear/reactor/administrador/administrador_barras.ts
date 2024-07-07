@@ -28,27 +28,17 @@ export default class AdministradorBarras {
   }
 
   public getBarrasInsertadas(): BarraControl[] {
-    return this.getReactor()
-      .getBarrasDeControl()
-      .filter((b) => {
-        b.estaActivo();
-      });
+    return this.getBarrasTotales().filter((b) => b.estaActivo());
   }
 
   public getBarrasEnDesuso(): BarraControl[] {
-    return this.getReactor()
-      .getBarrasDeControl()
-      .filter((b) => {
-        !b.estaActivo() && b.getVidaUtilRestante() > 0;
-      });
+    return this.getBarrasTotales().filter(
+      (b) => !b.estaActivo() && b.getVidaUtilRestante() > 0
+    );
   }
 
   public getBarrasVencidas(): BarraControl[] {
-    return this.getReactor()
-      .getBarrasDeControl()
-      .filter((b) => {
-        b.getVidaUtilRestante() === 0;
-      });
+    return this.getBarrasTotales().filter((b) => b.getVidaUtilRestante() === 0);
   }
 
   private removerBarras(barras: BarraControl[]): void {
@@ -102,7 +92,7 @@ export default class AdministradorBarras {
     return null;
   }
 
-  public cargarBarras(cantBarras: number, tipo: string): void {
+  public cargarBarras(cantBarras: number, tipo: string = "cadmio"): void {
     try {
       let nuevasBarras = this.crearBarras(cantBarras, tipo);
       nuevasBarras.forEach((b) => this._reactor.agregarBarra(b));
@@ -117,7 +107,6 @@ export default class AdministradorBarras {
 
   public subirBarras(cantidadInput: number = 0): void {
     const barrasRemovibles: BarraControl[] = this.getBarrasInsertadas();
-    const numBarras: number = this._reactor.getBarrasDeControl().length;
     let cantidadASubir: number;
     let cantidadBarrasInsertadas: number = barrasRemovibles.length;
 
@@ -125,7 +114,7 @@ export default class AdministradorBarras {
       if (cantidadInput > 0) {
         cantidadASubir = cantidadInput;
       } else {
-        cantidadASubir = numBarras;
+        cantidadASubir = barrasRemovibles.length;
       }
 
       for (let i = 0; i < cantidadASubir; i++) {
@@ -139,8 +128,12 @@ export default class AdministradorBarras {
   public insertarBarras(cantidadInput: number = 0): void {
     if (this._reactor.puedeInsertarBarras()) {
       const barrasActivables: BarraControl[] = this.getBarrasEnDesuso();
-      const numBarras: number = this._reactor.getBarrasDeControl().length;
+      const numBarras: number = this.getBarrasEnDesuso().length;
       let cantidadAInsertar: number;
+
+      if (numBarras === 0) {
+        throw new InsertarBarrasError(Constantes.NO_HAY_BARRAS_DISPONIBLES);
+      }
 
       if (cantidadInput > 0) {
         cantidadAInsertar = cantidadInput;

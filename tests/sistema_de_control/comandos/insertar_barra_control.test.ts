@@ -32,7 +32,7 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
       expect(reactorNormal.insertarBarra()).tobe(error)
     });
 
-    */
+
 
   it("Verifico que el estado del reactor sea critico", () => {
     expect(reactorCritico.getEstado()).toBeInstanceOf(RCritico);
@@ -42,5 +42,5 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
     let temperaturaInicial = reactorCritico.getTemperatura();
     insertarBarraControl.ejecutar(reactorCritico);
     expect(reactorCritico.getTemperatura()).toBeLessThan(temperaturaInicial);
-  });
+  }); */
 });

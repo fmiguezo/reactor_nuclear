@@ -1,5 +1,4 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";

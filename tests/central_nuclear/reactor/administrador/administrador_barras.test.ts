@@ -13,6 +13,7 @@ import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/nor
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 import InsertarBarrasError from "../../../../src/errores/errores_central_nuclear/errores_del_administrador_de_barras/insertar_barras_error";
 import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
+import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 
 describe("Test del administrador de barras", () => {
   let plantaNuclear = new PlantaNuclear();
@@ -22,7 +23,7 @@ describe("Test del administrador de barras", () => {
       new BuilderReactorNormal()
     ) as jest.Mocked<DirectorBuildReactor>;
   MockDirector.cargarPlantaNuclear(plantaNuclear);
-  let reactor = MockDirector.buildReactorNormal();
+  let reactor: Reactor;
   let MockApagado: jest.Mocked<RApagado>;
   let MockCritico: jest.Mocked<RCritico>;
   let MockBarrasControl: jest.Mocked<BarraControl>;
@@ -31,7 +32,7 @@ describe("Test del administrador de barras", () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
-
+    reactor = MockDirector.buildReactorNormal();
     MockApagado = new RApagado(reactor) as jest.Mocked<RApagado>;
     reactor.setEstado(MockApagado);
   });
@@ -48,9 +49,7 @@ describe("Test del administrador de barras", () => {
     // Obtiene directamente del reactor las barras, y se fija cuáles están insertadas
     let barrasTotalesFromReactor: BarraControl[] = reactor.getBarrasDeControl();
     let barrasInsertadasFromReactor: BarraControl[] =
-      barrasTotalesFromReactor.filter((b) => {
-        b.estaActivo();
-      });
+      barrasTotalesFromReactor.filter((b) => b.estaActivo());
     // Obtiene las barras insertadas preguntándole al administrador de barras
     let barrasInsertadasFromADMIN: BarraControl[] = reactor
       .getAdministradorBarras()
@@ -75,7 +74,8 @@ describe("Test del administrador de barras", () => {
     // Guardo el número de barras inicial en esta constante para evitar cambios
     const cantidadBarrasInicial: number = coleccionOriginal.length;
 
-    refAdministrador.cargarBarras(10, "cadmio");
+    refAdministrador.cargarBarras(10);
+    // también puede pasarse el material por parámetro: refAdministrador.cargarBarras(10, "cadmio");
 
     let coleccionConNuevaBarras: BarraControl[] =
       refAdministrador.getBarrasTotales();
@@ -86,9 +86,9 @@ describe("Test del administrador de barras", () => {
   it("Verifica que getBarrasEnDesuso() funcione bien", () => {
     let barrasTotalesFromReactor: BarraControl[] = reactor.getBarrasDeControl();
     let barrasEnDesusoFromReactor: BarraControl[] =
-      barrasTotalesFromReactor.filter((b) => {
-        !b.estaActivo();
-      });
+      barrasTotalesFromReactor.filter((b) => !b.estaActivo());
+
+    expect(barrasEnDesusoFromReactor.length).toBeGreaterThan(0);
 
     let barrasEnDesusoFromAdmin: BarraControl[] = reactor
       .getAdministradorBarras()
@@ -106,9 +106,9 @@ describe("Test del administrador de barras", () => {
   it("Verifica que getBarrasVencidas() funcione bien", () => {
     let barrasTotalesFromReactor: BarraControl[] = reactor.getBarrasDeControl();
     let barrasVencidasFromReactor: BarraControl[] =
-      barrasTotalesFromReactor.filter((b) => {
-        !b.estaActivo() && b.getVidaUtilRestante() === 0;
-      });
+      barrasTotalesFromReactor.filter(
+        (b) => !b.estaActivo() && b.getVidaUtilRestante() === 0
+      );
 
     let barrasVencidasFromAdmin: BarraControl[] = reactor
       .getAdministradorBarras()
@@ -129,9 +129,9 @@ describe("Test del administrador de barras", () => {
 
     // Refresca los valores
     barrasTotalesFromReactor = reactor.getBarrasDeControl();
-    barrasVencidasFromReactor = barrasTotalesFromReactor.filter((b) => {
-      !b.estaActivo() && b.getVidaUtilRestante() === 0;
-    });
+    barrasVencidasFromReactor = barrasTotalesFromReactor.filter(
+      (b) => !b.estaActivo() && b.getVidaUtilRestante() === 0
+    );
 
     barrasVencidasFromAdmin = reactor
       .getAdministradorBarras()
@@ -162,5 +162,28 @@ describe("Test del administrador de barras", () => {
     expect(aliasAdmin.getBarrasInsertadas().length).toBe(
       numInsertadasOriginales
     );
+  });
+
+  it("Debería poder insertar barras en estado crítico", () => {
+    reactor.encender();
+
+    // Pasa el reactor a estado crítico y lo verifica
+    reactor.setEstado(new RCritico(reactor));
+    expect(reactor.getEstado()).toBeInstanceOf(RCritico);
+
+    // Revisa que las barras no estén insertadas
+    const aliasAdmin: AdministradorBarras = reactor.getAdministradorBarras();
+    let cantbarrasTotales: number = aliasAdmin.getBarrasTotales().length;
+    let cantBarrasInsertadas: number = aliasAdmin.getBarrasInsertadas().length;
+    expect(cantBarrasInsertadas).toBe(0);
+
+    // Revisa que las barras puedan insertarse
+    expect(reactor.puedeInsertarBarras()).toBeTruthy();
+
+    // Inserta todas las barras
+    aliasAdmin.insertarBarras();
+    cantbarrasTotales = aliasAdmin.getBarrasTotales().length;
+    cantBarrasInsertadas = aliasAdmin.getBarrasInsertadas().length;
+    expect(cantbarrasTotales).toBe(cantBarrasInsertadas);
   });
 });
