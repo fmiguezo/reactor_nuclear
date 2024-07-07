@@ -68,9 +68,9 @@ export default class Reactor {
       energiaTermal = Energia.calcularEnergiaTermal(this._temperatura);
     } catch (error) {
       if (error instanceof EnergiaTermalCalculationError) {
-        console.log("Error específico de energía termal:", error.message);
+        console.log(error.message);
       } else {
-        console.log("Error genérico:", error.message);
+        console.log(error.message);
       }
     }
     return energiaTermal;
@@ -132,7 +132,7 @@ export default class Reactor {
     }
   }
 
-  public calcularTemperatura(): void {}
+  public calcularTemperatura(): void { }
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;
@@ -156,7 +156,7 @@ export default class Reactor {
   }
 
   public desactivarMecanismosDeControl(): void {
-    if (this._administradorBarras.getBarrasInsertadas.length > 0) {
+    if (this._administradorBarras.getBarrasInsertadas().length > 0) {
       try {
         this._administradorBarras.subirBarras();
       } catch (error) {

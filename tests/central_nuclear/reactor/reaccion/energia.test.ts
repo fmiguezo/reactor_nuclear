@@ -1,5 +1,6 @@
 import Energia from "../../../../src/central_nuclear/reactor/reaccion/energia";
 import { Constantes } from "../../../../src/central_nuclear/reactor/reaccion/constantes_formula_energia";
+import EnergiaTermalCalculationError from "../../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
 describe("Test de Energia", () => {
   let instance: Energia;
 
@@ -9,7 +10,7 @@ describe("Test de Energia", () => {
 
   it("Verifica con una temperatura de 0 no se puede generar energia termal", () => {
     let temp: number = 0;
-    expect(() => Energia.calcularEnergiaTermal(temp)).toThrow(new Error(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE));
+    expect(() => Energia.calcularEnergiaTermal(temp)).toThrow(new EnergiaTermalCalculationError());
   })
 
   it("Verifica con una temperatura de 280 generara 2100", () => {

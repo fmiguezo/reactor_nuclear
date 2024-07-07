@@ -58,7 +58,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
-    expect(instance.encender()).toThrow(new EncenderError());
+    expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
   it("debería cambiar a estado apagado si se llama al método apagar", () => {

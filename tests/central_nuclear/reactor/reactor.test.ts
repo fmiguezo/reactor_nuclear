@@ -1,39 +1,29 @@
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
 import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
-import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecanismo_control";
-import ISensor from "../../../src/central_nuclear/interfaces/isensor";
-import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
-import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
-import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
-import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
 import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import AdministradorBarras from "../../../src/central_nuclear/reactor/administrador/administrador_barras";
+import { Constantes } from "../../../../reactor_nuclear/src/central_nuclear/reactor/reaccion/constantes_formula_energia";
+import IBuilder from "../../../src/central_nuclear/reactor/builder/ibuilder";
+import PlantaNuclear from "../../../src/planta_nuclear";
+import EnergiaNetaCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
+import EnergiaTermalCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
 
 describe("Test del reactor", () => {
-  let MockDirector: jest.Mocked<DirectorBuildReactor> =
-    new DirectorBuildReactor(
-      new BuilderReactorNormal()
-    ) as jest.Mocked<DirectorBuildReactor>;
-  let reactor = MockDirector.buildReactorNormal();
-  let MockApagado: jest.Mocked<RApagado>;
-  let MockCritico: jest.Mocked<RCritico>;
-  let MockBarrasControl: jest.Mocked<BarraControl>;
-  let MockMecanismosControl: jest.Mocked<IMecanismoDeControl>;
-  let MockSensor: jest.Mocked<ISensor>;
+  let builder: IBuilder;
+  let director: DirectorBuildReactor;
+  let administrador: AdministradorBarras;
+  let reactor: Reactor;
+  let plantaNuclear: PlantaNuclear;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    MockApagado = new RApagado(reactor) as jest.Mocked<RApagado>;
-    reactor.setEstado(MockApagado);
-  });
-
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-    jest.clearAllMocks();
-    jest.clearAllTimers();
+    builder = new BuilderReactorNormal();
+    director = new DirectorBuildReactor(builder);
+    plantaNuclear = new PlantaNuclear();
+    director.cargarPlantaNuclear(plantaNuclear);
+    reactor = director.buildReactorNormal();
   });
 
   it("Debería inicializar el reactor con los valores correctos por defecto", () => {
@@ -42,6 +32,15 @@ describe("Test del reactor", () => {
     expect(reactor.getBarrasDeControl()).toEqual([]);
   });
 
+  it("El objeto instanciado deberia ser de tipo Reactor", () => {
+    expect(reactor).toBeInstanceOf(Reactor);
+  });
+
+  it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
+    expect(() => reactor.obtenerEnergiaTermal()).toThrow(new EnergiaTermalCalculationError());
+    expect(reactor.obtenerEnergiaNeta()).toThrow(new EnergiaNetaCalculationError());
+  });
+  
   it("Debería encender el reactor y verificar que esté encendiendo y su estado sea normal", () => {
     reactor.encender();
     expect(reactor.getEstado()).toBeInstanceOf(REncenciendo);
@@ -49,9 +48,9 @@ describe("Test del reactor", () => {
   });
 
   it("Debería settear y obetener el estado del reactor correctamente", () => {
-    MockCritico = new RCritico(reactor) as jest.Mocked<RCritico>;
-    reactor.setEstado(MockCritico);
-    expect(reactor.getEstado()).toBe(MockCritico);
+    let estadoCritico = new RCritico(reactor);
+    reactor.setEstado(estadoCritico);
+    expect(reactor.getEstado()).toBe(estadoCritico);
   });
 
   it("Debería setear y obtener la temperatura correctamente", () => {
@@ -59,33 +58,12 @@ describe("Test del reactor", () => {
     expect(reactor.getTemperatura()).toBe(100);
   });
 
-  it("Debería setteear y obtener las barras de control correctamente", () => {
-    let BarrasDeControl = new Array<BarraControlCadmio>();
-    MockBarrasControl =
-      new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
-    BarrasDeControl.push(MockBarrasControl);
-    reactor.setBarrasDeControl(BarrasDeControl);
-    expect(reactor.getBarrasDeControl()).toEqual(BarrasDeControl);
+  it("Debería poder agregar y eliminar mecanismos de control correctamente", () => {
+    let cantBarrasOriginales = administrador.getBarrasTotales().length;
+    let cantAgregadas = 3
+    administrador.cargarBarras(cantAgregadas);
+    expect(reactor.getBarrasDeControl()).toContain(cantBarrasOriginales + cantAgregadas);
+
   });
 
-  it("Debería agregar y eliminar mecanismos de control correctamente", () => {
-    MockMecanismosControl =
-      new BarraControlCadmio() as jest.Mocked<BarraControlCadmio>;
-
-    reactor.agregarMecanismoDeControl(MockMecanismosControl);
-    expect(reactor["_mecanimosDeControl"]).toContain(MockMecanismosControl);
-
-    reactor.eliminarMecanismoDeControl(MockMecanismosControl);
-    expect(reactor["_mecanimosDeControl"]).not.toContain(MockMecanismosControl);
-  });
-
-  it("Debería agregar y eliminar sensores correctamente", () => {
-    MockSensor = new SensorTemperatura() as jest.Mocked<SensorTemperatura>;
-
-    reactor.agregarSensor(MockSensor);
-    expect(reactor["_sensores"]).toContain(MockSensor);
-
-    reactor.eliminarSensor(MockSensor);
-    expect(reactor["_sensores"]).not.toContain(MockSensor);
-  });
 });

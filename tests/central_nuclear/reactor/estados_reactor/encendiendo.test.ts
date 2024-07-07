@@ -56,7 +56,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("Verifica que encender que tire el Error correcto", () => {
-    expect(instance.encender()).toThrow(new EncenderError());
+    expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
   it("Verifica que apagar cambie de estado correctamente", () => {

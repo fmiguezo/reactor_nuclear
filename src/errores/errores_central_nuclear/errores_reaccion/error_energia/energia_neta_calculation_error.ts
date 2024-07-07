@@ -1,5 +1,7 @@
+import { Constantes } from "../../../../central_nuclear/reactor/reaccion/constantes_formula_energia";
+
 export default class EnergiaNetaCalculationError extends Error {
-    constructor(message: string = "No se pudo calcular la energía neta, dado que la energía termal generada es menor a la producción mínima necesaria") {
+    constructor(message: string = Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE) {
         super(message);
         this.name = "EnergiaNetaCalculationError";
     }
