@@ -121,12 +121,12 @@ En el futuro podrían agregarse más registros.
 
 ---
 
-**Comprobador de salud del reactor**
+**Comprobador de salud del reactor (modificaciones pendientes)**
 
 Tiene como propósito vigilar el estado del reactor, y en caso de que la situación sea de verdadera emergencia, otro módulo del software toma el control del reactor para intentar estabilizar la reacción y evitar una explosión.
 
 ---
 
-**EmergencIA**
+**EmergencIA (pendiente de desarrollo)**
 
 El propósito de este módulo es realizar las acciones necesarias para estabilizar la reacción en situaciones de emergencia. Este módulo funciona sin interacción humana, aunque los operadores pueden desactivarlo para intentar estabilizarlo manualmente (no recomendado).
