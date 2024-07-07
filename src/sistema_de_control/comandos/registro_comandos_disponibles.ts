@@ -1,5 +1,4 @@
 import Command from "../comandos/command";
-import Registro from "./interfaces/registro";
 
 export default class RegistroComandosDisponibles {
   private static _instancia: RegistroComandosDisponibles;
@@ -11,7 +10,8 @@ export default class RegistroComandosDisponibles {
 
   public static get instancia(): RegistroComandosDisponibles {
     if (!RegistroComandosDisponibles._instancia) {
-        RegistroComandosDisponibles._instancia = new RegistroComandosDisponibles();
+      RegistroComandosDisponibles._instancia =
+        new RegistroComandosDisponibles();
     }
 
     return RegistroComandosDisponibles._instancia;

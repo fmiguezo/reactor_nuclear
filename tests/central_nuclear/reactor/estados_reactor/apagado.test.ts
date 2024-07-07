@@ -11,23 +11,31 @@ import ApagarError from "../../../../src/errores/errores_central_nuclear/errores
 
 let instance: RApagado;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-  MockBuilderConcreto
-) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   instance = new RApagado(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(0);
 });
 
 afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
   jest.clearAllMocks();
   jest.clearAllTimers();
 });
@@ -38,10 +46,12 @@ describe("Test del estado apagado", () => {
   });
 
   it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
-    expect(() => MockReactor.obtenerEnergiaTermal()).toThrow(
+    expect(MockReactor.obtenerEnergiaTermal()).toThrow(
       "No se alcanza la temperatura minima para generar energia"
     );
-    expect(() => MockReactor.obtenerEnergiaNeta()).toThrow("No se alcanza la temperatura minima para generar energia");
+    expect(MockReactor.obtenerEnergiaNeta()).toThrow(
+      "No se alcanza la temperatura minima para generar energia"
+    );
   });
 
   it("debería mantener el estado apagado si la temperatura del reactor es igual a 0", () => {
@@ -57,7 +67,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("debería dar un mensaje de error si se quiere apagar un reactor apagado", () => {
-    expect(() => instance.apagar()).toThrow(new ApagarError);
+    expect(instance.apagar()).toThrow(new ApagarError());
   });
 
   it("debería tener un estado de encendido falso si el reactor está apagado", () => {

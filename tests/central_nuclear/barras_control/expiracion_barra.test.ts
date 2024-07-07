@@ -8,10 +8,14 @@ describe("Test de Barra de Control: expiracion", () => {
   let barraControl: BarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     barraControl = new BarraControlCadmio(200, new EnDesuso());
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
     jest.clearAllTimers();
   });
 

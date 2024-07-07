@@ -9,24 +9,33 @@ import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/d
 describe("Test del comando Apagar reactor", () => {
   let instance: ApagarReactor = new ApagarReactor();
 
-  let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-  let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+  let MockPlanta: jest.Mocked<PlantaNuclear> =
+    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockSistema: jest.Mocked<Sistema> = new Sistema(
+    MockPlanta
+  ) as jest.Mocked<Sistema>;
   let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
     new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+    new DirectorBuildReactor(
+      MockBuilderConcreto
+    ) as jest.Mocked<DirectorBuildReactor>;
   MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-  let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+  let MockReactor: jest.Mocked<Reactor> =
+    MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
   let MockEncendido: jest.Mocked<RNormal>;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     MockEncendido = new RNormal(MockReactor) as jest.Mocked<RNormal>;
     MockReactor.setEstado(MockEncendido);
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
     jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("debería apagar el reactor", () => {

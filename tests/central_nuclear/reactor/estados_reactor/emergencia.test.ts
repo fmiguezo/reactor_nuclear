@@ -11,23 +11,31 @@ import EncenderError from "../../../../src/errores/errores_central_nuclear/error
 import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
 
 let instance: REmergencia;
-let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-  MockBuilderConcreto
-) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   instance = new REmergencia(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(332);
 });
 
 afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
   jest.clearAllMocks();
   jest.clearAllTimers();
 });
@@ -50,7 +58,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
-    expect(() => instance.encender()).toThrow(new EncenderError);
+    expect(instance.encender()).toThrow(new EncenderError());
   });
 
   it("debería cambiar a estado apagado si se llama al método apagar", () => {

@@ -2,7 +2,7 @@ import * as readline from "readline";
 import PlantaNuclear from "../planta_nuclear";
 import Reactor from "../central_nuclear/reactor/reactor";
 import { Constantes } from "./constantes";
-import RegistroComandosDisponibles from "./registros/registro_comandos_disponibles";
+import RegistroComandosDisponibles from "./comandos/registro_comandos_disponibles";
 import ReactorNoEncontradoError from "../errores/errores_sistema_de_control/error_reactor_no_encontrado";
 
 export default class Sistema {
@@ -46,12 +46,17 @@ export default class Sistema {
           } else {
             console.log(Constantes.MENSAJE_COMANDO_RECIBIDO + { input });
 
-            const reactor = this._plantaNuclear.getReactores().get(parseInt(input1, 10));
+            const reactor = this._plantaNuclear
+              .getReactores()
+              .get(parseInt(input1, 10));
 
             if (reactor) {
-              RegistroComandosDisponibles.instancia.obtenerCommands().get(input)?.ejecutar(reactor);
+              RegistroComandosDisponibles.instancia
+                .obtenerCommands()
+                .get(input)
+                ?.ejecutar(reactor);
             } else {
-              throw new ReactorNoEncontradoError;
+              throw new ReactorNoEncontradoError();
             }
             promptUser();
           }
