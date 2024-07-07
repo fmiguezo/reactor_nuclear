@@ -23,7 +23,7 @@ export default class AdministradorBarras {
     return this._reactor;
   }
 
-  private retreiveColeccionBarras(): BarraControl[] {
+  public getBarrasTotales(): BarraControl[] {
     return this.getReactor().getBarrasDeControl();
   }
 
@@ -52,7 +52,7 @@ export default class AdministradorBarras {
   }
 
   private removerBarras(barras: BarraControl[]): void {
-    const coleccionBarras: BarraControl[] = this.retreiveColeccionBarras();
+    const coleccionBarras: BarraControl[] = this.getBarrasTotales();
     let nuevaColeccion: BarraControl[] = [];
     barras.forEach((b) => {
       this.getReactor().setBarrasDeControl(
@@ -76,7 +76,7 @@ export default class AdministradorBarras {
   }
 
   private agregarBarras(barras: BarraControl[]): void {
-    let coleccionModificada: BarraControl[] = this.retreiveColeccionBarras();
+    let coleccionModificada: BarraControl[] = this.getBarrasTotales();
     barras.forEach((b) => {
       this.getReactor().getBarrasDeControl().push(b);
     });
@@ -85,7 +85,8 @@ export default class AdministradorBarras {
   }
 
   private crearBarra(material: string): BarraControl | null {
-    const selectorDeFabrica: SelectorFabricaBarra = SelectorFabricaBarra.getInstancia();
+    const selectorDeFabrica: SelectorFabricaBarra =
+      SelectorFabricaBarra.getInstancia();
     try {
       let fabricaBarra: FabricaBarra;
       fabricaBarra = selectorDeFabrica.getFabrica(material);
@@ -165,7 +166,9 @@ export default class AdministradorBarras {
       if (nuevaBarra) {
         nuevasBarras.push(nuevaBarra);
       } else {
-        throw new RemplazarBarrasBencidasError(Constantes.NO_PUDE_REMPLAZAR_BARRA);
+        throw new RemplazarBarrasBencidasError(
+          Constantes.NO_PUDE_REMPLAZAR_BARRA
+        );
       }
     }
 
