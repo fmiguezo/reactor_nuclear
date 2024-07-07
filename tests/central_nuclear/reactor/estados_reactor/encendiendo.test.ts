@@ -9,25 +9,32 @@ import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builde
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_enciendo/error_encender";
 
-
 let instance: REncenciendo;
-let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-  MockBuilderConcreto
-) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   instance = new REncenciendo(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(0);
 });
 
 afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
   jest.clearAllMocks();
   jest.clearAllTimers();
 });
@@ -50,7 +57,7 @@ describe("Test del estado apagado", () => {
   });
 
   it("Verifica que encender que tire el Error correcto", () => {
-    expect(() => instance.encender()).toThrow(new EncenderError);
+    expect(instance.encender()).toThrow(new EncenderError());
   });
 
   it("Verifica que apagar cambie de estado correctamente", () => {

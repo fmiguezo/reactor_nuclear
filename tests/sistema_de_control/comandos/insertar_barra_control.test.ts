@@ -11,6 +11,7 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
   let MockCritico: RCritico;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     let reactorNormal = new Reactor();
     let reactorCritico = new Reactor();
     let insertarBarraControl = new InsertarBarraDeControl();
@@ -19,7 +20,10 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
     jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   /* A IMPLEMENTAR

@@ -10,6 +10,7 @@ let instanceReactor: Reactor;
 let _timerGeneracion: NodeJS.Timeout | null = null;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   instanceReactor = new Reactor();
   instance = new RCritico(instanceReactor);
   instanceReactor.setEstado(instance);
@@ -17,6 +18,8 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
   jest.clearAllMocks();
   jest.clearAllTimers();
 });

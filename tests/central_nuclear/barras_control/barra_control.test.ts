@@ -9,8 +9,16 @@ describe("Test de Barra de Control: Activar/Desactivar", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     let defaultState: EstadoBarraControl = new EnDesuso();
     instance = new BarraControlCadmio(200, defaultState);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que no esté activa", () => {
@@ -44,7 +52,6 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
       jest.useFakeTimers();
       const estadoInsertada: EstadoBarraControl = new Insertada();
       instance.cambiarEstado(estadoInsertada);
-      jest.clearAllTimers();
     });
 
     it("Verifica que el calculo funcione adecuadamente", () => {
@@ -53,8 +60,10 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
     });
 
     afterEach(() => {
-      jest.clearAllTimers();
+      jest.runOnlyPendingTimers();
       jest.useRealTimers();
+      jest.clearAllMocks();
+      jest.clearAllTimers();
     });
   });
 
@@ -85,8 +94,10 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
     });
 
     afterEach(() => {
-      jest.clearAllTimers();
+      jest.runOnlyPendingTimers();
       jest.useRealTimers();
+      jest.clearAllMocks();
+      jest.clearAllTimers();
     });
   });
 });

@@ -12,10 +12,18 @@ describe("Tests del builder de reactor normal", () => {
   let MockNormal: jest.Mocked<RNormal>;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     instance = new BuilderReactorNormal();
     plantaNuclear = new PlantaNuclear();
     instance.reset();
     MockReactor = instance.getReactor() as jest.Mocked<Reactor>;
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que la instancia sea de tipo BuilderReactorNormal", () => {
@@ -29,7 +37,9 @@ describe("Tests del builder de reactor normal", () => {
 
   it("Verifica que el administrador se agregue de forma correcta", () => {
     instance.setAdminBarras();
-    expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(AdministradorBarras);
+    expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(
+      AdministradorBarras
+    );
   });
 
   it("Verifica que las barras se agreguen de forma correcta", () => {

@@ -9,8 +9,16 @@ describe("Test de Estado Barra de Control: Eliminada", () => {
   let stateInstance: EstadoBarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     stateInstance = new Eliminada();
     rodInstance = new BarraControlCadmio(200, stateInstance);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que NO esté activo", () => {
@@ -19,23 +27,29 @@ describe("Test de Estado Barra de Control: Eliminada", () => {
   });
 
   it("Verifica que NO pueda activarse", () => {
-    expect(() => rodInstance.activar()).toThrow(new Error(Constantes.MENSAJE_BARRA_VENCIDA));
+    expect(() => rodInstance.activar()).toThrow(
+      new Error(Constantes.MENSAJE_BARRA_VENCIDA)
+    );
   });
 
   it("Verifica que NO pueda activarse y desactivarse", () => {
     let estado: boolean = rodInstance.estaActivo();
     expect(estado).toBe(false);
 
-    expect(() => rodInstance.activar()).toThrow(new Error(Constantes.MENSAJE_BARRA_VENCIDA));
+    expect(() => rodInstance.activar()).toThrow(
+      new Error(Constantes.MENSAJE_BARRA_VENCIDA)
+    );
     estado = rodInstance.estaActivo();
     expect(estado).toBe(false);
 
-    expect(() => rodInstance.desactivar()).toThrow(new Error(Constantes.MENSAJE_BARRA_VENCIDA));
+    expect(() => rodInstance.desactivar()).toThrow(
+      new Error(Constantes.MENSAJE_BARRA_VENCIDA)
+    );
     estado = rodInstance.estaActivo();
     expect(estado).toBe(false);
   });
 
-   afterEach(() => {
-     jest.clearAllTimers();
-   });
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
 });

@@ -8,10 +8,19 @@ describe("Test de DirectorBuilderReactor", () => {
     new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
   let instance = new DirectorBuilderReactor(MockBuilderConcreto);
 
-  beforeEach(() => {});
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
 
   it("Verifica que la instancia sea de tipo DirectorBuilderReactor", () => {
     expect(instance).toBeInstanceOf(DirectorBuilderReactor);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Verifica que la planta nuclear se cargue correctamente", () => {
