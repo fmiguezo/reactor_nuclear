@@ -15,7 +15,6 @@ import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/em
 import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
 
 describe("Test del comando Encender reactor", () => {
-  // let instance: EncenderReactor;
   let instance: jest.Mocked<EncenderReactor>;
   let MockPlanta: jest.Mocked<PlantaNuclear> =
     new PlantaNuclear() as jest.Mocked<PlantaNuclear>;

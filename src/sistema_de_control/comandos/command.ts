@@ -1,5 +1,5 @@
 import Reactor from "../../central_nuclear/reactor/reactor";
 
 export default interface Command {
-  ejecutar(r: Reactor): void;
+  ejecutar(r: Reactor, params?: { [key: string]: any }): void;
 }

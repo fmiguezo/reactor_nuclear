@@ -1,6 +1,8 @@
+import { Constantes } from "../../../central_nuclear/reactor/constantes";
+
 export default class InsertarBarrasError extends Error {
-    constructor(message: string = "No se pudo insertar ninguna barra dado que: El estado del reactor no admite insertar barras") {
-        super(message);
-        this.name = "InsertarBarrasError";
-    }
+  constructor(message: string = Constantes.NO_PUEDE_INSERTAR_BARRA) {
+    super(message);
+    this.name = "InsertarBarrasError";
+  }
 }

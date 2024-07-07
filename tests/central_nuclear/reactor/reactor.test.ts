@@ -19,11 +19,19 @@ describe("Test del reactor", () => {
   let plantaNuclear: PlantaNuclear;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     builder = new BuilderReactorNormal();
     director = new DirectorBuildReactor(builder);
     plantaNuclear = new PlantaNuclear();
     director.cargarPlantaNuclear(plantaNuclear);
     reactor = director.buildReactorNormal();
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Debería inicializar el reactor con los valores correctos por defecto", () => {
@@ -37,10 +45,14 @@ describe("Test del reactor", () => {
   });
 
   it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
-    expect(() => reactor.obtenerEnergiaTermal()).toThrow(new EnergiaTermalCalculationError());
-    expect(reactor.obtenerEnergiaNeta()).toThrow(new EnergiaNetaCalculationError());
+    expect(() => reactor.obtenerEnergiaTermal()).toThrow(
+      new EnergiaTermalCalculationError()
+    );
+    expect(reactor.obtenerEnergiaNeta()).toThrow(
+      new EnergiaNetaCalculationError()
+    );
   });
-  
+
   it("Debería encender el reactor y verificar que esté encendiendo y su estado sea normal", () => {
     reactor.encender();
     expect(reactor.getEstado()).toBeInstanceOf(REncenciendo);
@@ -60,10 +72,10 @@ describe("Test del reactor", () => {
 
   it("Debería poder agregar y eliminar mecanismos de control correctamente", () => {
     let cantBarrasOriginales = administrador.getBarrasTotales().length;
-    let cantAgregadas = 3
+    let cantAgregadas = 3;
     administrador.cargarBarras(cantAgregadas);
-    expect(reactor.getBarrasDeControl()).toContain(cantBarrasOriginales + cantAgregadas);
-
+    expect(reactor.getBarrasDeControl()).toContain(
+      cantBarrasOriginales + cantAgregadas
+    );
   });
-
 });
