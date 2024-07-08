@@ -9,7 +9,7 @@ export default class Eliminada extends EstadoBarraControl {
 
   constructor() {
     super();
-    this.reportarVencimiento;
+    this.reportarVencimiento();
   }
 
   override estaActivo(): boolean {
