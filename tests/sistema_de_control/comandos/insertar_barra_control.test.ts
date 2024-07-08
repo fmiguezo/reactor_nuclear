@@ -1,22 +1,55 @@
+import ApagarReactor from "../../../src/sistema_de_control/comandos/apagar_reactor";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
-import InsertarBarraDeControl from "../../../src/sistema_de_control/comandos/insertar_barra_control";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
+import PlantaNuclear from "../../../src/planta_nuclear";
+import Sistema from "../../../src/sistema_de_control/sistema";
+import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
+import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
+import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/emergencia";
+import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
+import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
+import InsertarBarraDeControl from "../../../src/sistema_de_control/comandos/insertar_barra_control";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
 
-describe("Test del comando insertar barra de control dentro del reactor", () => {
-  let reactorNormal: Reactor;
-  let insertarBarraControl: InsertarBarraDeControl;
-  let reactorCritico: Reactor;
-  let MockNormal: RNormal;
-  let MockCritico: RCritico;
+describe("Test del comando insertar barra de control", () => {
+  let instance: jest.Mocked<InsertarBarraDeControl>;
+  let MockPlanta: jest.Mocked<PlantaNuclear> =
+    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockSistema: jest.Mocked<Sistema> = new Sistema(
+    MockPlanta
+  ) as jest.Mocked<Sistema>;
+  let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+    new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+    new DirectorBuildReactor(
+      MockBuilderConcreto
+    ) as jest.Mocked<DirectorBuildReactor>;
+  MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+  let MockReactor: jest.Mocked<Reactor> =
+    MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+  let MockApagado: jest.Mocked<RApagado>;
 
   beforeEach(() => {
     jest.useFakeTimers();
-    let reactorNormal = new Reactor();
-    let reactorCritico = new Reactor();
-    let insertarBarraControl = new InsertarBarraDeControl();
-    let MockNormal = new RNormal(reactorNormal) as jest.Mocked<RNormal>;
-    let MockCritico = new RCritico(reactorCritico) as jest.Mocked<RCritico>;
+    let instance =
+      new InsertarBarraDeControl() as jest.Mocked<InsertarBarraDeControl>;
+    let MockPlanta: jest.Mocked<PlantaNuclear> =
+      new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+    let MockSistema: jest.Mocked<Sistema> = new Sistema(
+      MockPlanta
+    ) as jest.Mocked<Sistema>;
+    let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+      new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+    let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+      new DirectorBuildReactor(
+        MockBuilderConcreto
+      ) as jest.Mocked<DirectorBuildReactor>;
+    MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+    let MockReactor: jest.Mocked<Reactor> =
+      MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+    let MockApagado: jest.Mocked<RApagado>;
   });
 
   afterEach(() => {
@@ -26,12 +59,31 @@ describe("Test del comando insertar barra de control dentro del reactor", () => 
     jest.clearAllTimers();
   });
 
+  it("Verifica que NO se puedan insertar barras cuando el reactor se encuentra en estado Normal", () => {
+    // Setea el estado en RNormal
+    MockReactor.cambiarEstado(new RNormal(MockReactor));
+    expect(MockReactor.estaEncendido()).toBeTruthy();
+
+    // Setea los spy
+    const insertarSpy = jest.spyOn(MockReactor, "setBarrasDeControl");
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+
+    // Envía el comando InsertarBarras
+    const params = { param1: 10 };
+    instance.ejecutar(MockReactor, params);
+
+    // Verifica si se llamó al método encender del reactor
+    expect(insertarSpy).toHaveBeenCalled();
+
+    // Verifica si en la consola salió el error
+    expect(consoleSpy).toHaveBeenCalledWith(Constantes.NO_PUEDE_INSERTAR_BARRA);
+
+    // Restaura los mocks
+    insertarSpy.mockRestore();
+    consoleSpy.mockRestore();
+  });
+
   /* A IMPLEMENTAR
-
-    it("Verifica que no se pueda insertar barras cuando el reactor se encuentra en estado normal", () => {
-      expect(reactorNormal.insertarBarra()).tobe(error)
-    });
-
 
 
   it("Verifico que el estado del reactor sea critico", () => {
