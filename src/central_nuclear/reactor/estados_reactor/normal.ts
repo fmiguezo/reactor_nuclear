@@ -66,6 +66,7 @@ export default class RNormal extends EstadoReactor {
     const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
+
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_NORMAL;
   }
