@@ -50,7 +50,7 @@ describe("Test del comando Apagar reactor", () => {
     // Setea los spy
 
     const apagarSpy = jest.spyOn(MockReactor, "apagar");
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, "log");
 
     // Envía el comando Apagar
     instance.ejecutar(MockReactor);

@@ -10,7 +10,7 @@ export default class Chernobyl extends EstadoReactor {
     this.eliminarTimeOut(this._timerTemp);
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
+  override obtenerEnergiaNeta(): number {
     return 0;
   }
 
@@ -28,5 +28,9 @@ export default class Chernobyl extends EstadoReactor {
 
   override estaEncendido() {
     return false;
+  }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO;
   }
 }

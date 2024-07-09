@@ -3,7 +3,8 @@ import Reactor from "../reactor";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import { Constantes } from "../constantes";
 import BarraControl from "../../barras_control/barra_control";
-
+import EnergiaNetaCalculationError from "../../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
+import Energia from "../reaccion/energia";
 export default abstract class EstadoReactor implements IEncendible {
   protected _incrementoTemp: number = Constantes.INCREMENTO_POR_MINUTO;
   protected _reactor: Reactor;
@@ -14,7 +15,22 @@ export default abstract class EstadoReactor implements IEncendible {
     this.crearTimeOutTemp(300000);
   }
 
-  public abstract calcularEnergia(temperatura: number): number;
+  public obtenerEnergiaNeta(): number {
+    let energiaNeta = 0;
+    try {
+      energiaNeta = Energia.calcularEnergiaNeta(
+        this._reactor.obtenerEnergiaTermal()
+      );
+    } catch (error) {
+      if (error instanceof EnergiaNetaCalculationError) {
+        console.log("Error específico de energía neta:", error.message);
+      } else {
+        console.log("Error genérico:", error.message);
+      }
+    }
+    return energiaNeta;
+  }
+
   public abstract encender(): void;
   public abstract apagar(): void;
   public abstract estaEncendido(): boolean;
@@ -24,7 +40,9 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public incrementarTemperatura(): void {
-    this._reactor.setTemperatura(this._incrementoTemp + this._reactor.getTemperatura());
+    this._reactor.setTemperatura(
+      this._incrementoTemp + this._reactor.getTemperatura()
+    );
     this._reactor.notificarSensores();
   }
 
@@ -52,7 +70,9 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public calcValorEnfriamiento(): number {
-    const barrasInsertadas: BarraControl[] = this._reactor.getAdministradorBarras().getBarrasInsertadas();
+    const barrasInsertadas: BarraControl[] = this._reactor
+      .getAdministradorBarras()
+      .getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => {
       valorEnfriamiento += b.getPctBarra();

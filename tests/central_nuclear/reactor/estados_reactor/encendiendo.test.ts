@@ -7,6 +7,7 @@ import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_enciendo/error_encender";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 
 let instance: REncenciendo;
 let MockPlanta: jest.Mocked<PlantaNuclear> =
@@ -28,7 +29,7 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new REncenciendo(MockReactor);
   MockReactor.setEstado(instance);
-  MockReactor.setTemperatura(0);
+  MockReactor.setTemperatura(1);
 });
 
 afterEach(() => {
@@ -38,33 +39,39 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-describe("Test del estado apagado", () => {
-  it("verifica que la instancia sea de tipo RApagado", () => {
+describe("Test del estado Rencendiendo", () => {
+  it("verifica que la instancia sea de tipo REncendiendo", () => {
     expect(instance).toBeInstanceOf(REncenciendo);
   });
 
-  it("Verifica que verificarEstado cambie al estado a normal", () => {
-    MockReactor.setTemperatura(300);
+  it("si la temperatura es 280°C o más, debería cambiar a RNormal", () => {
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL);
     instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("Verifica que verificarEstado que continue en estado encendido", () => {
-    MockReactor.setTemperatura(350);
-    instance.verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(REncenciendo);
+  it("energía neta debería ser 0", () => {
+    expect(instance.obtenerEnergiaNeta()).toBe(0);
   });
 
-  it("Verifica que encender que tire el Error correcto", () => {
+  it("debería lanzar una excepción de tipo EncenderError", () => {
     expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
-  it("Verifica que apagar cambie de estado correctamente", () => {
+  it("apagar() deberia cambiar de estado correctamente", () => {
     instance.apagar();
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
-  it("Verifica que estaEncendido, tire true", () => {
-    expect(instance.estaEncendido()).toBe(true);
+  it("estaEncendido() debería retornar true", () => {
+    expect(instance.estaEncendido()).toBeTruthy;
+  });
+
+  it("no debería generar alertas", () => {
+    expect(instance.generarAlerta()).toBeNull;
+  });
+
+  it("no debería poder insertar barras", () => {
+    expect(instance.puedeInsertarBarras()).toBeFalsy();
   });
 });

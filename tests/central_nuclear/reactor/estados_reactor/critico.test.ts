@@ -1,16 +1,13 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
-import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
-import GeneradorDeAlertaApagado from "../../../../src/sistema_de_control/alertas/generador_alerta_apagado";
-import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
+import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
-import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor/emergencia";
+import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
+import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_estandar";
 
 let instance: RCritico;
 let _timerGeneracion: NodeJS.Timeout | null = null;
@@ -38,13 +35,42 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-describe("Test del estado apagado", () => {
-  it("verifica que la instancia sea de tipo RApagado", () => {
-    expect(instance).toBeInstanceOf(RCritico);
+describe("Test del estado Critico", () => {
+  it("verifica que la instancia sea de tipo RCritico", () => {
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("Verifica que calcularEnergia de el valor esperado", () => {
-    expect(instance.calcularEnergia()).toBe(0);
+  it("debería cambiar a estado RNormal si la temperatura es 329 o menor", () => {
+    MockReactor.setTemperatura(329);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
+  });
+
+  it("debería cambiar a estado REmergencia si la temperatura es 400 o mayor", () => {
+    MockReactor.setTemperatura(400);
+    // Elimina los timers para que el reactor no explote
+    jest.clearAllTimers();
+    expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
+  });
+
+  it("debería dar error si se intenta encender un reactor en estado RCritico", () => {
+    expect(() => instance.encender()).toThrow(new EncenderError());
+  });
+
+  it("debería cambiar a estado apagado si se llama al método apagar", () => {
+    instance.apagar();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
+  });
+
+  it("debería confirmar que el reactor está encendido si el estado es RCritico", () => {
+    expect(instance.estaEncendido()).toBeTruthy;
+  });
+
+  it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
+    expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
+  });
+
+  it("debería poder insertar barras", () => {
+    expect(instance.puedeInsertarBarras()).toBeTruthy();
   });
 
   it("debería cambiar a estado normal si la temperatura está por debajo de 300 grados", () => {

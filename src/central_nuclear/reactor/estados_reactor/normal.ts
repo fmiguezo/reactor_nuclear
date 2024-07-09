@@ -8,13 +8,15 @@ import { Constantes } from "../constantes";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 
 export default class RNormal extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada =
+    RegistroEnergiaGenerada.instancia;
 
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
+    this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -29,13 +31,11 @@ export default class RNormal extends EstadoReactor {
     }, frecuencia);
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
-    return this._reactor.obtenerEnergiaNeta();
-  }
-
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_NORMAL) {
+      this.apagar();
+    } else if (tempActual > Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoCritico();
     }
   }
@@ -63,7 +63,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   public liberarEnergia(): void {
-    const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
 

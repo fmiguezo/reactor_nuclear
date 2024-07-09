@@ -10,16 +10,14 @@ import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 export default class RCritico extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada =
+    RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOut();
-  }
-
-  override calcularEnergia(temperatura: number = 0): number {
-    return 0;
+    this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -36,9 +34,9 @@ export default class RCritico extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < Constantes.TEMP_MAXIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_CRITICA) {
       this.cambiarAEstadoNormal();
-    } else if (tempActual >= Constantes.TEMP_CRITICA) {
+    } else if (tempActual >= Constantes.TEMP_MINIMA_EMERGENCIA) {
       this.cambiarAEstadoEmergencia();
     }
   }
@@ -76,7 +74,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   public liberarEnergia(): void {
-    const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
   override toString(): string {

@@ -73,4 +73,8 @@ describe("Test del estado apagado", () => {
   it("verifica que generar alerta genere la alerta de tipo Critica", () => {
     expect(instance.generarAlerta()).toBeInstanceOf(AlertaCritica);
   });
+
+  it("debería poder insertar barras", () => {
+    expect(instance.puedeInsertarBarras()).toBeTruthy();
+  });
 });

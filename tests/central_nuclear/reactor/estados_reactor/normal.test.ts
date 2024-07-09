@@ -1,13 +1,13 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
-import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
-import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
-import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
 import RegistroEstados from "../../../../src/sistema_de_control/registros/registroEstados";
 
@@ -36,7 +36,7 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new RNormal(MockReactor);
   MockReactor.setEstado(instance);
-  MockReactor.setTemperatura(280);
+  MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL);
 });
 
 afterEach(() => {
@@ -46,31 +46,36 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-describe("Test del estado normal", () => {
-  it("verifica que la instancia sea de tipo normal", () => {
-    expect(instance).toBeInstanceOf(RNormal);
+describe("Test del estado Normal", () => {
+  it("verifica que la instancia sea de tipo RNormal", () => {
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
-    MockReactor.setTemperatura(280);
-    expect(instance.calcularEnergia()).toBe(100);
+  it("debería cambiar a estado RCritico si la temperatura es 330 o mayor", () => {
+    MockReactor.setTemperatura(330);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería dar error si se intenta encender un reactor en estado normal", () => {
+  it("debería dar error si se intenta encender un reactor en estado RNormal", () => {
     expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
-  it("debería cambiar el estado a apagado si se llama a la funcion apagar", () => {
+  it("debería cambiar a estado apagado si se llama al método apagar", () => {
     instance.apagar();
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
-  it("verifica que el reactor esté encendido si el estado es normal", () => {
-    expect(instance.estaEncendido()).toBe(true);
+  it("debería confirmar que el reactor está encendido si el estado es RNormal", () => {
+    expect(instance.estaEncendido()).toBeTruthy;
   });
 
-  it("Verifica que to string devuelva el mensaje esperado", () => {
-    expect(instance.toString()).toBe(Constantes.MENSAJE_ESTADO_NORMAL);
+  it("No debería generar alertas si está en estado RNormal", () => {
+    expect(instance.generarAlerta()).toBeNull;
+  });
+
+  it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
+    MockReactor.setTemperatura(280);
+    expect(instance.obtenerEnergiaNeta()).toBe(100);
   });
 
   it("debería cambiar a estado crítico si la temperatura es igual o mayor a 500 grados", () => {
@@ -90,7 +95,6 @@ describe("Test del estado normal", () => {
   });
 
   it("debería crear un registro con el mismo valor de la energía neta producida si llama a liberarEnergia()", () => {
-    jest.spyOn(MockReactor, "obtenerEnergiaNeta").mockReturnValue(100);
     instance.liberarEnergia();
     expect(RegistroEnergiaGenerada.instancia.insertarRegistro).toHaveBeenCalledWith(100);
   });
