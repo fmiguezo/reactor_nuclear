@@ -1,5 +1,6 @@
+import { Constantes } from "../../../central_nuclear/barras_control/constantes";
 export default class getFabricaError extends Error {
-    constructor(message: string = "No se pudo obtener la fabrica dado que: No existe la fabrica") {
+    constructor(message: string = Constantes.MENSAJE_FABRICA_NO_ENCONTRADA) {
         super(message);
         this.name = "getFabricaError";
     }

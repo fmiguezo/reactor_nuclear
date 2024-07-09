@@ -50,7 +50,7 @@ describe("Test de Energia", () => {
     const energiaTermal = Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL;
     expect(Energia.calcularEnergiaNeta(energiaTermal)).toBe(100);
   });
-
+  
   it("Verifica el cálculo de energía neta para valores altos de energía termal", () => {
     const energiaTermal = 2200;
     const expectedEnergiaNeta = Number((Constantes.M_NETA * energiaTermal + Constantes.B_NETA).toFixed(2));

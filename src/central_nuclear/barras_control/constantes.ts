@@ -4,6 +4,7 @@ const MENSAJE_BARRA_VENCIDA = "La barra está vencida. No puede utilizarse.";
 const MENSAJE_BARRA_INSERTADA = "La barra ya está insertada.";  // Cambié el nombre para evitar duplicación
 const MENSAJE_BARRA_DESACTIVADA = "La barra ya está desactivada.";
 const MENSAJE_NO_BARRAS_INSERTADAS = "No hay barras insertadas";
+const MENSAJE_FABRICA_NO_ENCONTRADA = "No se encontro la fabrica de barras";
 
 export const Constantes = {
     VIDA_UTIL_BARRA,
@@ -11,5 +12,6 @@ export const Constantes = {
     MENSAJE_BARRA_VENCIDA,
     MENSAJE_BARRA_INSERTADA,
     MENSAJE_BARRA_DESACTIVADA,
-    MENSAJE_NO_BARRAS_INSERTADAS
+    MENSAJE_NO_BARRAS_INSERTADAS,
+    MENSAJE_FABRICA_NO_ENCONTRADA
 };
