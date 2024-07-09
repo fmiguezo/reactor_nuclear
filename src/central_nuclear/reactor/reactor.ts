@@ -150,9 +150,9 @@ export default class Reactor {
         this._administradorBarras.subirBarras();
       } catch (error) {
         if (error instanceof SubirBarrasError) {
-          console.log("Error específico de subir barras:", error.message);
+          console.log(error.message);
         } else {
-          console.log("Error genérico:", error.message);
+          console.log(error.message);
         }
       }
     }
