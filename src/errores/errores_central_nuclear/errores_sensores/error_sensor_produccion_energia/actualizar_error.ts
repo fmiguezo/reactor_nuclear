@@ -1,5 +1,7 @@
+import { Constantes } from "../../../../central_nuclear/sensores/constantes";
+
 export default class ActualizarError extends Error {
-    constructor(message: string = "No fue posible actualizar el sensor dado que: el mismo se encuentra inactivo") {
+    constructor(message: string = Constantes.MENSAJE_SENSOR_INACTIVO) {
         super(message);
         this.name = "ActualizarError";
     }
