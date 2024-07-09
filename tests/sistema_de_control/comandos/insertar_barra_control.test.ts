@@ -15,41 +15,19 @@ import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
 
 describe("Test del comando insertar barra de control", () => {
   let instance: jest.Mocked<InsertarBarraDeControl>;
-  let MockPlanta: jest.Mocked<PlantaNuclear> =
-    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-  let MockSistema: jest.Mocked<Sistema> = new Sistema(
-    MockPlanta
-  ) as jest.Mocked<Sistema>;
+  let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
   let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
     new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-    new DirectorBuildReactor(
-      MockBuilderConcreto
-    ) as jest.Mocked<DirectorBuildReactor>;
+  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
   MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-  let MockReactor: jest.Mocked<Reactor> =
-    MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+  let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
   let MockApagado: jest.Mocked<RApagado>;
 
   beforeEach(() => {
     jest.useFakeTimers();
-    let instance =
-      new InsertarBarraDeControl() as jest.Mocked<InsertarBarraDeControl>;
-    let MockPlanta: jest.Mocked<PlantaNuclear> =
-      new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-    let MockSistema: jest.Mocked<Sistema> = new Sistema(
-      MockPlanta
-    ) as jest.Mocked<Sistema>;
-    let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
-      new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-    let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-      new DirectorBuildReactor(
-        MockBuilderConcreto
-      ) as jest.Mocked<DirectorBuildReactor>;
-    MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-    let MockReactor: jest.Mocked<Reactor> =
-      MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
-    let MockApagado: jest.Mocked<RApagado>;
   });
 
   afterEach(() => {
