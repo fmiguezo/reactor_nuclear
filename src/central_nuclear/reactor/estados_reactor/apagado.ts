@@ -12,7 +12,7 @@ export default class RApagado extends EstadoReactor {
     this._reactor.desactivarMecanismosDeControl();
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
+  override obtenerEnergiaNeta(): number {
     return 0;
   }
 

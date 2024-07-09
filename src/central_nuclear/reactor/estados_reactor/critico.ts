@@ -19,10 +19,6 @@ export default class RCritico extends EstadoReactor {
     this.crearTimeOut();
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
-    return 0;
-  }
-
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
     this.eliminarTimeOut(this._timerGeneracion);
     this.crearTimeOut(frecuencia);
@@ -77,7 +73,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   public liberarEnergia(): void {
-    const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
   override toString(): string {

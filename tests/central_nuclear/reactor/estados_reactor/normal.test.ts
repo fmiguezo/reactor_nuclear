@@ -45,7 +45,7 @@ describe("Test del estado normal", () => {
   });
 
   it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
-    expect(instance.calcularEnergia()).toBe(100);
+    expect(instance.obtenerEnergiaNeta()).toBe(100);
   });
 
   it("debería dar error si se intenta encender un reactor en estado normal", () => {

@@ -6,7 +6,7 @@ import BarraControl from "../barras_control/barra_control";
 import AdministradorBarras from "./administrador/administrador_barras";
 import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
-import EnergiaNetaCalculationError from "../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
+
 import EnergiaTermalCalculationError from "../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
 import SubirBarrasError from "../../errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
 
@@ -77,17 +77,7 @@ export default class Reactor {
   }
 
   public obtenerEnergiaNeta(): number {
-    let energiaNeta = 0;
-    try {
-      energiaNeta = Energia.calcularEnergiaNeta(this.obtenerEnergiaTermal());
-    } catch (error) {
-      if (error instanceof EnergiaNetaCalculationError) {
-        console.log("Error específico de energía neta:", error.message);
-      } else {
-        console.log("Error genérico:", error.message);
-      }
-    }
-    return energiaNeta;
+    return this._estado.obtenerEnergiaNeta();
   }
 
   public cambiarEstado(state: EstadoReactor): void {
@@ -131,8 +121,6 @@ export default class Reactor {
       this._plantaNuclear.getSistema().actualizar(this);
     }
   }
-
-  public calcularTemperatura(): void { }
 
   public getAdministradorBarras(): AdministradorBarras {
     return this._administradorBarras;

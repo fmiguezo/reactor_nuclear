@@ -1,21 +1,37 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
-import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
-import GeneradorDeAlertaApagado from "../../../../src/sistema_de_control/alertas/generador_alerta_apagado";
-import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
+import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
+import Chernobyl from "../../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
+import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
+import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
+import PlantaNuclear from "../../../../src/planta_nuclear";
+import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
+import Sistema from "../../../../src/sistema_de_control/sistema";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
+import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 
 let instance: RCritico;
-let instanceReactor: Reactor;
-let _timerGeneracion: NodeJS.Timeout | null = null;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
+let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
+  new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
+MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  instanceReactor = new Reactor();
-  instance = new RCritico(instanceReactor);
-  instanceReactor.setEstado(instance);
-  instanceReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA);
+  instance = new RCritico(MockReactor);
+  MockReactor.setEstado(instance);
+  MockReactor.setTemperatura(332);
 });
 
 afterEach(() => {
@@ -27,16 +43,12 @@ afterEach(() => {
 
 describe("Test del estado Critico", () => {
   it("verifica que la instancia sea de tipo RCritico", () => {
-    expect(instance).toBeInstanceOf(RCritico);
-  });
-
-  it("Verifica que calcularEnergia de el valor esperado", () => {
-    expect(instance.calcularEnergia()).toBe(0);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
   it("debería cambiar a estado crítico si la temperatura es 389 o menor", () => {
-    instanceReactor.setTemperatura(389);
+    MockReactor.setTemperatura(389);
     instance.verificarEstado();
-    expect(instanceReactor.getEstado()).toBeInstanceOf(RCritico);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 });
