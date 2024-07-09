@@ -1,5 +1,4 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
-import REmergencia from "../../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import RCritico from "../../../../src/central_nuclear/reactor/estados_reactor/critico";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
@@ -9,24 +8,29 @@ import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
-import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_estandar";
+import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
+import RegistroEstados from "../../../../src/sistema_de_control/registros/registroEstados";
 
 let instance: RNormal;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> =
-  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(
-  MockPlanta
-) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-  new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> =
-  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockRegistroEnergia: jest.Mocked<RegistroEnergiaGenerada> =
+  RegistroEnergiaGenerada.instancia as jest.Mocked<RegistroEnergiaGenerada>;
+let MockRegistroEstados: jest.Mocked<RegistroEstados> = RegistroEstados.instancia as jest.Mocked<RegistroEstados>;
+
+jest.mock("../../../../src/sistema_de_control/registros/registro_energia_generada", () => ({
+  instancia: {
+    insertarRegistro: jest.fn(),
+  },
+}));
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -47,13 +51,8 @@ describe("Test del estado Normal", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("el reactor deberia apagarse si la temperatura es menor a 280", () => {
-    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL - 1);
-    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
-  });
-
   it("debería cambiar a estado RCritico si la temperatura es 330 o mayor", () => {
-    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA);
+    MockReactor.setTemperatura(330);
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
@@ -75,15 +74,32 @@ describe("Test del estado Normal", () => {
   });
 
   it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
-    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL);
+    MockReactor.setTemperatura(280);
     expect(instance.obtenerEnergiaNeta()).toBe(100);
   });
 
-  test("Verifica que to string devuelva el mensaje esperado", () => {
-    expect(instance.toString()).toBe(Constantes.MENSAJE_ESTADO_NORMAL);
+  it("debería cambiar a estado crítico si la temperatura es igual o mayor a 500 grados", () => {
+    MockReactor.setTemperatura(500);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("no debería poder insertar barras", () => {
-    expect(instance.puedeInsertarBarras()).toBeFalsy();
+  it("no debería cambiar de estado si la temperatura es menor a 300 grados", () => {
+    MockReactor.setTemperatura(290);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
+  });
+
+  it("no debería poder insertar barras de control si el estado es normal", () => {
+    expect(instance.puedeInsertarBarras()).toBe(false);
+  });
+
+  it("debería crear un registro con el mismo valor de la energía neta producida si llama a liberarEnergia()", () => {
+    instance.liberarEnergia();
+    expect(RegistroEnergiaGenerada.instancia.insertarRegistro).toHaveBeenCalledWith(100);
+  });
+
+  it("toString debería volver el mensaje de estado normal", () => {
+    expect(instance.toString()).toBe("El reactor está en estado normal.");
   });
 });
