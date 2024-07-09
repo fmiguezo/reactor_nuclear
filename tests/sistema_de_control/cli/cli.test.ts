@@ -11,6 +11,7 @@ describe("CLI", () => {
   let sistema: Sistema;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     instancia = new Cli();
     sistema = new Sistema(new PlantaNuclear());
   });

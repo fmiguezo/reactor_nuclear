@@ -29,4 +29,8 @@ export default class Chernobyl extends EstadoReactor {
   override estaEncendido() {
     return false;
   }
+
+  override toString(): string {
+    return Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO;
+  }
 }
