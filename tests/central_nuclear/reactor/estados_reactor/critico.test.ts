@@ -49,13 +49,13 @@ describe("Test del estado Critico", () => {
 
   it("debería cambiar a estado RNormal si la temperatura es 329 o menor", () => {
     MockReactor.setTemperatura(Constantes.TEMP_MAXIMA_NORMAL);
-    instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
   it("debería cambiar a estado REmergencia si la temperatura es 400 o mayor", () => {
     MockReactor.setTemperatura(Constantes.TEMP_MINIMA_EMERGENCIA);
-    instance.verificarEstado();
+    // Elimina los timers para que el reactor no explote
+    jest.clearAllTimers();
     expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
   });
 

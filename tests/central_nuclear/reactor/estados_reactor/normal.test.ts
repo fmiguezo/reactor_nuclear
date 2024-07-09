@@ -49,13 +49,11 @@ describe("Test del estado Normal", () => {
 
   it("el reactor deberia apagarse si la temperatura es menor a 280", () => {
     MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL - 1);
-    instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
   it("debería cambiar a estado RCritico si la temperatura es 330 o mayor", () => {
     MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA);
-    instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
