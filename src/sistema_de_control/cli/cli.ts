@@ -12,7 +12,7 @@ export default class Cli {
     this.lanzarCli(sistema, rlInterface);
   }
 
-  private creaInterfazRL(): readline.Interface {
+  public creaInterfazRL(): readline.Interface {
     const rl: readline.Interface = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
