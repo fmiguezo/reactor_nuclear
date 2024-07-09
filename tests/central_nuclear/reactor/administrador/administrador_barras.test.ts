@@ -186,4 +186,34 @@ describe("Test del administrador de barras", () => {
     cantBarrasInsertadas = aliasAdmin.getBarrasInsertadas().length;
     expect(cantbarrasTotales).toBe(cantBarrasInsertadas);
   });
+
+  it("debería reemplazar las barras vencidas", () => {
+    const aliasAdmin: AdministradorBarras = reactor.getAdministradorBarras();
+    reactor.encender();
+    reactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA + 20);
+    reactor.getEstado().verificarEstado();
+    expect(reactor.getEstado()).toBeInstanceOf(RCritico);
+
+    // Inserta las barras
+    aliasAdmin.insertarBarras();
+
+    // Valores iniciales
+    const cantInicialBarrasTotales: number =
+      aliasAdmin.getBarrasTotales().length;
+    const cantInicialBarrasVencidas: number =
+      aliasAdmin.getBarrasVencidas().length;
+
+    // Se adelanta el tiempo para que se venzan las barras
+    jest.advanceTimersByTime(200);
+    const cantFinalBarrasTotales: number = aliasAdmin.getBarrasTotales().length;
+    const cantFinalBarrasVencidas: number =
+      aliasAdmin.getBarrasVencidas().length;
+
+    expect(cantFinalBarrasVencidas).toBe(cantInicialBarrasTotales);
+
+    // Reemplaza las barras vencidas
+
+    aliasAdmin.reemplazarBarrasVencidas();
+    expect(aliasAdmin.getBarrasVencidas().length).toBe(0);
+  });
 });

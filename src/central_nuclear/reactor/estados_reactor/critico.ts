@@ -17,6 +17,7 @@ export default class RCritico extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOut();
+    this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -33,9 +34,9 @@ export default class RCritico extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual <= Constantes.TEMP_MAXIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_CRITICA) {
       this.cambiarAEstadoNormal();
-    } else if (tempActual >= Constantes.TEMP_MINIMA_CRITICA) {
+    } else if (tempActual >= Constantes.TEMP_MINIMA_EMERGENCIA) {
       this.cambiarAEstadoEmergencia();
     }
   }

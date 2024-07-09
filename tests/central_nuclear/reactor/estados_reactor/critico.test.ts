@@ -75,4 +75,8 @@ describe("Test del estado Critico", () => {
   it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
     expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
   });
+
+  it("debería poder insertar barras", () => {
+    expect(instance.puedeInsertarBarras()).toBeTruthy();
+  });
 });
