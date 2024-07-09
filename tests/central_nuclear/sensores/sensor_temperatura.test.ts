@@ -1,5 +1,7 @@
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
+import { Constantes } from "../../../src/central_nuclear/sensores/constantes";
 import SensorTemperatura from "../../../src/central_nuclear/sensores/sensor_temperatura";
+import ActualizarError from "../../../src/errores/errores_central_nuclear/errores_sensores/error_sensor_temperatura/actualizar_error";
 let instance: SensorTemperatura;
 let instanceReactor: Reactor;
 
@@ -49,6 +51,11 @@ describe("Test de los metodos implementados de ISensor.ts", () => {
 
   it("Verifica el else se actualizarValor", () => {
     instance.activo = false;
-    expect(() => instance.actualizar(instanceReactor)).toThrow(Error);
+    expect(() => instance.actualizar(instanceReactor)).toThrow(new ActualizarError());
   });
+
+  it("Que la funcion toString devuelva lo esperado", () => {
+    expect(instance.toString()).toBe(Constantes.MENSAJE_SENSOR_TEMPERATURA + instance.obtenerValor());
+  });
+
 });
