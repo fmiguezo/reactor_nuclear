@@ -8,8 +8,9 @@ import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
-import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
+import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_estandar";
 
 let instance: RCritico;
 let MockPlanta: jest.Mocked<PlantaNuclear> =
@@ -31,7 +32,7 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new RCritico(MockReactor);
   MockReactor.setEstado(instance);
-  MockReactor.setTemperatura(332);
+  MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA + 2);
 });
 
 afterEach(() => {
@@ -46,9 +47,32 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado crítico si la temperatura es 389 o menor", () => {
-    MockReactor.setTemperatura(389);
+  it("debería cambiar a estado RNormal si la temperatura es 329 o menor", () => {
+    MockReactor.setTemperatura(Constantes.TEMP_MAXIMA_NORMAL);
     instance.verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
+  });
+
+  it("debería cambiar a estado REmergencia si la temperatura es 400 o mayor", () => {
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_EMERGENCIA);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
+  });
+
+  it("debería dar error si se intenta encender un reactor en estado RCritico", () => {
+    expect(() => instance.encender()).toThrow(new EncenderError());
+  });
+
+  it("debería cambiar a estado apagado si se llama al método apagar", () => {
+    instance.apagar();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
+  });
+
+  it("debería confirmar que el reactor está encendido si el estado es RCritico", () => {
+    expect(instance.estaEncendido()).toBeTruthy;
+  });
+
+  it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
+    expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
   });
 });
