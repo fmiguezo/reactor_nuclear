@@ -42,12 +42,6 @@ describe("Test del comando para reportar estado del reactor", () => {
     jest.clearAllTimers();
   });
 
-  it("Verifica el estado", () => {
-    MockReactor.setEstado(MockCritico);
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
-    // Falta desarrollar verificacion
-  });
-
   it("se testea que el mensaje sea el correcto: RApagado", () => {
     MockReactor.setEstado(new RApagado(MockReactor));
     const espiaConsola = jest.spyOn(console, "log");

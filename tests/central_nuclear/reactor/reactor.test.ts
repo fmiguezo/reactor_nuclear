@@ -44,6 +44,11 @@ describe("Test del reactor", () => {
     expect(reactor).toBeInstanceOf(Reactor);
   });
 
+  it("Verifica que el getter de estado funcione", () => {
+    reactor.setEstado(new RCritico(reactor));
+    expect(reactor.getEstado()).toBeInstanceOf(RCritico);
+  });
+
   it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
     expect(() => reactor.obtenerEnergiaTermal()).toThrow(
       new EnergiaTermalCalculationError()

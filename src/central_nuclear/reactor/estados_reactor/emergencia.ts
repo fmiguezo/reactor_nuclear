@@ -14,7 +14,7 @@ export default class REmergencia extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < Constantes.TEMP_CRITICA) {
+    if (tempActual < Constantes.TEMP_MINIMA_EMERGENCIA) {
       this.cambiarAEstadoCritico();
     } else if (tempActual >= Constantes.TEMP_CHERNOBYL) {
       this.cambiarAEstadoChernobyl();
