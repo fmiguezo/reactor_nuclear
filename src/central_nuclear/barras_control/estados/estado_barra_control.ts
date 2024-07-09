@@ -10,6 +10,11 @@ export default abstract class EstadoBarraControl
     this._barraControl = barra;
   }
 
+  public getBarraControl(): BarraControl
+  {
+    return this._barraControl;
+  }
+
   public abstract estaActivo(): boolean;
   public abstract activar(): void;
   public abstract desactivar(): void;
