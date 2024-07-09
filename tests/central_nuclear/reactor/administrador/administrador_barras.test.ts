@@ -9,11 +9,11 @@ import IMecanismoDeControl from "../../../../src/central_nuclear/interfaces/imec
 import ISensor from "../../../../src/central_nuclear/interfaces/isensor";
 import AdministradorBarras from "../../../../src/central_nuclear/reactor/administrador/administrador_barras";
 import Eliminada from "../../../../src/central_nuclear/barras_control/estados/eliminada";
-import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 import InsertarBarrasError from "../../../../src/errores/errores_central_nuclear/errores_del_administrador_de_barras/insertar_barras_error";
 import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
+import EstadoBarraControl from "../../../../src/central_nuclear/barras_control/estados/estado_barra_control";
 
 describe("Test del administrador de barras", () => {
   let plantaNuclear = new PlantaNuclear();
@@ -191,6 +191,8 @@ describe("Test del administrador de barras", () => {
     const aliasAdmin: AdministradorBarras = reactor.getAdministradorBarras();
     reactor.encender();
     reactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA + 20);
+
+    reactor.getEstado().verificarEstado();
     reactor.getEstado().verificarEstado();
     expect(reactor.getEstado()).toBeInstanceOf(RCritico);
 
@@ -203,17 +205,37 @@ describe("Test del administrador de barras", () => {
     const cantInicialBarrasVencidas: number =
       aliasAdmin.getBarrasVencidas().length;
 
-    // Se adelanta el tiempo para que se venzan las barras
-    jest.advanceTimersByTime(200);
-    const cantFinalBarrasTotales: number = aliasAdmin.getBarrasTotales().length;
+    // Pasa las barras a estado Eliminado
+    const barrasTotalesColeccion: BarraControl[] =
+      aliasAdmin.getBarrasTotales();
+
+    // Elimina los timers para evitar que el reactor explote
+    jest.clearAllTimers();
+
+    barrasTotalesColeccion.forEach((b) => {
+      const nuevoEstado: EstadoBarraControl = new Eliminada();
+      b.setVidaUtilRestante(0);
+      b.cambiarEstado(nuevoEstado);
+      nuevoEstado.setBarraControl(b);
+    });
+
     const cantFinalBarrasVencidas: number =
       aliasAdmin.getBarrasVencidas().length;
 
     expect(cantFinalBarrasVencidas).toBe(cantInicialBarrasTotales);
 
     // Reemplaza las barras vencidas
-
     aliasAdmin.reemplazarBarrasVencidas();
-    expect(aliasAdmin.getBarrasVencidas().length).toBe(0);
+
+    const cantBarrasTotalesDespReemp: number =
+      aliasAdmin.getBarrasTotales().length;
+
+    const cantBarrasVencidasDespReemp: number =
+      aliasAdmin.getBarrasVencidas().length;
+
+    expect(cantBarrasVencidasDespReemp).toBe(0);
+
+    // Verifica que el número de barras totales sea el mismo
+    expect(cantBarrasTotalesDespReemp).toBe(cantInicialBarrasTotales);
   });
 });

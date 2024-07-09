@@ -52,6 +52,7 @@ export default class Reactor {
 
   public setTemperatura(temperatura: number): void {
     this._temperatura = temperatura;
+    this._estado.verificarEstado();
   }
 
   public getBarrasDeControl(): BarraControl[] {
