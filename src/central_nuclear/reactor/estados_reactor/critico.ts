@@ -10,13 +10,14 @@ import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 export default class RCritico extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada =
+    RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOut();
-    this.verificarEstado();
+    // this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {

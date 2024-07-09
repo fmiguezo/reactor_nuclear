@@ -5,6 +5,7 @@ import SubirBarrasError from "../../errores/errores_central_nuclear/errores_del_
 export default class SacarBarrasDeControl implements Command {
   public ejecutar(r: Reactor, params?: { [key: string]: any }): void {
     const { param1 } = params || {};
+
     try {
       r.getAdministradorBarras().subirBarras(param1);
     } catch (error) {

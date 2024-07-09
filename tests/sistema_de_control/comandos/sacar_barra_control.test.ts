@@ -80,7 +80,7 @@ describe("Test del comando sacar barras de control del reactor", () => {
   });
 
   it("Deberia manejar SubirBarrasError correctamente", () => {
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, "log");
 
     instance.ejecutar(MockReactor);
 
@@ -88,7 +88,7 @@ describe("Test del comando sacar barras de control del reactor", () => {
   });
 
   it("Deberia manejar errores desconocidos correctamente", () => {
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, "log");
 
     instance.ejecutar(MockReactor);
 
