@@ -8,6 +8,7 @@ import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builde
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_estandar";
+import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 
 let instance: RCritico;
 let _timerGeneracion: NodeJS.Timeout | null = null;
@@ -25,7 +26,6 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new RCritico(MockReactor);
   MockReactor.setEstado(instance);
-  MockReactor.setTemperatura(0);
 });
 
 afterEach(() => {
@@ -79,14 +79,14 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("debería cambiar a estado emergencia si la temperatura es igual o mayor a 500 grados", () => {
-    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(500);
+  it("debería cambiar a estado emergencia si la temperatura es igual o mayor a 400 grados", () => {
+    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(400);
     instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
   });
 
   it("debería dar error si se llama a la función encender()", () => {
-    expect(() => instance.encender()).toThrowError("El reactor ya está encendido.");
+    expect(() => instance.encender()).toThrow("El reactor ya está encendido.");
   });
 
   it("debería cambiar a estado apagado si se llama a la función apagar()", () => {

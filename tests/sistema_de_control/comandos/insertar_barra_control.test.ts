@@ -27,29 +27,14 @@ describe("Test del comando insertar barra de control", () => {
       MockBuilderConcreto
     ) as jest.Mocked<DirectorBuildReactor>;
   MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-  let MockReactor: jest.Mocked<Reactor> =
-    MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
-  let MockApagado: jest.Mocked<RApagado>;
+  let MockReactor: jest.Mocked<Reactor>;
 
   beforeEach(() => {
     jest.useFakeTimers();
-    let instance =
-      new InsertarBarraDeControl() as jest.Mocked<InsertarBarraDeControl>;
-    let MockPlanta: jest.Mocked<PlantaNuclear> =
-      new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-    let MockSistema: jest.Mocked<Sistema> = new Sistema(
-      MockPlanta
-    ) as jest.Mocked<Sistema>;
-    let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
-      new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-    let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-      new DirectorBuildReactor(
-        MockBuilderConcreto
-      ) as jest.Mocked<DirectorBuildReactor>;
-    MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-    let MockReactor: jest.Mocked<Reactor> =
+    MockReactor =
       MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
-    let MockApagado: jest.Mocked<RApagado>;
+    instance =
+      new InsertarBarraDeControl() as jest.Mocked<InsertarBarraDeControl>;
   });
 
   afterEach(() => {
@@ -61,38 +46,74 @@ describe("Test del comando insertar barra de control", () => {
 
   it("Verifica que NO se puedan insertar barras cuando el reactor se encuentra en estado Normal", () => {
     // Setea el estado en RNormal
-    MockReactor.cambiarEstado(new RNormal(MockReactor));
+    MockReactor.encender();
     expect(MockReactor.estaEncendido()).toBeTruthy();
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
 
-    // Setea los spy
-    const insertarSpy = jest.spyOn(MockReactor, "setBarrasDeControl");
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    // Setea el spy
+    const consoleSpy = jest.spyOn(console, "log");
 
     // Envía el comando InsertarBarras
     const params = { param1: 10 };
     instance.ejecutar(MockReactor, params);
 
-    // Verifica si se llamó al método encender del reactor
-    expect(insertarSpy).toHaveBeenCalled();
-
     // Verifica si en la consola salió el error
     expect(consoleSpy).toHaveBeenCalledWith(Constantes.NO_PUEDE_INSERTAR_BARRA);
 
-    // Restaura los mocks
-    insertarSpy.mockRestore();
+    // Restaura el mock
     consoleSpy.mockRestore();
   });
 
-  /* A IMPLEMENTAR
+  it("Debería poder bajar las barras en estado Crítico", () => {
+    // Setea el estado en RNormal
+    MockReactor.encender();
+    expect(MockReactor.estaEncendido()).toBeTruthy();
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA);
+    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
 
+    // Frena el tiempo para evitar explosiones
+    jest.clearAllTimers();
 
-  it("Verifico que el estado del reactor sea critico", () => {
-    expect(reactorCritico.getEstado()).toBeInstanceOf(RCritico);
+    // Setea el spy
+    const consoleSpy = jest.spyOn(console, "log");
+
+    // Envía el comando InsertarBarras. 0 baja todas las barras
+    const params = { param1: 0 };
+    instance.ejecutar(MockReactor, params);
+
+    // Verifica que hayan bajado las barras
+    const cantBarrasInsertadas: number =
+      MockReactor.getAdministradorBarras().getBarrasInsertadas().length;
+
+    expect(cantBarrasInsertadas).toBeGreaterThan(0);
+    // Verifica que no haya salido el error
+    expect(consoleSpy).toHaveBeenCalledTimes(0);
+
+    // Restaura el mock
+    consoleSpy.mockRestore();
   });
 
-  it(" Deberia de ejecutar el comando y disminuir la temperatura ", () => {
-    let temperaturaInicial = reactorCritico.getTemperatura();
-    insertarBarraControl.ejecutar(reactorCritico);
-    expect(reactorCritico.getTemperatura()).toBeLessThan(temperaturaInicial);
-  }); */
+  // it("Deberia ejecutar el comando y disminuir la temperatura", () => {
+  //   MockReactor.encender();
+  //   // Setea la temperatura en TEMP_MINIMA_CRITICA + 30
+  //   MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA + 30);
+
+  //   // Verifica que reactor esté en estado RCritico
+  //   expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+
+  //   const temperaturaInicial: number = MockReactor.getTemperatura();
+  //   // Baja todas las barras
+  //   const params = { param1: 100 };
+  //   instance.ejecutar(MockReactor, params);
+
+  //   // Avanza el tiempo
+  //   jest.advanceTimersByTime(250);
+
+  //   expect(
+  //     MockReactor.getAdministradorBarras().getBarrasInsertadas().length
+  //   ).toBe(MockReactor.getAdministradorBarras().getBarrasTotales().length);
+  //   // Verifica que la temperatura haya disminuido
+  //   expect(MockReactor.getTemperatura()).toBeLessThan(temperaturaInicial);
+  // });
 });

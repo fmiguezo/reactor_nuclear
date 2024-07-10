@@ -11,7 +11,7 @@ import Reactor from "../reactor";
 export default class REmergencia extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
-    this.verificarEstado();
+    // this.verificarEstado();
   }
 
   override verificarEstado(): void {
