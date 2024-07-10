@@ -22,7 +22,9 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que el getter de los reactores devuelva un array de ellos ", () => {
-    expect(Array.isArray(instance.getReactores())).toBe(true);
+    const mapaReactores: Map<number, Reactor> = instance.getReactores();
+    expect(mapaReactores.get.length).toBeGreaterThan(0);
+    expect(mapaReactores).toBeInstanceOf(Map);
   });
 
   it("Verifica que el cargarSistema funcione correctamente", () => {
@@ -36,7 +38,7 @@ describe("Test de la clase AlertaEstandar", () => {
 
     instance.agregarReactores(reactor1);
     instance.agregarReactores(reactor2);
-    
-    expect(instance.getReactores()).toHaveLength(2);
+
+    expect(instance.getReactores().get.length).toBe(2);
   });
 });
