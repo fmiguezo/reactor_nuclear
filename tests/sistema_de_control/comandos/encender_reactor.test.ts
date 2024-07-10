@@ -7,7 +7,7 @@ import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/b
 import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import EncenderErrorENormal from "../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 import EncenderErrorEEmergencia from "../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
 import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
@@ -16,15 +16,20 @@ import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/cher
 
 describe("Test del comando Encender reactor", () => {
   let instance: jest.Mocked<EncenderReactor>;
-  let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-  let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+  let MockPlanta: jest.Mocked<PlantaNuclear> =
+    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockSistema: jest.Mocked<Sistema> = new Sistema(
+    MockPlanta
+  ) as jest.Mocked<Sistema>;
   let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
     new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+  let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+    new DirectorBuildReactor(
+      MockBuilderConcreto
+    ) as jest.Mocked<DirectorBuildReactor>;
   MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-  let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+  let MockReactor: jest.Mocked<Reactor> =
+    MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
   let MockApagado: jest.Mocked<RApagado>;
 
   beforeEach(() => {
@@ -116,7 +121,9 @@ describe("Test del comando Encender reactor", () => {
     expect(encenderSpy).toHaveBeenCalled();
 
     // Verifica si en la consola salió el error
-    expect(consoleSpy).toHaveBeenCalledWith(Constantes.MENSAJE_ENCENDER_CRITICO);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      Constantes.MENSAJE_ENCENDER_CRITICO
+    );
 
     encenderSpy.mockRestore();
     consoleSpy.mockRestore();
@@ -168,7 +175,9 @@ describe("Test del comando Encender reactor", () => {
     expect(encenderSpy).toHaveBeenCalled();
 
     // Verifica si en la consola salió el error
-    expect(consoleSpy).toHaveBeenCalledWith(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO
+    );
 
     encenderSpy.mockRestore();
     consoleSpy.mockRestore();

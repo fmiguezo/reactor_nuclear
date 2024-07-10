@@ -9,7 +9,7 @@ import IMecanismoDeControl from "../../../../src/central_nuclear/interfaces/imec
 import ISensor from "../../../../src/central_nuclear/interfaces/isensor";
 import AdministradorBarras from "../../../../src/central_nuclear/reactor/administrador/administrador_barras";
 import Eliminada from "../../../../src/central_nuclear/barras_control/estados/eliminada";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes_reactor";
 import InsertarBarrasError from "../../../../src/errores/errores_central_nuclear/errores_del_administrador_de_barras/insertar_barras_error";
 import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";

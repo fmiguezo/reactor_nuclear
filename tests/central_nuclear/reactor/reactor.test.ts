@@ -16,7 +16,7 @@ import Energia from "../../../src/central_nuclear/reactor/reaccion/energia";
 import ISensor from "../../../src/central_nuclear/interfaces/isensor";
 import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecanismo_control";
 import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import Sistema from "../../../src/sistema_de_control/sistema";
 describe("Reactor", () => {
   let reactor: Reactor;

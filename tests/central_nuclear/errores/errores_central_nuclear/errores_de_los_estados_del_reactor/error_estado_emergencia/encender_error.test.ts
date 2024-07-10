@@ -1,5 +1,5 @@
 import EncenderError from "../../../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
-import { Constantes } from "../../../../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../../../../src/central_nuclear/reactor/constantes_reactor";
 
 describe("EncenderError", () => {
   it("debería crear una instancia de EncenderError con el mensaje predeterminado", () => {

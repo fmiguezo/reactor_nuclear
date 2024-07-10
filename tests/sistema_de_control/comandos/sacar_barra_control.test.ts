@@ -11,7 +11,7 @@ import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apaga
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
 import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 
 describe("Test del comando sacar barras de control del reactor", () => {
