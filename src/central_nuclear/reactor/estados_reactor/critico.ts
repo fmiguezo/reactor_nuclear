@@ -55,7 +55,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   override encender() {
-    throw new EncenderError(Constantes.MENSAJE_ESTADO_CRITICO);
+    throw new EncenderError(Constantes.MENSAJE_ENCENDER_CRITICO);
   }
 
   override apagar() {
