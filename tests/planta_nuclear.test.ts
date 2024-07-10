@@ -5,7 +5,6 @@ import Sistema from "../src/sistema_de_control/sistema";
 describe("Test de la clase AlertaEstandar", () => {
   let instance: PlantaNuclear;
   let instanceSistema: Sistema;
-  let instanceReactor: Reactor;
 
   beforeEach(() => {
     instance = new PlantaNuclear();
@@ -36,9 +35,21 @@ describe("Test de la clase AlertaEstandar", () => {
     const reactor1 = new Reactor();
     const reactor2 = new Reactor();
 
+    // Setea distintos IDs. Si tiene el mismo ID, nunca va a haber dos reactores.
+    reactor1.id = 0;
+    reactor2.id = 1;
+
     instance.agregarReactores(reactor1);
     instance.agregarReactores(reactor2);
 
-    expect(instance.getReactores().get.length).toBe(2);
+    const mapaReactores: Map<number, Reactor> = instance.getReactores();
+
+    // Verifica que hayan quedado cargados
+    expect(mapaReactores.get(0)).toBe(reactor1);
+    expect(mapaReactores.get(1)).toBe(reactor2);
+
+    // Verifica que el Map tenga 2 elementos
+
+    expect(mapaReactores.size).toBe(2);
   });
 });
