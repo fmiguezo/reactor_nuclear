@@ -16,7 +16,7 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   it("Verifica que el setter y el getter del sistema sea correcto", () => {
-    instance.setSistema(instanceSistema);
+    instance.cargarSistema(instanceSistema);
     expect(instance.getSistema()).toBeInstanceOf(Sistema);
   });
 
