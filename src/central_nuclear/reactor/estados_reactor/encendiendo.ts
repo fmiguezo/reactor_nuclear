@@ -7,7 +7,7 @@ import Reactor from "../reactor";
 export default class REncenciendo extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
-    this.verificarEstado();
+    // this.verificarEstado();
   }
 
   override verificarEstado(): void {

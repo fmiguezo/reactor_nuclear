@@ -26,7 +26,6 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new RCritico(MockReactor);
   MockReactor.setEstado(instance);
-  MockReactor.setTemperatura(0);
 });
 
 afterEach(() => {

@@ -16,7 +16,7 @@ export default class RNormal extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
-    this.verificarEstado();
+    // this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {

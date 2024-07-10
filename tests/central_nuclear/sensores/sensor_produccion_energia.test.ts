@@ -1,6 +1,6 @@
 import SensorProduccionDeEnergia from "../../../src/central_nuclear/sensores/sensor_produccion_energia";
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
-import { Constantes }  from "../../../src/central_nuclear/sensores/constantes";
+import { Constantes } from "../../../src/central_nuclear/sensores/constantes";
 import ActualizarError from "../../../src/errores/errores_central_nuclear/errores_sensores/error_sensor_produccion_energia/actualizar_error";
 
 let sensor: SensorProduccionDeEnergia;

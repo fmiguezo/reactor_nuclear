@@ -86,6 +86,7 @@ export default class Reactor {
     if (this._plantaNuclear.getSistema() != null) {
       this.notificarSistema();
     }
+    this._estado.verificarEstado();
   }
 
   public agregarMecanismoDeControl(

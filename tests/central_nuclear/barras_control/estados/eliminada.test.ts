@@ -1,11 +1,10 @@
 import Eliminada from "../../../../src/central_nuclear/barras_control/estados/eliminada";
-import { Constantes } from "../../../../src/central_nuclear/barras_control/constantes";
 import ActivarError from "../../../../src/errores/errores_central_nuclear/errores_barras_de_control/error_estado_eliminada/activar_error";
 import DesactivarError from "../../../../src/errores/errores_central_nuclear/errores_barras_de_control/error_estado_eliminada/desactivar_error";
 import RegistroBarrasUsadas from "../../../../src/sistema_de_control/registros/registro_barras_usadas";
 import BarraControlCadmio from "../../../../src/central_nuclear/barras_control/barra_control_cadmio";
 
-describe('Eliminada', () => {
+describe("Eliminada", () => {
   let eliminada: Eliminada;
   let rodInstance: BarraControlCadmio;
   beforeEach(() => {
@@ -14,35 +13,35 @@ describe('Eliminada', () => {
     eliminada.setBarraControl(rodInstance);
   });
 
-  it('Constructor should call reportarVencimiento', () => {
-    const insertarRegistroSpy = jest.spyOn(RegistroBarrasUsadas.instancia, 'insertarRegistro');
+  it("Constructor debería llamar a reportarVencimiento", () => {
+    const insertarRegistroSpy = jest.spyOn(RegistroBarrasUsadas.instancia, "insertarRegistro");
     new Eliminada(); // Llamamos al constructor para verificar su comportamiento
     expect(insertarRegistroSpy).toHaveBeenCalledWith(1);
   });
 
-  it('estaActivo should return false', () => {
+  it("estaActivo debería devolver falso", () => {
     expect(eliminada.estaActivo()).toBe(false);
   });
 
-  it('activar should throw ActivarError with correct message', () => {
+  it("activar debería tirar ActivarError con el mensaje de barra vencida", () => {
     expect(() => eliminada.activar()).toThrow(ActivarError);
-    expect(() => eliminada.activar()).toThrow(Constantes.MENSAJE_BARRA_VENCIDA);
+    expect(() => eliminada.activar()).toThrow("La barra está vencida. No puede utilizarse.");
   });
 
-  it('desactivar should throw DesactivarError with correct message', () => {
+  it("desactivar debería tirar DesactivarError con el mensaje de barra vencida", () => {
     expect(() => eliminada.desactivar()).toThrow(DesactivarError);
-    expect(() => eliminada.desactivar()).toThrow(Constantes.MENSAJE_BARRA_VENCIDA);
+    expect(() => eliminada.desactivar()).toThrow("La barra está vencida. No puede utilizarse.");
   });
 
-  it('calcPctBarra should return 0', () => {
+  it("calcPctBarra debería devolver 0", () => {
     expect(eliminada.calcPctBarra()).toBe(0);
   });
 
-  it('reportarVencimiento should insert record in RegistroBarrasUsadas', () => {
-    const insertarRegistroSpy = jest.spyOn(RegistroBarrasUsadas.instancia, 'insertarRegistro');
+  it("reportarVencimiento debería insertar el registo en RegistroBarrasUsadas", () => {
+    const insertarRegistroSpy = jest.spyOn(RegistroBarrasUsadas.instancia, "insertarRegistro");
     // Accedemos al método privado usando la indexación de propiedades
     // @ts-ignore
-    eliminada['reportarVencimiento']();
+    eliminada["reportarVencimiento"]();
     expect(insertarRegistroSpy).toHaveBeenCalledWith(1);
   });
 

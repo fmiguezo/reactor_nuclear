@@ -17,7 +17,7 @@ export default class RCritico extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOut();
-    this.verificarEstado();
+    // this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {
@@ -56,7 +56,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   override encender() {
-    throw new EncenderError(Constantes.MENSAJE_ENCENDIDO);
+    throw new EncenderError(Constantes.MENSAJE_ESTADO_CRITICO);
   }
 
   override apagar() {

@@ -1,5 +1,5 @@
-import Command from "./command";
 import Reactor from "../../central_nuclear/reactor/reactor";
+import Command from "./command";
 import InsertarBarrasError from "../../errores/errores_central_nuclear/errores_del_administrador_de_barras/insertar_barras_error";
 
 export default class InsertarBarraDeControl implements Command {
