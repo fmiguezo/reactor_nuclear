@@ -5,7 +5,7 @@ describe("ApagarError", () => {
   it("debería crear una instancia de ApagarError con el mensaje predeterminado", () => {
     const error = new ApagarError();
     expect(error instanceof ApagarError).toBeTruthy();
-    expect(error.message).toBe(Constantes.MENSAJE_APAGADO);
+    expect(error.message).toBe(Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_APAGO);
   });
 
   it("debería crear una instancia de ApagarError con un mensaje personalizado", () => {
