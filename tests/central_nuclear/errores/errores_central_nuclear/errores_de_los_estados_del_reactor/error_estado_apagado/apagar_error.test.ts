@@ -1,7 +1,7 @@
 import ApagarError from "../../../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_apagado/apagar_error";
 import { Constantes } from "../../../../../../src/central_nuclear/reactor/constantes_reactor";
 
-describe("ApagarError", () => {
+describe("tests de la clase de error ApagarError", () => {
   it("debería crear una instancia de ApagarError con el mensaje predeterminado", () => {
     const error = new ApagarError();
     expect(error instanceof ApagarError).toBeTruthy();
