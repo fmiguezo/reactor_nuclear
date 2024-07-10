@@ -1,7 +1,7 @@
 import EstadoReactor from "./estadoreactor";
 import RApagado from "./apagado";
 import RNormal from "./normal";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import Reactor from "../reactor";
 export default class REncenciendo extends EstadoReactor {

@@ -4,7 +4,7 @@ import RCritico from "./critico";
 import Chernobyl from "./chernobyl";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertaCritica from "../../../sistema_de_control/alertas/generador_alerta_critica";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import Reactor from "../reactor";

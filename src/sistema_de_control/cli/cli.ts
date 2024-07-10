@@ -2,8 +2,6 @@ import * as readline from "readline";
 import { Constantes } from "./constantes";
 import RegistroComandosDisponibles from "../comandos/registro_comandos_disponibles";
 import ReactorNoEncontradoError from "../../errores/errores_sistema_de_control/error_reactor_no_encontrado";
-import PlantaNuclear from "../../planta_nuclear";
-import Reactor from "../../central_nuclear/reactor/reactor";
 import Sistema from "../sistema";
 
 export default class Cli {

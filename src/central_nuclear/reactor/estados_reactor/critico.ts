@@ -6,11 +6,12 @@ import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
 import Reactor from "../reactor";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 export default class RCritico extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada =
+    RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
