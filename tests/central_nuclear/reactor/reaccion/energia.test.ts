@@ -57,4 +57,10 @@ describe("Test de Energia", () => {
     const actualEnergiaNeta = Energia.calcularEnergiaNeta(energiaTermal);
     expect(actualEnergiaNeta).toBe(expectedEnergiaNeta);
   });
+
+  it("Verifica que calcular correctamente la energía termal cuando la temperatura es exactamente la mínima permitida", () => {
+    const temp = Constantes.MIN_TEMPERATURA;
+    const expectedEnergiaTermal = Number((Constantes.M_TERMAL * temp + Constantes.B_TERMAL).toFixed(2));
+    expect(Energia.calcularEnergiaTermal(temp)).toBe(expectedEnergiaTermal);
+  });
 });

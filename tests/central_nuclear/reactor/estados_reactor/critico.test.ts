@@ -9,6 +9,7 @@ import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/nor
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_estandar";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes_reactor";
 
 let instance: RCritico;
 let _timerGeneracion: NodeJS.Timeout | null = null;
@@ -36,12 +37,12 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-describe("Test del estado Critico", () => {
-  it("verifica que la instancia sea de tipo RCritico", () => {
+describe("Test del estado Crítico", () => {
+  it("debería inicializar correctamente como estado RCritico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado normal si la temperatura está por debajo de 330 grados", () => {
+  it("debería cambiar a estado RNormal si la temperatura está por debajo de 330 grados", () => {
     MockReactor.setTemperatura(329);
     MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
@@ -53,23 +54,56 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
   });
 
-  it("debería dar error si se intenta encender un reactor en estado RCritico", () => {
-    MockReactor.getEstado().verificarEstado();
-    expect(() => instance.encender()).toThrow(new EncenderError());
+  it("debería lanzar un error al intentar encender un reactor en estado RCritico", () => {
+    expect(() => instance.encender()).toThrow(EncenderError);
   });
 
-  it("debería cambiar a estado apagado si se llama al método apagar", () => {
+  it("debería cambiar a estado RApagado al llamar al método apagar", () => {
     instance.apagar();
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
-  it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
-    MockReactor.getEstado().verificarEstado();
-    expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
+  it("debería generar una alerta de tipo AlertaEstandar al llamar a generarAlerta", () => {
+    const alerta = instance.generarAlerta();
+    expect(alerta).toBeInstanceOf(AlertaEstandar);
   });
 
-  it("debería poder insertar barras", () => {
-    MockReactor.getEstado().verificarEstado();
+  it("debería permitir insertar barras de control", () => {
     expect(instance.puedeInsertarBarras()).toBeTruthy();
+  });
+
+  it("debería resetear el timeout de generación de energía correctamente", () => {
+    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
+    const spyCrearTimeOut = jest.spyOn(instance as any, 'crearTimeOut');
+    (instance as any).resetTimeOutEnergia(10000);
+    expect(spyEliminarTimeOut).toHaveBeenCalled();
+    expect(spyCrearTimeOut).toHaveBeenCalledWith(10000);
+  });
+
+  it("debería cambiar al estado RNormal correctamente", () => {
+    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
+    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
+    (instance as any).cambiarAEstadoNormal();
+    expect(spyEliminarTimeOut).toHaveBeenCalled();
+    expect(spyCambiarEstado).toHaveBeenCalledWith(expect.any(RNormal));
+  });
+
+  it("debería cambiar al estado REmergencia correctamente", () => {
+    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
+    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
+    (instance as any).cambiarAEstadoEmergencia();
+    expect(spyEliminarTimeOut).toHaveBeenCalled();
+    expect(spyCambiarEstado).toHaveBeenCalledWith(expect.any(REmergencia));
+  });
+
+  it("debería liberar energía correctamente", () => {
+    const spyInsertarRegistro = jest.spyOn(instance['_registroEnergia'], 'insertarRegistro');
+    jest.spyOn(instance, 'obtenerEnergiaNeta').mockReturnValue(100);
+    instance.liberarEnergia();
+    expect(spyInsertarRegistro).toHaveBeenCalledWith(100);
+  });
+
+  it("debería devolver el mensaje de estado crítico correctamente", () => {
+    expect(instance.toString()).toBe(Constantes.MENSAJE_ESTADO_CRITICO);
   });
 });

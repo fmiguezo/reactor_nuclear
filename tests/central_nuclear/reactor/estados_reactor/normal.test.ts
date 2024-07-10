@@ -122,4 +122,47 @@ describe("Test del estado Normal", () => {
     jest.clearAllTimers();
     expect(instance.toString()).toBe("El reactor está en estado normal.");
   });
+
+  it("debería resetear el timeout de generación de energía", () => {
+    const spyEliminarTimeout = jest.spyOn(instance as any, 'eliminarTimeOut');
+    const spyCrearTimeout = jest.spyOn(instance as any, 'crearTimeOutEnergia');
+
+    (instance as any).resetTimeOutEnergia();
+
+    expect(spyEliminarTimeout).toHaveBeenCalled();
+    expect(spyCrearTimeout).toHaveBeenCalled();
+  });
+
+  it("debería crear un nuevo timeout de generación de energía", () => {
+    jest.spyOn(global, 'setTimeout'); 
+    (instance as any).crearTimeOutEnergia(10000);
+    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
+  });
+
+  it("debería cambiar a estado crítico y registrar el cambio de estado", () => {
+    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
+    const spyAumentarRegistro = jest.spyOn(MockRegistroEstados, 'aumentarRegistro');
+
+    (instance as any).cambiarAEstadoCritico();
+
+    expect(spyCambiarEstado).toHaveBeenCalledWith(expect.any(RCritico));
+    expect(spyAumentarRegistro).toHaveBeenCalledWith(expect.any(RCritico));
+  });
+
+  it("debería lanzar una alerta cuando se genera una alerta", () => {
+    const alerta = instance.generarAlerta();
+    expect(alerta).toBeDefined();
+  });
+
+  it("debería insertar barras de control si el estado lo permite", () => {
+    const puedeInsertar = instance.puedeInsertarBarras();
+    expect(puedeInsertar).toBe(false); 
+  });
+
+  it("debería liberar energía y registrarla adecuadamente", () => {
+    instance.liberarEnergia();
+    jest.advanceTimersByTime(30000); 
+    expect(MockRegistroEnergia.insertarRegistro).toHaveBeenCalledWith(100);
+  });
+
 });
