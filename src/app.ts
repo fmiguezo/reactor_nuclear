@@ -25,3 +25,7 @@ plantaNuclear.cargarSistema(sistema);
 
 // Cede el control a los comandos
 sistema.init();
+
+//  TESTING
+
+nuevoReactor.encender();
