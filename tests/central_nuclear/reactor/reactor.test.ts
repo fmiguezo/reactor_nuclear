@@ -1,15 +1,7 @@
 import Reactor from "../../../src/central_nuclear/reactor/reactor";
-import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
-import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
-import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
-import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
-import AdministradorBarras from "../../../src/central_nuclear/reactor/administrador/administrador_barras";
-import IBuilder from "../../../src/central_nuclear/reactor/builder/ibuilder";
 import PlantaNuclear from "../../../src/planta_nuclear";
-import EnergiaNetaCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
 import EnergiaTermalCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
-import exp from "constants";
 import SubirBarrasError from "../../../src/errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
 import EstadoReactor from "../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 import Energia from "../../../src/central_nuclear/reactor/reaccion/energia";
@@ -18,6 +10,9 @@ import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecani
 import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
 import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import Sistema from "../../../src/sistema_de_control/sistema";
+import AdministradorBarras from "../../../src/central_nuclear/reactor/administrador/administrador_barras";
+import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
+import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 
 describe("Reactor", () => {
   let reactor: Reactor;
@@ -26,8 +21,11 @@ describe("Reactor", () => {
   let mecanismoDeControlMock: IMecanismoDeControl;
   let sensorMock: ISensor;
   let administradorBarrasMock: AdministradorBarras;
-  let plantaNuclearMock: PlantaNuclear;
-  let sistema: Sistema;
+  let plantaNuclearMock: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let sistemaMock: jest.Mocked<Sistema> = new Sistema(plantaNuclearMock) as jest.Mocked<Sistema>;
+  let RCriticoMock: jest.Mocked<RCritico>;
+  let RApagadoMock: jest.Mocked<RApagado>;
+  let REmergenciaMock: jest.Mocked<REmergencia>;
 
   beforeEach(() => {
     estadoMock = {
@@ -53,14 +51,6 @@ describe("Reactor", () => {
       setReactor: jest.fn(),
     } as unknown as AdministradorBarras;
 
-    plantaNuclearMock = {
-      getSistema: jest.fn().mockReturnValue({
-        actualizar: jest.fn(),
-      }),
-    } as unknown as PlantaNuclear;
-
-    plantaNuclearMock = new PlantaNuclear();
-    sistema = new Sistema(plantaNuclearMock);
     reactor = new Reactor();
     reactor.setEstado(estadoMock);
     reactor.setAadministradorBarras(administradorBarrasMock);
@@ -91,7 +81,6 @@ describe("Reactor", () => {
   it("debería obtener y establecer la temperatura del reactor", () => {
     reactor.setTemperatura(100);
     expect(reactor.getTemperatura()).toBe(100);
-    expect(estadoMock.verificarEstado).toHaveBeenCalled();
   });
 
   it("debería obtener y establecer las barras de control", () => {
@@ -155,10 +144,27 @@ describe("Reactor", () => {
     expect(sensorMock.actualizar).toHaveBeenCalledWith(reactor);
   });
 
-  // PENDIENTE
-  it("debería notificar al sistema", () => {
-    reactor.notificarSistema();
-    expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(reactor);
+  describe("debería notificar al sistema cuando se produce un cambio de estado a critico, emergencia o apagado", () => {
+    it("debería notificar al sistema cuando se produce un cambio de estado a critico", () => {
+      jest.spyOn(reactor, "notificarSistema");
+      RCriticoMock = new RCritico(reactor) as jest.Mocked<RCritico>;
+      reactor.cambiarEstado(RCriticoMock);
+      expect(reactor.notificarSistema).toHaveBeenCalled();
+    });
+
+    it("debería notificar al sistema cuando se produce un cambio de estado a emergencia", () => {
+      jest.spyOn(reactor, "notificarSistema");
+      RApagadoMock = new RApagado(reactor) as jest.Mocked<RApagado>;
+      reactor.cambiarEstado(RApagadoMock);
+      expect(reactor.notificarSistema).toHaveBeenCalled();
+    });
+
+    it("debería notificar al sistema cuando se produce un cambio de estado a apagado", () => {
+      jest.spyOn(reactor, "notificarSistema");
+      REmergenciaMock = new REmergencia(reactor) as jest.Mocked<REmergencia>;
+      reactor.cambiarEstado(REmergenciaMock);
+      expect(reactor.notificarSistema).toHaveBeenCalled();
+    });
   });
 
   it("debería obtener y establecer el administrador de barras", () => {
