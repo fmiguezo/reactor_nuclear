@@ -4,14 +4,16 @@ import EnDesuso from "../../../src/central_nuclear/barras_control/estados/en_des
 import Insertada from "../../../src/central_nuclear/barras_control/estados/insertada";
 import Eliminada from "../../../src/central_nuclear/barras_control/estados/eliminada";
 import BarraControlCadmio from "../../../src/central_nuclear/barras_control/barra_control_cadmio";
+import FabricaBarraCadmio from "../../../src/central_nuclear/barras_control/fabrica/fabrica_barra_cadmio";
+import FabricaBarra from "../../../src/central_nuclear/barras_control/fabrica/fabrica_barra";
 
 describe("Test de Barra de Control: Activar/Desactivar", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
     jest.useFakeTimers();
-    let defaultState: EstadoBarraControl = new EnDesuso();
-    instance = new BarraControlCadmio(200, defaultState);
+    const fabricaBarras: FabricaBarra = new FabricaBarraCadmio();
+    instance = fabricaBarras.crearBarra();
   });
 
   afterEach(() => {
@@ -21,22 +23,26 @@ describe("Test de Barra de Control: Activar/Desactivar", () => {
     jest.clearAllTimers();
   });
 
+  it("Verifica que esté en el estado correspondiente por defecto", () => {
+    expect(instance.getEstado()).toBeInstanceOf(EnDesuso);
+  });
+
   it("Verifica que no esté activa", () => {
     let estado: boolean = instance.estaActivo();
-    expect(estado).toBe(false);
+    expect(estado).toBeFalsy();
   });
 
   it("Verifica que pueda activarse", () => {
     instance.activar();
     let estado: boolean = instance.estaActivo();
-    expect(estado).toBe(true);
+    expect(estado).toBeTruthy();
   });
 
   it("Verifica que pueda activarse y desactivarse", () => {
     instance.activar();
     instance.desactivar();
     let estado: boolean = instance.estaActivo();
-    expect(estado).toBe(false);
+    expect(estado).toBeFalsy();
   });
 });
 
@@ -44,6 +50,7 @@ describe("Test de Barra de Control: Calculo porcentaje reduccion temp", () => {
   let instance: BarraControl;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     instance = new BarraControlCadmio(3600);
   });
 
