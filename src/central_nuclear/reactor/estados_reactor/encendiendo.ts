@@ -7,7 +7,6 @@ import Reactor from "../reactor";
 export default class REncenciendo extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
-    // this.verificarEstado();
   }
 
   override verificarEstado(): void {
@@ -15,9 +14,6 @@ export default class REncenciendo extends EstadoReactor {
     if (tempActual >= Constantes.TEMP_MINIMA_NORMAL) {
       this.cambiarAEstadoNormal();
     }
-  }
-  override obtenerEnergiaNeta(): number {
-    return 0;
   }
 
   private cambiarAEstadoNormal() {

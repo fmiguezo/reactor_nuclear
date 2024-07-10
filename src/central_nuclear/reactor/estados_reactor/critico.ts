@@ -16,16 +16,15 @@ export default class RCritico extends EstadoReactor {
 
   constructor(r: Reactor) {
     super(r);
-    this.crearTimeOut();
-    // this.verificarEstado();
+    this.crearTimeOut(120000);
   }
 
-  private resetTimeOutEnergia(frecuencia: number = 30000): void {
+  private resetTimeOutEnergia(frecuencia: number): void {
     this.eliminarTimeOut(this._timerGeneracion);
     this.crearTimeOut(frecuencia);
   }
 
-  private crearTimeOut(frecuencia: number = 30000): void {
+  private crearTimeOut(frecuencia: number): void {
     this._timerGeneracion = setTimeout(() => {
       this.liberarEnergia();
       this.resetTimeOutEnergia(frecuencia);

@@ -12,7 +12,7 @@ export default abstract class EstadoReactor implements IEncendible {
 
   constructor(r: Reactor) {
     this._reactor = r;
-    this.crearTimeOutTemp(300000);
+    this.crearTimeOutTemp(120000);
   }
 
   public obtenerEnergiaNeta(): number {
@@ -52,13 +52,13 @@ export default abstract class EstadoReactor implements IEncendible {
     return null;
   }
 
-  protected crearTimeOutTemp(frecuencia: number = 300000): void {
+  protected crearTimeOutTemp(frecuencia: number): void {
     this._timerTemp = setTimeout(() => {
       this.modificarTemperatura();
       this.resetTimeOutTemp(frecuencia);
     }, frecuencia);
   }
-  private resetTimeOutTemp(frecuencia: number = 300000): void {
+  private resetTimeOutTemp(frecuencia: number): void {
     this.eliminarTimeOut(this._timerTemp);
     this.crearTimeOutTemp(frecuencia);
   }
