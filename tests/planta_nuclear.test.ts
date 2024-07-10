@@ -41,7 +41,6 @@ describe("Test de la clase AlertaEstandar", () => {
     reactor2.id = 1;
 
     // Carga reactores en el Map
-
     instance.agregarReactores(reactor1);
     instance.agregarReactores(reactor2);
 
@@ -52,7 +51,6 @@ describe("Test de la clase AlertaEstandar", () => {
     expect(mapaReactores.get(1)).toBe(reactor2);
 
     // Verifica que el Map tenga 2 elementos
-
     expect(mapaReactores.size).toBe(2);
   });
 });
