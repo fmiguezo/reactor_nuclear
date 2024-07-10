@@ -17,6 +17,7 @@ import ISensor from "../../../src/central_nuclear/interfaces/isensor";
 import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecanismo_control";
 import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
 import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import Sistema from "../../../src/sistema_de_control/sistema";
 describe('Reactor', () => {
   let reactor: Reactor;
   let estadoMock: EstadoReactor;
@@ -120,6 +121,8 @@ describe('Reactor', () => {
 
   it('debería cambiar el estado del reactor y notificar al sistema', () => {
     const nuevoEstado = {} as EstadoReactor;
+    const sistema = new Sistema(plantaNuclearMock);
+    plantaNuclearMock.setSistema(sistema);
     reactor.cambiarEstado(nuevoEstado);
     expect(reactor.getEstado()).toBe(nuevoEstado);
     expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(reactor);

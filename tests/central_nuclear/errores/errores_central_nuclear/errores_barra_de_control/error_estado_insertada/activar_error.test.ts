@@ -5,7 +5,7 @@ describe('ActivarError', () => {
     it('debería crear una instancia de ActivarError con el mensaje predeterminado', () => {
       const error = new ActivarError();
       expect(error instanceof ActivarError).toBeTruthy();
-      expect(error.message).toBe(Constantes.MENSAJE_BARRA_VENCIDA);
+      expect(error.message).toBe(Constantes.MENSAJE_BARRA_INSERTADA);
     });
   
     it('debería crear una instancia de ActivarError con un mensaje personalizado', () => {
