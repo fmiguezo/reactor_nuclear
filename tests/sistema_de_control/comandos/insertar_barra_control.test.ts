@@ -11,7 +11,7 @@ import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/em
 import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
 import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import InsertarBarraDeControl from "../../../src/sistema_de_control/comandos/insertar_barra_control";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 
 describe("Test del comando insertar barra de control", () => {
   let instance: jest.Mocked<InsertarBarraDeControl>;

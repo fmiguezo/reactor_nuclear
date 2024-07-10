@@ -1,6 +1,6 @@
 import EstadoReactor from "./estadoreactor";
 import Reactor from "../reactor";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import VerificarEstadoError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_chernobyl/verificar_estado_error";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_chernobyl/encender_error";
 import ApagarError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_chernobyl/apagar_error";

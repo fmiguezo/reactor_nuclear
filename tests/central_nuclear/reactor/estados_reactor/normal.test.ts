@@ -6,31 +6,40 @@ import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes_reactor";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
 import RegistroEnergiaGenerada from "../../../../src/sistema_de_control/registros/registro_energia_generada";
 import RegistroEstados from "../../../../src/sistema_de_control/registros/registroEstados";
 
 let instance: RNormal;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> =
+  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(
+  MockPlanta
+) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
-  MockBuilderConcreto
-) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
+  new DirectorBuildReactor(
+    MockBuilderConcreto
+  ) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> =
+  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 let MockRegistroEnergia: jest.Mocked<RegistroEnergiaGenerada> =
   RegistroEnergiaGenerada.instancia as jest.Mocked<RegistroEnergiaGenerada>;
-let MockRegistroEstados: jest.Mocked<RegistroEstados> = RegistroEstados.instancia as jest.Mocked<RegistroEstados>;
+let MockRegistroEstados: jest.Mocked<RegistroEstados> =
+  RegistroEstados.instancia as jest.Mocked<RegistroEstados>;
 
-jest.mock("../../../../src/sistema_de_control/registros/registro_energia_generada", () => ({
-  instancia: {
-    insertarRegistro: jest.fn(),
-  },
-}));
+jest.mock(
+  "../../../../src/sistema_de_control/registros/registro_energia_generada",
+  () => ({
+    instancia: {
+      insertarRegistro: jest.fn(),
+    },
+  })
+);
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -104,7 +113,9 @@ describe("Test del estado Normal", () => {
   it("debería crear un registro con el mismo valor de la energía neta producida si llama a liberarEnergia()", () => {
     instance.liberarEnergia();
     jest.clearAllTimers();
-    expect(RegistroEnergiaGenerada.instancia.insertarRegistro).toHaveBeenCalledWith(100);
+    expect(
+      RegistroEnergiaGenerada.instancia.insertarRegistro
+    ).toHaveBeenCalledWith(100);
   });
 
   it("toString debería volver el mensaje de estado normal", () => {

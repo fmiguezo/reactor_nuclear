@@ -1,7 +1,7 @@
 import IEncendible from "../../interfaces/iencendible";
 import Reactor from "../reactor";
 import Alerta from "../../../sistema_de_control/alertas/alerta";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import BarraControl from "../../barras_control/barra_control";
 import EnergiaNetaCalculationError from "../../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
 import Energia from "../reaccion/energia";
@@ -18,7 +18,9 @@ export default abstract class EstadoReactor implements IEncendible {
   public obtenerEnergiaNeta(): number {
     let energiaNeta = 0;
     try {
-      energiaNeta = Energia.calcularEnergiaNeta(this._reactor.obtenerEnergiaTermal());
+      energiaNeta = Energia.calcularEnergiaNeta(
+        this._reactor.obtenerEnergiaTermal()
+      );
     } catch (error) {
       if (error instanceof EnergiaNetaCalculationError) {
         console.log("Error específico de energía neta:", error.message);
@@ -61,7 +63,9 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public calcValorEnfriamiento(): number {
-    const barrasInsertadas: BarraControl[] = this._reactor.getAdministradorBarras().getBarrasInsertadas();
+    const barrasInsertadas: BarraControl[] = this._reactor
+      .getAdministradorBarras()
+      .getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => {
       valorEnfriamiento += b.getPctBarra();
