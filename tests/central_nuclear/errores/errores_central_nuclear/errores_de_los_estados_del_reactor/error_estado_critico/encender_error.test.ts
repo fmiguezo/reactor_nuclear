@@ -5,7 +5,7 @@ describe("EncenderError", () => {
   it("debería crear una instancia de EncenderError con el mensaje predeterminado", () => {
     const error = new EncenderError();
     expect(error instanceof EncenderError).toBeTruthy();
-    expect(error.message).toBe(Constantes.MENSAJE_ESTADO_CRITICO);
+    expect(error.message).toBe(Constantes.MENSAJE_ENCENDER_CRITICO);
   });
 
   it("debería crear una instancia de EncenderError con un mensaje personalizado", () => {
