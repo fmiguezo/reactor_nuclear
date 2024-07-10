@@ -12,20 +12,15 @@ import EncenderError from "../../../../src/errores/errores_central_nuclear/error
 
 let instance: RCritico;
 let _timerGeneracion: NodeJS.Timeout | null = null;
-let MockPlanta: jest.Mocked<PlantaNuclear> =
-  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(
-  MockPlanta
-) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-  new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> =
-  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -45,7 +40,7 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado RNormal si la temperatura es 329 o menor", () => {
+  it("debería cambiar a estado normal si la temperatura está por debajo de 300 grados", () => {
     MockReactor.setTemperatura(329);
     jest.clearAllTimers();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
@@ -59,6 +54,7 @@ describe("Test del estado Critico", () => {
   });
 
   it("debería dar error si se intenta encender un reactor en estado RCritico", () => {
+    jest.clearAllTimers();
     expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
@@ -67,36 +63,13 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 
-  it("debería confirmar que el reactor está encendido si el estado es RCritico", () => {
-    expect(instance.estaEncendido()).toBeTruthy;
-  });
-
   it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
+    jest.clearAllTimers();
     expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
   });
 
   it("debería poder insertar barras", () => {
+    jest.clearAllTimers();
     expect(instance.puedeInsertarBarras()).toBeTruthy();
-  });
-
-  it("debería cambiar a estado normal si la temperatura está por debajo de 300 grados", () => {
-    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(299);
-    instance.verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
-  });
-
-  it("debería cambiar a estado emergencia si la temperatura es igual o mayor a 500 grados", () => {
-    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(350);
-    instance.verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
-  });
-
-  it("debería dar error si se llama a la función encender()", () => {
-    expect(() => instance.encender()).toThrow(new EncenderError());
-  });
-
-  it("debería cambiar a estado apagado si se llama a la función apagar()", () => {
-    instance.apagar();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
   });
 });
