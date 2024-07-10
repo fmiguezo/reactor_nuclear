@@ -12,6 +12,7 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     jest.useFakeTimers();
     stateInstance = new EnDesuso();
     rodInstance = new BarraControlCadmio(200, stateInstance);
+    stateInstance.setBarraControl(rodInstance);
   });
 
   afterEach(() => {
@@ -41,6 +42,16 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
 
   it("Verifica que desactivar tire una excepcion", () => {
     expect(() => rodInstance.desactivar()).toThrow(new DesactivarError());
+  });
+
+  it('Verifica que el getter de la barra funcione correctamente', () => {
+    expect(stateInstance.getBarraControl()).toBe(rodInstance);
+  });
+
+  it('Verifica que el setter de la barra funcione correctamente', () => {
+    let rodInstance1 = new BarraControlCadmio(200, stateInstance);
+    stateInstance.setBarraControl(rodInstance1);
+    expect(stateInstance.getBarraControl()).toBe(rodInstance1);
   });
 
   afterEach(() => {

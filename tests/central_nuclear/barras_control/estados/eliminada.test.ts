@@ -2,12 +2,15 @@ import Eliminada from "../../../../src/central_nuclear/barras_control/estados/el
 import ActivarError from "../../../../src/errores/errores_central_nuclear/errores_barras_de_control/error_estado_eliminada/activar_error";
 import DesactivarError from "../../../../src/errores/errores_central_nuclear/errores_barras_de_control/error_estado_eliminada/desactivar_error";
 import RegistroBarrasUsadas from "../../../../src/sistema_de_control/registros/registro_barras_usadas";
+import BarraControlCadmio from "../../../../src/central_nuclear/barras_control/barra_control_cadmio";
 
 describe("Eliminada", () => {
   let eliminada: Eliminada;
-
+  let rodInstance: BarraControlCadmio;
   beforeEach(() => {
     eliminada = new Eliminada();
+    rodInstance = new BarraControlCadmio(200,eliminada);
+    eliminada.setBarraControl(rodInstance);
   });
 
   it("Constructor debería llamar a reportarVencimiento", () => {
@@ -41,4 +44,15 @@ describe("Eliminada", () => {
     eliminada["reportarVencimiento"]();
     expect(insertarRegistroSpy).toHaveBeenCalledWith(1);
   });
+
+  it('Verifica que el getter de la barra funcione correctamente', () => {
+    expect(eliminada.getBarraControl()).toBe(rodInstance);
+  });
+
+  it('Verifica que el setter de la barra funcione correctamente', () => {
+    let rodInstance1 = new BarraControlCadmio(200, eliminada);
+    eliminada.setBarraControl(rodInstance1);
+    expect(eliminada.getBarraControl()).toBe(rodInstance1);
+  });
+
 });

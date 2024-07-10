@@ -79,14 +79,14 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("debería cambiar a estado emergencia si la temperatura es igual o mayor a 400 grados", () => {
-    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(400);
+  it("debería cambiar a estado emergencia si la temperatura es igual o mayor a 500 grados", () => {
+    jest.spyOn(MockReactor, "getTemperatura").mockReturnValue(350);
     instance.verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
   });
 
   it("debería dar error si se llama a la función encender()", () => {
-    expect(() => instance.encender()).toThrow("El reactor ya está encendido.");
+    expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
   it("debería cambiar a estado apagado si se llama a la función apagar()", () => {

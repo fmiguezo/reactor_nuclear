@@ -5,82 +5,180 @@ import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/e
 import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import AdministradorBarras from "../../../src/central_nuclear/reactor/administrador/administrador_barras";
-import { Constantes } from "../../../../reactor_nuclear/src/central_nuclear/reactor/reaccion/constantes_formula_energia";
 import IBuilder from "../../../src/central_nuclear/reactor/builder/ibuilder";
 import PlantaNuclear from "../../../src/planta_nuclear";
 import EnergiaNetaCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
 import EnergiaTermalCalculationError from "../../../src/errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
-
-describe("Test del reactor", () => {
-  let builder: IBuilder;
-  let director: DirectorBuildReactor;
-  let administrador: AdministradorBarras;
+import exp from "constants";
+import SubirBarrasError from "../../../src/errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
+import EstadoReactor from "../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
+import Energia from "../../../src/central_nuclear/reactor/reaccion/energia";
+import ISensor from "../../../src/central_nuclear/interfaces/isensor";
+import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecanismo_control";
+import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+describe('Reactor', () => {
   let reactor: Reactor;
-  let plantaNuclear: PlantaNuclear;
+  let estadoMock: EstadoReactor;
+  let barraControlMock: BarraControl;
+  let mecanismoDeControlMock: IMecanismoDeControl;
+  let sensorMock: ISensor;
+  let administradorBarrasMock: AdministradorBarras;
+  let plantaNuclearMock: PlantaNuclear;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    builder = new BuilderReactorNormal();
-    director = new DirectorBuildReactor(builder);
-    plantaNuclear = new PlantaNuclear();
-    director.cargarPlantaNuclear(plantaNuclear);
-    reactor = director.buildReactorNormal();
+    estadoMock = {
+      encender: jest.fn(),
+      apagar: jest.fn(),
+      estaEncendido: jest.fn().mockReturnValue(true),
+      verificarEstado: jest.fn(),
+      obtenerEnergiaNeta: jest.fn().mockReturnValue(100),
+      puedeInsertarBarras: jest.fn().mockReturnValue(true),
+    } as unknown as EstadoReactor;
+
+    barraControlMock = {
+      // Aquí debes implementar los métodos de BarraControl que sean necesarios para las pruebas
+    } as unknown as BarraControl;
+
+    mecanismoDeControlMock = {
+      // Aquí debes implementar los métodos de IMecanismoDeControl que sean necesarios para las pruebas
+    } as unknown as IMecanismoDeControl;
+
+    sensorMock = {
+      actualizar: jest.fn(),
+    } as unknown as ISensor;
+
+    administradorBarrasMock = {
+      getBarrasInsertadas: jest.fn().mockReturnValue([]),
+      subirBarras: jest.fn(),
+      setReactor: jest.fn(),
+    } as unknown as AdministradorBarras;
+
+    plantaNuclearMock = {
+      getSistema: jest.fn().mockReturnValue({
+        actualizar: jest.fn(),
+      }),
+    } as unknown as PlantaNuclear;
+
+    reactor = new Reactor();
+    reactor.setEstado(estadoMock);
+    reactor.setAadministradorBarras(administradorBarrasMock);
+    reactor.setPlantaNuclear(plantaNuclearMock);
   });
 
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-    jest.clearAllMocks();
-    jest.clearAllTimers();
-  });
-
-  it("Debería inicializar el reactor con los valores correctos por defecto", () => {
-    expect(reactor.getEstado()).toBeInstanceOf(RApagado);
-    expect(reactor.getTemperatura()).toBe(0);
-    expect(reactor.getBarrasDeControl()).toEqual([]);
-  });
-
-  it("El objeto instanciado deberia ser de tipo Reactor", () => {
-    expect(reactor).toBeInstanceOf(Reactor);
-  });
-
-  it("Verifica que el getter de estado funcione", () => {
-    reactor.setEstado(new RCritico(reactor));
-    expect(reactor.getEstado()).toBeInstanceOf(RCritico);
-  });
-
-  it("no debería calcular energía termal ni neta si el reactor está apagado", () => {
-    expect(() => reactor.obtenerEnergiaTermal()).toThrow(
-      new EnergiaTermalCalculationError()
-    );
-    expect(reactor.obtenerEnergiaNeta()).toThrow(
-      new EnergiaNetaCalculationError()
-    );
-  });
-
-  it("Debería encender el reactor y verificar que esté encendiendo y su estado sea normal", () => {
+  it('debería encender el reactor', () => {
     reactor.encender();
-    expect(reactor.getEstado()).toBeInstanceOf(REncenciendo);
-    expect(reactor.estaEncendido()).toBeTruthy();
+    expect(estadoMock.encender).toHaveBeenCalled();
   });
 
-  it("Debería settear y obetener el estado del reactor correctamente", () => {
-    let estadoCritico = new RCritico(reactor);
-    reactor.setEstado(estadoCritico);
-    expect(reactor.getEstado()).toBe(estadoCritico);
+  it('debería apagar el reactor', () => {
+    reactor.apagar();
+    expect(estadoMock.apagar).toHaveBeenCalled();
   });
 
-  it("Debería setear y obtener la temperatura correctamente", () => {
+  it('debería verificar si el reactor está encendido', () => {
+    expect(reactor.estaEncendido()).toBe(true);
+    expect(estadoMock.estaEncendido).toHaveBeenCalled();
+  });
+
+  it('debería obtener y establecer el estado del reactor', () => {
+    const nuevoEstado = {} as EstadoReactor;
+    reactor.setEstado(nuevoEstado);
+    expect(reactor.getEstado()).toBe(nuevoEstado);
+  });
+
+  it('debería obtener y establecer la temperatura del reactor', () => {
     reactor.setTemperatura(100);
     expect(reactor.getTemperatura()).toBe(100);
+    expect(estadoMock.verificarEstado).toHaveBeenCalled();
   });
 
-  it("Debería poder agregar y eliminar mecanismos de control correctamente", () => {
-    let cantBarrasOriginales = administrador.getBarrasTotales().length;
-    let cantAgregadas = 3;
-    administrador.cargarBarras(cantAgregadas);
-    expect(reactor.getBarrasDeControl()).toContain(
-      cantBarrasOriginales + cantAgregadas
-    );
+  it('debería obtener y establecer las barras de control', () => {
+    const barras = [barraControlMock];
+    reactor.setBarrasDeControl(barras);
+    expect(reactor.getBarrasDeControl()).toBe(barras);
+  });
+
+  it('debería obtener la energía termal', () => {
+    jest.spyOn(Energia, 'calcularEnergiaTermal').mockReturnValue(500);
+    expect(reactor.obtenerEnergiaTermal()).toBe(500);
+  });
+
+  it('debería manejar el error al calcular la energía termal', () => {
+    jest.spyOn(Energia, 'calcularEnergiaTermal').mockImplementation(() => {
+      throw new EnergiaTermalCalculationError('Error de cálculo');
+    });
+    console.log = jest.fn();
+    expect(reactor.obtenerEnergiaTermal()).toBe(0);
+    expect(console.log).toHaveBeenCalledWith('Error de cálculo');
+  });
+
+  it('debería obtener la energía neta', () => {
+    expect(reactor.obtenerEnergiaNeta()).toBe(100);
+    expect(estadoMock.obtenerEnergiaNeta).toHaveBeenCalled();
+  });
+
+  it('debería cambiar el estado del reactor y notificar al sistema', () => {
+    const nuevoEstado = {} as EstadoReactor;
+    reactor.cambiarEstado(nuevoEstado);
+    expect(reactor.getEstado()).toBe(nuevoEstado);
+    expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(reactor);
+  });
+
+  it('debería agregar y eliminar mecanismos de control', () => {
+    reactor.agregarMecanismoDeControl(mecanismoDeControlMock);
+    expect(reactor['_mecanimosDeControl']).toContain(mecanismoDeControlMock);
+
+    reactor.eliminarMecanismoDeControl(mecanismoDeControlMock);
+    expect(reactor['_mecanimosDeControl']).not.toContain(mecanismoDeControlMock);
+  });
+
+  it('debería agregar y eliminar sensores', () => {
+    reactor.agregarSensor(sensorMock);
+    expect(reactor.getSensores()).toContain(sensorMock);
+
+    reactor.eliminarSensor(sensorMock);
+    expect(reactor.getSensores()).not.toContain(sensorMock);
+  });
+
+  it('debería notificar a los sensores', () => {
+    reactor.agregarSensor(sensorMock);
+    reactor.notificarSensores();
+    expect(sensorMock.actualizar).toHaveBeenCalledWith(reactor);
+  });
+
+  it('debería notificar al sistema', () => {
+    reactor.notificarSistema();
+    expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(reactor);
+  });
+
+  it('debería obtener y establecer el administrador de barras', () => {
+    expect(reactor.getAdministradorBarras()).toBe(administradorBarrasMock);
+  });
+
+  it('debería verificar si se pueden insertar barras', () => {
+    expect(reactor.puedeInsertarBarras()).toBe(true);
+    expect(estadoMock.puedeInsertarBarras).toHaveBeenCalled();
+  });
+
+  it('debería desactivar los mecanismos de control', () => {
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
+    reactor.desactivarMecanismosDeControl();
+    expect(administradorBarrasMock.subirBarras).toHaveBeenCalled();
+  });
+
+  it('debería manejar errores al desactivar los mecanismos de control', () => {
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
+    administradorBarrasMock.subirBarras = jest.fn().mockImplementation(() => {
+      throw new SubirBarrasError(Constantes.NO_PUEDE_SUBIR_BARRA);
+    });
+    console.log = jest.fn();
+    reactor.desactivarMecanismosDeControl();
+    expect(console.log).toHaveBeenCalledWith(Constantes.NO_PUEDE_SUBIR_BARRA);
+  });
+
+  it('debería agregar barras de control', () => {
+    reactor.agregarBarra(barraControlMock);
+    expect(reactor.getBarrasDeControl()).toContain(barraControlMock);
   });
 });

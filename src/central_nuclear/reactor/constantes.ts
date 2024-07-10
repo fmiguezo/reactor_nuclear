@@ -23,6 +23,7 @@ const NO_PUEDE_INSERTAR_BARRA =
 const NO_HAY_BARRAS_DISPONIBLES = "No hay barras disponibles para insertar";
 const NO_PUEDE_SUBIR_BARRA = "No hay barras insertadas.";
 const NO_PUDE_REMPLAZAR_BARRA = "No se pudo crear una nueva barra de tipo";
+const NO_SE_ENCONTRO_REACTOR = "No fue posible encontrar el ractor especificado";
 
 export const Constantes = {
   TEMP_MINIMA_NORMAL,
@@ -46,4 +47,5 @@ export const Constantes = {
   NO_HAY_BARRAS_DISPONIBLES,
   NO_PUEDE_SUBIR_BARRA,
   NO_PUDE_REMPLAZAR_BARRA,
+  NO_SE_ENCONTRO_REACTOR
 };
