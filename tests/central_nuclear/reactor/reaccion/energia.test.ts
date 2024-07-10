@@ -58,4 +58,22 @@ describe("Test de Energia", () => {
       expect(energiaNeta).toBeLessThanOrEqual(energNetaEsperada[i] + tolerancia);
     });
   });
+
+  it("Verifica el cálculo de energía neta en el borde superior del umbral", () => {
+    const energiaTermal = Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL;
+    expect(Energia.calcularEnergiaNeta(energiaTermal)).toBe(100);
+  });
+  
+  it("Verifica el cálculo de energía neta para valores altos de energía termal", () => {
+    const energiaTermal = 2200;
+    const expectedEnergiaNeta = Number((Constantes.M_NETA * energiaTermal + Constantes.B_NETA).toFixed(2));
+    const actualEnergiaNeta = Energia.calcularEnergiaNeta(energiaTermal);
+    expect(actualEnergiaNeta).toBe(expectedEnergiaNeta);
+  });
+
+  it("Verifica que calcular correctamente la energía termal cuando la temperatura es exactamente la mínima permitida", () => {
+    const temp = Constantes.MIN_TEMPERATURA;
+    const expectedEnergiaTermal = Number((Constantes.M_TERMAL * temp + Constantes.B_TERMAL).toFixed(2));
+    expect(Energia.calcularEnergiaTermal(temp)).toBe(expectedEnergiaTermal);
+  });
 });
