@@ -11,9 +11,7 @@ import AlertaEstandar from "../../../../src/sistema_de_control/alertas/alerta_es
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 
 let instance: RCritico;
-let _timerGeneracion: NodeJS.Timeout | null = null;
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
 let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(

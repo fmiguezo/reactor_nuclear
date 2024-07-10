@@ -35,4 +35,22 @@ describe("Test de la clase AlertaCritica", () => {
     anotherDate = instance.getDate();
     expect(instance.getDate()).toBe(anotherDate);
   });
+
+  describe("Tests de suscripción a alertas y notificación a suscriptores", () => {
+    const empleadoMock = { notificar: jest.fn() };
+
+    it("agregarSuscriptor y removerSuscriptor debberían agregar y eliminar suscriptores respectivamente", () => {
+      instance.agregarSuscriptor(empleadoMock);
+      expect(instance["_suscriptores"]).toContain(empleadoMock);
+
+      instance.removerSuscriptor(empleadoMock);
+      expect(instance["_suscriptores"]).not.toContain(empleadoMock);
+    });
+
+    it("notificar debe llamar al método notificar de los suscriptores", () => {
+      instance.agregarSuscriptor(empleadoMock);
+      instance.notificar();
+      expect(empleadoMock.notificar).toHaveBeenCalledWith(instance);
+    });
+  });
 });
