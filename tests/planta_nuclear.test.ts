@@ -32,12 +32,15 @@ describe("Test de la clase AlertaEstandar", () => {
   });
 
   test("debería agregar reactores a la lista", () => {
+    // Instancia los reactores
     const reactor1 = new Reactor();
     const reactor2 = new Reactor();
 
     // Setea distintos IDs. Si tiene el mismo ID, nunca va a haber dos reactores.
     reactor1.id = 0;
     reactor2.id = 1;
+
+    // Carga reactores en el Map
 
     instance.agregarReactores(reactor1);
     instance.agregarReactores(reactor2);
