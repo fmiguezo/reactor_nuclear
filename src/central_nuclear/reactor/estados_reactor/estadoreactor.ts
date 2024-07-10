@@ -5,8 +5,8 @@ import { Constantes } from "../constantes";
 import BarraControl from "../../barras_control/barra_control";
 import EnergiaNetaCalculationError from "../../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
 import Energia from "../reaccion/energia";
+
 export default abstract class EstadoReactor implements IEncendible {
-  protected _incrementoTemp: number = Constantes.INCREMENTO_POR_MINUTO;
   protected _reactor: Reactor;
   protected _timerTemp: NodeJS.Timeout | null = null;
 
@@ -18,9 +18,7 @@ export default abstract class EstadoReactor implements IEncendible {
   public obtenerEnergiaNeta(): number {
     let energiaNeta = 0;
     try {
-      energiaNeta = Energia.calcularEnergiaNeta(
-        this._reactor.obtenerEnergiaTermal()
-      );
+      energiaNeta = Energia.calcularEnergiaNeta(this._reactor.obtenerEnergiaTermal());
     } catch (error) {
       if (error instanceof EnergiaNetaCalculationError) {
         console.log("Error específico de energía neta:", error.message);
@@ -37,13 +35,6 @@ export default abstract class EstadoReactor implements IEncendible {
 
   public setReactor(reactor: Reactor): void {
     this._reactor = reactor;
-  }
-
-  public incrementarTemperatura(): void {
-    this._reactor.setTemperatura(
-      this._incrementoTemp + this._reactor.getTemperatura()
-    );
-    this._reactor.notificarSensores();
   }
 
   public abstract verificarEstado(): void;
@@ -70,9 +61,7 @@ export default abstract class EstadoReactor implements IEncendible {
   }
 
   public calcValorEnfriamiento(): number {
-    const barrasInsertadas: BarraControl[] = this._reactor
-      .getAdministradorBarras()
-      .getBarrasInsertadas();
+    const barrasInsertadas: BarraControl[] = this._reactor.getAdministradorBarras().getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => {
       valorEnfriamiento += b.getPctBarra();
@@ -86,6 +75,7 @@ export default abstract class EstadoReactor implements IEncendible {
     nuevaTemp += 100;
     nuevaTemp -= this.calcValorEnfriamiento();
     this._reactor.setTemperatura(nuevaTemp);
+    this.verificarEstado();
   }
 
   public puedeInsertarBarras(): boolean {

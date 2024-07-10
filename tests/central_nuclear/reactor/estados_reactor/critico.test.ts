@@ -26,6 +26,7 @@ beforeEach(() => {
   jest.useFakeTimers();
   instance = new RCritico(MockReactor);
   MockReactor.setEstado(instance);
+  jest.clearAllTimers();
 });
 
 afterEach(() => {
@@ -40,21 +41,20 @@ describe("Test del estado Critico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado normal si la temperatura está por debajo de 300 grados", () => {
+  it("debería cambiar a estado normal si la temperatura está por debajo de 330 grados", () => {
     MockReactor.setTemperatura(329);
-    jest.clearAllTimers();
+    MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
   it("debería cambiar a estado REmergencia si la temperatura es 400 o mayor", () => {
     MockReactor.setTemperatura(400);
-    // Elimina los timers para que el reactor no explote
-    jest.clearAllTimers();
+    MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
   });
 
   it("debería dar error si se intenta encender un reactor en estado RCritico", () => {
-    jest.clearAllTimers();
+    MockReactor.getEstado().verificarEstado();
     expect(() => instance.encender()).toThrow(new EncenderError());
   });
 
@@ -64,12 +64,12 @@ describe("Test del estado Critico", () => {
   });
 
   it("verifica que generar alerta genere la alerta de tipo Estandar", () => {
-    jest.clearAllTimers();
+    MockReactor.getEstado().verificarEstado();
     expect(instance.generarAlerta()).toBeInstanceOf(AlertaEstandar);
   });
 
   it("debería poder insertar barras", () => {
-    jest.clearAllTimers();
+    MockReactor.getEstado().verificarEstado();
     expect(instance.puedeInsertarBarras()).toBeTruthy();
   });
 });

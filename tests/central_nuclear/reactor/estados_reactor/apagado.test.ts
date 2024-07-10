@@ -11,20 +11,15 @@ import ApagarError from "../../../../src/errores/errores_central_nuclear/errores
 
 let instance: RApagado;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> =
-  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(
-  MockPlanta
-) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-  new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> =
-  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -63,12 +58,6 @@ describe("Test del estado apagado", () => {
 
   it("debería tener un estado de encendido falso si el reactor está apagado", () => {
     expect(instance.estaEncendido()).toBe(false);
-  });
-
-  it("no debería cambiar la temperatura si el reactor está apagado", () => {
-    let valorTemperatura = MockReactor.getTemperatura();
-    instance.incrementarTemperatura();
-    expect(valorTemperatura).toBe(MockReactor.getTemperatura());
   });
 
   it("no debería generar una alerta si el reactor está apagado", () => {

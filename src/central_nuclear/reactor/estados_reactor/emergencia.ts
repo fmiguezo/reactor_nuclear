@@ -53,4 +53,9 @@ export default class REmergencia extends EstadoReactor {
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_EMERGENCIA;
   }
+
+  override obtenerEnergiaNeta(): number {
+    let energia = super.obtenerEnergiaNeta();
+    return (energia -= energia * 0.8);
+  }
 }

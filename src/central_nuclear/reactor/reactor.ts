@@ -52,7 +52,6 @@ export default class Reactor {
 
   public setTemperatura(temperatura: number): void {
     this._temperatura = temperatura;
-    this._estado.verificarEstado();
   }
 
   public getBarrasDeControl(): BarraControl[] {
@@ -86,21 +85,14 @@ export default class Reactor {
     if (this._plantaNuclear.getSistema() != null) {
       this.notificarSistema();
     }
-    this._estado.verificarEstado();
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {

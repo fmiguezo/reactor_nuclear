@@ -31,8 +31,6 @@ export default class RApagado extends EstadoReactor {
     return false;
   }
 
-  override incrementarTemperatura(): void {}
-
   override generarAlerta(): Alerta {
     return GeneradorDeAlertaApagado.generarAlerta();
   }

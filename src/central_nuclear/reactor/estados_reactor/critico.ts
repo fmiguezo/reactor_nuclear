@@ -10,8 +10,7 @@ import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 export default class RCritico extends EstadoReactor {
-  private _registroEnergia: RegistroEnergiaGenerada =
-    RegistroEnergiaGenerada.instancia;
+  private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
@@ -76,6 +75,12 @@ export default class RCritico extends EstadoReactor {
     const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
+
+  override obtenerEnergiaNeta(): number {
+    let energia = super.obtenerEnergiaNeta();
+    return (energia -= energia * 0.8);
+  }
+
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_CRITICO;
   }

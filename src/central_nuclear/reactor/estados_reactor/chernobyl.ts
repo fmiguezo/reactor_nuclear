@@ -11,7 +11,7 @@ export default class Chernobyl extends EstadoReactor {
   }
 
   override obtenerEnergiaNeta(): number {
-    return 0;
+    throw new Error(Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO);
   }
 
   override verificarEstado(): void {
