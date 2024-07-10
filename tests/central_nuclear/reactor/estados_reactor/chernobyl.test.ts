@@ -7,41 +7,49 @@ import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
 let instance: Chernobyl;
 let instanceReactor: Reactor;
 
-beforeEach(() => {
-  jest.useFakeTimers();
-  instance = new Chernobyl(instanceReactor);
-  instanceReactor = new Reactor();
-  instanceReactor.setEstado(instance);
-  instanceReactor.setTemperatura(Constantes.TEMP_CHERNOBYL);
-});
+describe("Test del estado Chernobyl", () => {
+  let reactor: Reactor;
+  let estado: Chernobyl;
 
-afterEach(() => {
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
-  jest.clearAllMocks();
-  jest.clearAllTimers();
-});
-
-describe("Test del estado apagado", () => {
-  it("verifica que la instancia sea de tipo RApagado", () => {
-    expect(instance).toBeInstanceOf(Chernobyl);
+  beforeEach(() => {
+    reactor = new Reactor();
+    estado = new Chernobyl(reactor);
   });
 
-  it("Verifica que verificarEstado este lanzando el mensaje correcto", () => {
-    expect(() => instance.verificarEstado()).toThrow(
-      new VerificarEstadoError()
+  it("verifica que la instancia sea de tipo Chernobyl", () => {
+    expect(estado).toBeInstanceOf(Chernobyl);
+  });
+
+  it("debería retornar 0 en obtenerEnergiaNeta", () => {
+    expect(estado.obtenerEnergiaNeta()).toBe(0);
+  });
+
+  it("debería lanzar VerificarEstadoError al verificar el estado", () => {
+    expect(() => estado.verificarEstado()).toThrow(VerificarEstadoError);
+    expect(() => estado.verificarEstado()).toThrow(
+      Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO
     );
   });
 
-  it("Verifica que encender este lanzando el mensaje correcto", () => {
-    expect(() => instance.encender()).toThrow(new EncenderError());
+  it("debería lanzar EncenderError al intentar encender", () => {
+    expect(() => estado.encender()).toThrow(EncenderError);
+    expect(() => estado.encender()).toThrow(
+      Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO
+    );
   });
 
-  it("Verifica que encender este lanzando el mensaje correcto", () => {
-    expect(() => instance.apagar()).toThrow(new ApagarError());
+  it("debería lanzar ApagarError al intentar apagar", () => {
+    expect(() => estado.apagar()).toThrow(ApagarError);
+    expect(() => estado.apagar()).toThrow(
+      Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_APAGO
+    );
   });
 
-  it("Verifica que estaEncendido, devuelva false", () => {
-    expect(instance.estaEncendido()).toBe(false);
+  it("debería retornar false en estaEncendido", () => {
+    expect(estado.estaEncendido()).toBe(false);
+  });
+
+  it("debería retornar el mensaje correcto en toString", () => {
+    expect(estado.toString()).toBe(Constantes.MENSAJE_ESTADO_CHERNOBYL_EXPLOTO);
   });
 });

@@ -5,7 +5,7 @@ describe('DesactivarError', () => {
     it('debería crear una instancia de DesactivarError con el mensaje predeterminado', () => {
       const error = new DesactivarError();
       expect(error instanceof DesactivarError).toBeTruthy();
-      expect(error.message).toBe(Constantes.MENSAJE_BARRA_VENCIDA);
+      expect(error.message).toBe(Constantes.MENSAJE_BARRA_DESACTIVADA);
     });
   
     it('debería crear una instancia de DesactivarError con un mensaje personalizado', () => {
