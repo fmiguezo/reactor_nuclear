@@ -8,6 +8,7 @@ import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import Reactor from "../reactor";
+
 export default class REmergencia extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);

@@ -1,5 +1,6 @@
 import Reactor from "./central_nuclear/reactor/reactor";
 import Sistema from "./sistema_de_control/sistema";
+
 export default class PlantaNuclear {
   private _reactores: Map<number, Reactor> = new Map();
   private _sistema: Sistema = new Sistema(this);

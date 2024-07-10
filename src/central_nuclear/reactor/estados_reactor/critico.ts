@@ -9,6 +9,7 @@ import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/regis
 import { Constantes } from "../constantes";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
+
 export default class RCritico extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
   private _timerGeneracion: NodeJS.Timeout | null = null;

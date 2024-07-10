@@ -18,6 +18,7 @@ import IMecanismoDeControl from "../../../src/central_nuclear/interfaces/imecani
 import BarraControl from "../../../src/central_nuclear/barras_control/barra_control";
 import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
 import Sistema from "../../../src/sistema_de_control/sistema";
+
 describe("Reactor", () => {
   let reactor: Reactor;
   let estadoMock: EstadoReactor;
@@ -137,9 +138,7 @@ describe("Reactor", () => {
     expect(reactor["_mecanimosDeControl"]).toContain(mecanismoDeControlMock);
 
     reactor.eliminarMecanismoDeControl(mecanismoDeControlMock);
-    expect(reactor["_mecanimosDeControl"]).not.toContain(
-      mecanismoDeControlMock
-    );
+    expect(reactor["_mecanimosDeControl"]).not.toContain(mecanismoDeControlMock);
   });
 
   it("debería agregar y eliminar sensores", () => {
@@ -159,9 +158,7 @@ describe("Reactor", () => {
   // PENDIENTE
   it("debería notificar al sistema", () => {
     reactor.notificarSistema();
-    expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(
-      reactor
-    );
+    expect(plantaNuclearMock.getSistema().actualizar).toHaveBeenCalledWith(reactor);
   });
 
   it("debería obtener y establecer el administrador de barras", () => {
@@ -174,17 +171,13 @@ describe("Reactor", () => {
   });
 
   it("debería desactivar los mecanismos de control", () => {
-    administradorBarrasMock.getBarrasInsertadas = jest
-      .fn()
-      .mockReturnValue([barraControlMock]);
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
     reactor.desactivarMecanismosDeControl();
     expect(administradorBarrasMock.subirBarras).toHaveBeenCalled();
   });
 
   it("debería manejar errores al desactivar los mecanismos de control", () => {
-    administradorBarrasMock.getBarrasInsertadas = jest
-      .fn()
-      .mockReturnValue([barraControlMock]);
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
     administradorBarrasMock.subirBarras = jest.fn().mockImplementation(() => {
       throw new SubirBarrasError(Constantes.NO_PUEDE_SUBIR_BARRA);
     });

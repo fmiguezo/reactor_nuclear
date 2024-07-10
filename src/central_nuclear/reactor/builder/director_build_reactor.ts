@@ -1,6 +1,7 @@
 import PlantaNuclear from "../../../planta_nuclear";
 import Reactor from "../reactor";
 import IBuilder from "./ibuilder";
+
 export default class DirectorBuildReactor {
   private _builder: IBuilder;
   private _plantaNuclear!: PlantaNuclear;

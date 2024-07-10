@@ -5,6 +5,7 @@ import GeneradorDeAlertaApagado from "../../../sistema_de_control/alertas/genera
 import { Constantes } from "../constantes";
 import Reactor from "../reactor";
 import ApagarError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_apagado/apagar_error";
+
 export default class RApagado extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
