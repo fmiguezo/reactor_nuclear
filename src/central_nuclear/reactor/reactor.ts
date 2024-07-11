@@ -6,7 +6,6 @@ import BarraControl from "../barras_control/barra_control";
 import AdministradorBarras from "./administrador/administrador_barras";
 import Energia from "./reaccion/energia";
 import PlantaNuclear from "../../planta_nuclear";
-
 import EnergiaTermalCalculationError from "../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_termal_calculation_error";
 import SubirBarrasError from "../../errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
 
@@ -90,18 +89,12 @@ export default class Reactor {
     }
   }
 
-  public agregarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
+  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(
-    mecanismoDeControl: IMecanismoDeControl
-  ): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter(
-      (mecanismo) => mecanismo !== mecanismoDeControl
-    );
+  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -167,13 +160,11 @@ export default class Reactor {
   // Temperatura
 
   public calcValorEnfriamiento(): number {
-    const administradorBarras: AdministradorBarras =
-      this.getAdministradorBarras();
-    let barrasInsertadas: BarraControl[] =
-      administradorBarras.getBarrasInsertadas();
+    const administradorBarras: AdministradorBarras = this.getAdministradorBarras();
+    let barrasInsertadas: BarraControl[] = administradorBarras.getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => (valorEnfriamiento += b.getPctBarra()));
-    return (valorEnfriamiento/420);
+    return valorEnfriamiento / 420;
   }
 
   public incrementarTemperatura(): void {

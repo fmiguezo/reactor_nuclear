@@ -14,57 +14,43 @@ export default class REmergencia extends EstadoReactor {
   private _timerGeneracion: NodeJS.Timeout | null = null;
   constructor(r: Reactor) {
     super(r);
-    this.crearTimeoutEnergia(120000);
-  }
+    this.crearTimeoutEnergia(120000);  }
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
     if (tempActual < Constantes.TEMP_MINIMA_EMERGENCIA) {
       this.cambiarAEstadoCritico();
     } else if (tempActual >= Constantes.TEMP_CHERNOBYL) {
       this.cambiarAEstadoChernobyl();
-    }
-  }
+    }  }
   private crearTimeoutEnergia(frecuencia: number): void {
     this._timerGeneracion = setTimeout(() => {
       this.liberarEnergia();
       this.resetTimeOutEnergia(frecuencia);
-    }, frecuencia);
-  }
+    }, frecuencia);  }
   private cambiarAEstadoCritico() {
     let estado: EstadoReactor = new RCritico(this._reactor);
     this._reactor.cambiarEstado(estado);
-    RegistroEstados.instancia.aumentarRegistro(estado);
-  }
+    RegistroEstados.instancia.aumentarRegistro(estado);  }
   private cambiarAEstadoChernobyl() {
     let estado: EstadoReactor = new Chernobyl(this._reactor);
-    this._reactor.cambiarEstado(estado);
-  }
+    this._reactor.cambiarEstado(estado);  }
   override encender() {
-    throw new EncenderError(Constantes.MENSAJE_ENCENDIDO);
-  }
+    throw new EncenderError(Constantes.MENSAJE_ENCENDIDO);  }
   override apagar() {
     let estado: EstadoReactor = new RApagado(this._reactor);
-    this._reactor.cambiarEstado(estado);
-  }
+    this._reactor.cambiarEstado(estado);  }
   override estaEncendido() {
-    return true;
-  }
+    return true;  }
   override generarAlerta(): Alerta {
-    return GeneradorDeAlertaCritica.generarAlerta();
-  }
+    return GeneradorDeAlertaCritica.generarAlerta();  }
   override toString(): string {
-    return Constantes.MENSAJE_ESTADO_EMERGENCIA;
-  }
+    return Constantes.MENSAJE_ESTADO_EMERGENCIA;  }
   public liberarEnergia(): void {
     const energiaGenerada: number = this.obtenerEnergiaNeta();
-    this._registroEnergia.insertarRegistro(energiaGenerada);
-  }
+    this._registroEnergia.insertarRegistro(energiaGenerada);  }
   override obtenerEnergiaNeta(): number {
     let energia = super.obtenerEnergiaNeta();
-    return (energia -= energia * 0.8);
-  }
+    return (energia -= energia * 0.8);  }
   private resetTimeOutEnergia(frecuencia: number): void {
     this.eliminarTimeOut(this._timerGeneracion);
-    this.crearTimeoutEnergia(frecuencia);
-  }
-}
+    this.crearTimeoutEnergia(frecuencia);  }}

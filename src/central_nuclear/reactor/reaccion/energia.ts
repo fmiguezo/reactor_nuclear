@@ -4,8 +4,7 @@ import { Constantes } from "./constantes_formula_energia";
 export default class Energia {
   public static calcularEnergiaTermal(temp: number): number {
     if (temp < Constantes.MIN_TEMPERATURA) {
-      throw new EnergiaTermalCalculationError(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);
-    }
+      throw new EnergiaTermalCalculationError(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);    }
     let calculo = Constantes.M_TERMAL * temp + Constantes.B_TERMAL;
     return Number(calculo.toFixed(2));
   }
@@ -16,7 +15,4 @@ export default class Energia {
       return Constantes.PRODUCCION_MINIMA_NETA;
     } else {
       let calculo = Constantes.M_NETA * energiaTermal + Constantes.B_NETA;
-      return Number(calculo.toFixed(2));
-    }
-  }
-}
+      return Number(calculo.toFixed(2));    }  }}
