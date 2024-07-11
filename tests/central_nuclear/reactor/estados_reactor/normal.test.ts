@@ -98,9 +98,10 @@ describe("Test del estado Normal", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
   });
 
-  it("no debería poder insertar barras de control si el estado es normal", () => {
+  it("debería asegurar que no se puedan insertar barras de control en estado normal", () => {
     jest.clearAllTimers();
-    expect(instance.puedeInsertarBarras()).toBe(false);
+    const puedeInsertar = instance.puedeInsertarBarras();
+    expect(puedeInsertar).toBe(false);
   });
 
   it("debería crear un registro con el mismo valor de la energía neta producida si llama a liberarEnergia()", () => {
@@ -119,6 +120,16 @@ describe("Test del estado Normal", () => {
     const spyCrearTimeout = jest.spyOn(instance as any, "crearTimeOutEnergia");
 
     (instance as any).resetTimeOutEnergia();
+
+    expect(spyEliminarTimeout).toHaveBeenCalled();
+    expect(spyCrearTimeout).toHaveBeenCalled();
+  });
+
+  it("debería resetear y recrear el timeout de generación de energía", () => {
+    const spyEliminarTimeout = jest.spyOn(instance as any, "eliminarTimeOut");
+    const spyCrearTimeout = jest.spyOn(instance as any, "crearTimeOutEnergia");
+
+    (instance as any).resetTimeOutEnergia(150000);
 
     expect(spyEliminarTimeout).toHaveBeenCalled();
     expect(spyCrearTimeout).toHaveBeenCalled();
@@ -159,5 +170,18 @@ describe("Test del estado Normal", () => {
   it("debería retornar el mensaje de estado normal", () => {
     const resultado = instance.toString();
     expect(resultado).toBe(Constantes.MENSAJE_ESTADO_NORMAL);
+  });
+
+  it("debería mantener el estado normal si la temperatura es menor que la mínima normal", () => {
+    MockReactor.setTemperatura(290);
+    MockReactor.getEstado().verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
+  });
+
+  it("debería llamar a crearTimeOutEnergia durante la inicialización", () => {
+    const spyCrearTimeOutEnergia = jest.spyOn(RNormal.prototype as any, "crearTimeOutEnergia");
+    const instance = new RNormal(MockReactor);
+    expect(spyCrearTimeOutEnergia).toHaveBeenCalledTimes(1);
+    jest.clearAllMocks();
   });
 });

@@ -42,7 +42,8 @@ describe("Eliminada", () => {
   });
 
   it("estaActivo debería devolver falso", () => {
-    expect(eliminada.estaActivo()).toBe(false);
+    let activo = eliminada.estaActivo();
+    expect(activo).toBe(false);
   });
 
   it("activar debería tirar ActivarError con el mensaje de barra vencida", () => {
@@ -56,7 +57,8 @@ describe("Eliminada", () => {
   });
 
   it("calcPctBarra debería devolver 0", () => {
-    expect(eliminada.calcPctBarra()).toBe(0);
+    let pctBarra = eliminada.calcPctBarra();
+    expect(pctBarra).toBe(0);
   });
 
   it("reportarVencimiento debería insertar el registo en RegistroBarrasUsadas", () => {
@@ -66,13 +68,15 @@ describe("Eliminada", () => {
   });
 
   it("Verifica que el getter de la barra funcione correctamente", () => {
-    expect(eliminada.getBarraControl()).toBe(rodInstance);
+    let barra = eliminada.getBarraControl();
+    expect(barra).toBe(rodInstance);
   });
 
   it("Verifica que el setter de la barra funcione correctamente", () => {
     let rodInstance1 = new BarraControlCadmio(200, eliminada);
     eliminada.setBarraControl(rodInstance1);
-    expect(eliminada.getBarraControl()).toBe(rodInstance1);
+    let barra = eliminada.getBarraControl();
+    expect(barra).toBe(rodInstance1);
   });
 
   it("debería retornar falso en estaActivo()", () => {
@@ -88,16 +92,6 @@ describe("Eliminada", () => {
   it("debería devolver la barra de control al llamar al getter", () => {
     const barraControl = eliminada.getBarraControl();
     expect(barraControl).toBe(eliminada["_barraControl"]);
-  });
-
-  it("activar debería tirar ActivarError con el mensaje de barra vencida", () => {
-    expect(() => eliminada.activar()).toThrow(ActivarError);
-    expect(() => eliminada.activar()).toThrow("La barra está vencida. No puede utilizarse.");
-  });
-
-  it("desactivar debería tirar DesactivarError con el mensaje de barra vencida", () => {
-    expect(() => eliminada.desactivar()).toThrow(DesactivarError);
-    expect(() => eliminada.desactivar()).toThrow("La barra está vencida. No puede utilizarse.");
   });
 
   it("Constructor debería llamar a reportarVencimiento", () => {

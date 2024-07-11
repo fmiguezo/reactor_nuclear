@@ -6,16 +6,13 @@ describe("Singleton RegistroBarrasUsadas", () => {
   });
 
   it("_instancia no debe ser undefined luego de obtener una instancia", () => {
-    const instanciaSingleton: RegistroBarrasUsadas =
-      RegistroBarrasUsadas.instancia;
+    const instanciaSingleton: RegistroBarrasUsadas = RegistroBarrasUsadas.instancia;
     expect(RegistroBarrasUsadas["_instancia"]).not.toBeUndefined();
   });
 
   it("verifica que las instancias obtenidas sean iguales", () => {
-    const instanciaSingletonA: RegistroBarrasUsadas =
-      RegistroBarrasUsadas.instancia;
-    const instanciaSingletonB: RegistroBarrasUsadas =
-      RegistroBarrasUsadas.instancia;
+    const instanciaSingletonA: RegistroBarrasUsadas = RegistroBarrasUsadas.instancia;
+    const instanciaSingletonB: RegistroBarrasUsadas = RegistroBarrasUsadas.instancia;
 
     expect(instanciaSingletonA).toBe(instanciaSingletonB);
   });
@@ -68,16 +65,16 @@ describe("RegistroBarrasUsadas", () => {
     expect(registros.get(Array.from(registros.keys())[1])).toBe(barrasUsadas2);
   });
 
-  it("should create an instance only once (singleton pattern)", () => {
+  it("debe crear una instancia solo una vez (patrón singleton)", () => {
     const anotherRegistro = RegistroBarrasUsadas.instancia;
     expect(registro).toBe(anotherRegistro);
   });
 
-  it("should initialize mapaRegistros in the constructor", () => {
+  it("debería inicializar mapaRegistros en el constructor", () => {
     expect(registro.obtenerRegistros()).toBeInstanceOf(Map);
   });
 
-  it("should insert a new record into mapaRegistros", () => {
+  it("debe insertar un nuevo registro en mapaRegistros", () => {
     const dateBefore = new Date();
     const barrasUsadas = 5;
     registro.insertarRegistro(barrasUsadas);
@@ -89,12 +86,11 @@ describe("RegistroBarrasUsadas", () => {
     expect(records.get(recordDate)).toBe(barrasUsadas);
   });
 
-  it("should insert multiple records with different timestamps", () => {
+  it("debe insertar varios registros con diferentes timestamps", () => {
     const barrasUsadas1 = 5;
     const barrasUsadas2 = 10;
     registro.insertarRegistro(barrasUsadas1);
 
-    // Simulate time passage
     jest.advanceTimersByTime(1000);
 
     registro.insertarRegistro(barrasUsadas2);
@@ -106,7 +102,7 @@ describe("RegistroBarrasUsadas", () => {
     expect(recordValues).toContain(barrasUsadas2);
   });
 
-  it("should return the correct records from obtenerRegistros", () => {
+  it("debería devolver los registros correctos de obtenerRegistros", () => {
     const barrasUsadas1 = 5;
     const barrasUsadas2 = 10;
     const barrasUsadas3 = 15;
@@ -124,5 +120,4 @@ describe("RegistroBarrasUsadas", () => {
     const recordValues = Array.from(records.values());
     expect(recordValues).toEqual([barrasUsadas1, barrasUsadas2, barrasUsadas3]);
   });
-
 });
