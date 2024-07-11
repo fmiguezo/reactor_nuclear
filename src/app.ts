@@ -25,25 +25,3 @@ plantaNuclear.cargarSistema(sistema);
 
 // Cede el control a los comandos
 sistema.init();
-
-// //  TESTING
-
-// nuevoReactor.encender();
-
-// console.log(nuevoReactor.getTemperatura());
-// nuevoReactor.setTemperatura(370);
-// nuevoReactor.getEstado().verificarEstado();
-// nuevoReactor.getEstado().verificarEstado();
-// nuevoReactor.getEstado().verificarEstado();
-
-// // console.log(nuevoReactor.getAdministradorBarras().getBarrasTotales().length);
-// // console.log(nuevoReactor.getAdministradorBarras().getBarrasEnDesuso().length);
-
-// nuevoReactor.getAdministradorBarras().insertarBarras(10);
-
-// // console.log(nuevoReactor.getAdministradorBarras().getBarrasInsertadas().length);
-
-// console.log(nuevoReactor.getTemperatura());
-// setTimeout(() => {
-//   console.log(nuevoReactor.getTemperatura());
-// }, 10000);

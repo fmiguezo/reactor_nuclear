@@ -357,6 +357,13 @@ class ComprobadorSalud {
     -produceEnergiaEnRango(reactor: Reactor): boolean;
 }
 
+class modEmergencIA {
+    -static _instancia: modEmergencIA;
+
+    +static get instancia(): modEmergencIA;
+    +AZ5(reactor: Reactor): void;
+}
+
 
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
@@ -394,7 +401,7 @@ Encendible  <|.r. Reactor
 ComprobadorSalud -d[hidden]- Encendible
 DirectorBuildReactor -r[hidden]- Encendible
 Energia -d[hidden]- PlantaNuclear
-
+DirectorBuildReactor-[hidden]u- modEmergencIA
 Activable -[hidden]r- MecanismoDeControl
 Activable -[hidden]l- Sensor
 
@@ -440,6 +447,15 @@ class ReportarEstado {
 
 class SacarBarraDeControl {
     +ejecutar(r: Reactor): void
+}
+
+class RegistroComandosDisponibles {
+    -static _instancia: RegistroComandosDisponibles;
+    -mapaRegistros: Map<String, Command>;
+    +constructor();
+    +static get instancia(): RegistroComandosDisponibles;
+    +insertarCommand(nombreDelComando: String, command: Command): void;
+    +obtenerCommands(): Map<String, Command>;
 }
 
 abstract class Alerta {
@@ -527,6 +543,7 @@ class Sistema {
 
     +constructor(plantaNuclear: PlantaNuclear);
     +cargarPlanta(planta: PlantaNuclear): void;
+    +obtenerPlanta(): PlantaNuclear;
     +actualizar(r: Reactor): void;
     +actualizarTodo(): void;
     +init(): void;

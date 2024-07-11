@@ -1,5 +1,26 @@
 import RegistroBarrasUsadas from "../../../src/sistema_de_control/registros/registro_barras_usadas";
 
+describe("Singleton RegistroBarrasUsadas", () => {
+  it("_instancia debe ser undefined antes de obtener una instancia", () => {
+    expect(RegistroBarrasUsadas["_instancia"]).toBeUndefined();
+  });
+
+  it("_instancia no debe ser undefined luego de obtener una instancia", () => {
+    const instanciaSingleton: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+    expect(RegistroBarrasUsadas["_instancia"]).not.toBeUndefined();
+  });
+
+  it("verifica que las instancias obtenidas sean iguales", () => {
+    const instanciaSingletonA: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+    const instanciaSingletonB: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+
+    expect(instanciaSingletonA).toBe(instanciaSingletonB);
+  });
+});
+
 describe("RegistroBarrasUsadas", () => {
   let registro: RegistroBarrasUsadas;
 
@@ -46,5 +67,62 @@ describe("RegistroBarrasUsadas", () => {
     expect(registros.get(Array.from(registros.keys())[0])).toBe(barrasUsadas1);
     expect(registros.get(Array.from(registros.keys())[1])).toBe(barrasUsadas2);
   });
-});
 
+  it("should create an instance only once (singleton pattern)", () => {
+    const anotherRegistro = RegistroBarrasUsadas.instancia;
+    expect(registro).toBe(anotherRegistro);
+  });
+
+  it("should initialize mapaRegistros in the constructor", () => {
+    expect(registro.obtenerRegistros()).toBeInstanceOf(Map);
+  });
+
+  it("should insert a new record into mapaRegistros", () => {
+    const dateBefore = new Date();
+    const barrasUsadas = 5;
+    registro.insertarRegistro(barrasUsadas);
+    const records = registro.obtenerRegistros();
+
+    expect(records.size).toBe(1);
+    const recordDate = Array.from(records.keys())[0];
+    expect(recordDate.getTime()).toBeGreaterThanOrEqual(dateBefore.getTime());
+    expect(records.get(recordDate)).toBe(barrasUsadas);
+  });
+
+  it("should insert multiple records with different timestamps", () => {
+    const barrasUsadas1 = 5;
+    const barrasUsadas2 = 10;
+    registro.insertarRegistro(barrasUsadas1);
+
+    // Simulate time passage
+    jest.advanceTimersByTime(1000);
+
+    registro.insertarRegistro(barrasUsadas2);
+    const records = registro.obtenerRegistros();
+
+    expect(records.size).toBe(2);
+    const recordValues = Array.from(records.values());
+    expect(recordValues).toContain(barrasUsadas1);
+    expect(recordValues).toContain(barrasUsadas2);
+  });
+
+  it("should return the correct records from obtenerRegistros", () => {
+    const barrasUsadas1 = 5;
+    const barrasUsadas2 = 10;
+    const barrasUsadas3 = 15;
+    registro.insertarRegistro(barrasUsadas1);
+
+    jest.advanceTimersByTime(1000);
+    registro.insertarRegistro(barrasUsadas2);
+
+    jest.advanceTimersByTime(1000);
+    registro.insertarRegistro(barrasUsadas3);
+
+    const records = registro.obtenerRegistros();
+
+    expect(records.size).toBe(3);
+    const recordValues = Array.from(records.values());
+    expect(recordValues).toEqual([barrasUsadas1, barrasUsadas2, barrasUsadas3]);
+  });
+
+});

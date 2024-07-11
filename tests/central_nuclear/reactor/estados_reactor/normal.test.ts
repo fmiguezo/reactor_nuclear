@@ -13,33 +13,24 @@ import RegistroEstados from "../../../../src/sistema_de_control/registros/regist
 
 let instance: RNormal;
 
-let MockPlanta: jest.Mocked<PlantaNuclear> =
-  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(
-  MockPlanta
-) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-  new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> =
-  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 let MockRegistroEnergia: jest.Mocked<RegistroEnergiaGenerada> =
   RegistroEnergiaGenerada.instancia as jest.Mocked<RegistroEnergiaGenerada>;
-let MockRegistroEstados: jest.Mocked<RegistroEstados> =
-  RegistroEstados.instancia as jest.Mocked<RegistroEstados>;
+let MockRegistroEstados: jest.Mocked<RegistroEstados> = RegistroEstados.instancia as jest.Mocked<RegistroEstados>;
 
-jest.mock(
-  "../../../../src/sistema_de_control/registros/registro_energia_generada",
-  () => ({
-    instancia: {
-      insertarRegistro: jest.fn(),
-    },
-  })
-);
+jest.mock("../../../../src/sistema_de_control/registros/registro_energia_generada", () => ({
+  instancia: {
+    insertarRegistro: jest.fn(),
+  },
+}));
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -79,12 +70,14 @@ describe("Test del estado Normal", () => {
 
   it("debería confirmar que el reactor está encendido si el estado es RNormal", () => {
     jest.clearAllTimers();
-    expect(instance.estaEncendido()).toBeTruthy;
+    let encendido = instance.estaEncendido();
+    expect(encendido).toBeTruthy;
   });
 
   it("No debería generar alertas si está en estado RNormal", () => {
     jest.clearAllTimers();
-    expect(instance.generarAlerta()).toBeNull;
+    let alerta = instance.generarAlerta();
+    expect(alerta).toBeNull;
   });
 
   it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
@@ -113,9 +106,7 @@ describe("Test del estado Normal", () => {
   it("debería crear un registro con el mismo valor de la energía neta producida si llama a liberarEnergia()", () => {
     instance.liberarEnergia();
     jest.clearAllTimers();
-    expect(
-      RegistroEnergiaGenerada.instancia.insertarRegistro
-    ).toHaveBeenCalledWith(100);
+    expect(RegistroEnergiaGenerada.instancia.insertarRegistro).toHaveBeenCalledWith(100);
   });
 
   it("toString debería volver el mensaje de estado normal", () => {
@@ -124,8 +115,8 @@ describe("Test del estado Normal", () => {
   });
 
   it("debería resetear el timeout de generación de energía", () => {
-    const spyEliminarTimeout = jest.spyOn(instance as any, 'eliminarTimeOut');
-    const spyCrearTimeout = jest.spyOn(instance as any, 'crearTimeOutEnergia');
+    const spyEliminarTimeout = jest.spyOn(instance as any, "eliminarTimeOut");
+    const spyCrearTimeout = jest.spyOn(instance as any, "crearTimeOutEnergia");
 
     (instance as any).resetTimeOutEnergia();
 
@@ -134,14 +125,14 @@ describe("Test del estado Normal", () => {
   });
 
   it("debería crear un nuevo timeout de generación de energía", () => {
-    jest.spyOn(global, 'setTimeout'); 
+    jest.spyOn(global, "setTimeout");
     (instance as any).crearTimeOutEnergia(10000);
     expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
   });
 
   it("debería cambiar a estado crítico y registrar el cambio de estado", () => {
-    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
-    const spyAumentarRegistro = jest.spyOn(MockRegistroEstados, 'aumentarRegistro');
+    const spyCambiarEstado = jest.spyOn(MockReactor, "cambiarEstado");
+    const spyAumentarRegistro = jest.spyOn(MockRegistroEstados, "aumentarRegistro");
 
     (instance as any).cambiarAEstadoCritico();
 
@@ -156,13 +147,17 @@ describe("Test del estado Normal", () => {
 
   it("debería insertar barras de control si el estado lo permite", () => {
     const puedeInsertar = instance.puedeInsertarBarras();
-    expect(puedeInsertar).toBe(false); 
+    expect(puedeInsertar).toBe(false);
   });
 
   it("debería liberar energía y registrarla adecuadamente", () => {
     instance.liberarEnergia();
-    jest.advanceTimersByTime(30000); 
+    jest.advanceTimersByTime(30000);
     expect(MockRegistroEnergia.insertarRegistro).toHaveBeenCalledWith(100);
   });
 
+  it("debería retornar el mensaje de estado normal", () => {
+    const resultado = instance.toString();
+    expect(resultado).toBe(Constantes.MENSAJE_ESTADO_NORMAL);
+  });
 });

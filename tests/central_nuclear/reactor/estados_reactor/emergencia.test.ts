@@ -9,6 +9,7 @@ import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builde
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
+import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 
 let instance: REmergencia;
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
@@ -49,13 +50,15 @@ describe("Test del estado apagado", () => {
   it("debería cambiar a estado crítico si la temperatura es 390", () => {
     MockReactor.setTemperatura(390);
     MockReactor.getEstado().verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RCritico);
   });
 
   it("debería cambiar a estado Chernobyl si la temperatura es 500", () => {
     MockReactor.setTemperatura(500);
     MockReactor.getEstado().verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(Chernobyl);
   });
 
   it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
@@ -64,18 +67,51 @@ describe("Test del estado apagado", () => {
 
   it("debería cambiar a estado apagado si se llama al método apagar", () => {
     instance.apagar();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RApagado);
   });
 
   it("debería confirmar que el reactor está encendido si el estado es emergencia", () => {
-    expect(instance.estaEncendido()).toBe(true);
+    let encendido = instance.estaEncendido();
+    expect(encendido).toBe(true);
   });
 
   it("verifica que generar alerta genere la alerta de tipo Critica", () => {
-    expect(instance.generarAlerta()).toBeInstanceOf(AlertaCritica);
+    let alerta = instance.generarAlerta();
+    expect(alerta).toBeInstanceOf(AlertaCritica);
   });
 
   it("debería poder insertar barras", () => {
     expect(instance.puedeInsertarBarras()).toBeTruthy();
+  });
+
+  it("debería inserta la energía generada en el registro al llamar a liberarEnergia", () => {
+    const mockInsertarRegistro = jest.spyOn(instance["_registroEnergia"], "insertarRegistro");
+    const mockEnergiaNeta = 100;
+    jest.spyOn(instance, "obtenerEnergiaNeta").mockReturnValue(mockEnergiaNeta);
+    instance.liberarEnergia();
+    expect(mockInsertarRegistro).toHaveBeenCalledWith(mockEnergiaNeta);
+  });
+
+  it("debería calcular correctamente la energía neta a obtenerEnergiaNeta", () => {
+    const energia = 100;
+    const energiaNetaEsperada = energia * 0.2;
+    jest.spyOn(EstadoReactor.prototype, "obtenerEnergiaNeta").mockReturnValue(energia);
+    const energiaNeta = instance.obtenerEnergiaNeta();
+    expect(energiaNeta).toEqual(energiaNetaEsperada);
+  });
+
+  it("debería cambiar a estado crítico si la temperatura está entre 330 y 399 grados", () => {
+    MockReactor.setTemperatura(350);
+    MockReactor.getEstado().verificarEstado();
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RCritico);
+  });
+
+  it("debería cambiar a estado Chernobyl si la temperatura es igual o mayor a 390 grados", () => {
+    MockReactor.setTemperatura(400);
+    MockReactor.getEstado().verificarEstado();
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(REmergencia);
   });
 });

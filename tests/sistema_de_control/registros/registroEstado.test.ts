@@ -5,7 +5,25 @@ import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/criti
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
 import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
 
-describe('RegistroEstados', () => {
+describe("Singleton RegistroEstados", () => {
+  it("_instancia debe ser undefined antes de obtener una instancia", () => {
+    expect(RegistroEstados["_instancia"]).toBeUndefined();
+  });
+
+  it("_instancia no debe ser undefined luego de obtener una instancia", () => {
+    const instanciaSingleton: RegistroEstados = RegistroEstados.instancia;
+    expect(RegistroEstados["_instancia"]).not.toBeUndefined();
+  });
+
+  it("verifica que las instancias obtenidas sean iguales", () => {
+    const instanciaSingletonA: RegistroEstados = RegistroEstados.instancia;
+    const instanciaSingletonB: RegistroEstados = RegistroEstados.instancia;
+
+    expect(instanciaSingletonA).toBe(instanciaSingletonB);
+  });
+});
+
+describe("RegistroEstados", () => {
   let registroEstados: RegistroEstados;
   let estadoMock: EstadoReactor;
 
@@ -15,12 +33,12 @@ describe('RegistroEstados', () => {
     registroEstados._contadorCambiosEstado = new Map<EstadoReactor, number>();
   });
 
-  it('debería crear una instancia única de RegistroEstados', () => {
+  it("debería crear una instancia única de RegistroEstados", () => {
     const otraInstancia = RegistroEstados.instancia;
     expect(registroEstados).toBe(otraInstancia);
   });
 
-  it('debería aumentar el conteo de cambios de estado', () => {
+  it("debería aumentar el conteo de cambios de estado", () => {
     registroEstados.aumentarRegistro(estadoMock);
     expect(registroEstados._contadorCambiosEstado.get(estadoMock)).toBe(1);
 
@@ -28,7 +46,7 @@ describe('RegistroEstados', () => {
     expect(registroEstados._contadorCambiosEstado.get(estadoMock)).toBe(2);
   });
 
-  it('debería obtener y establecer el contador de cambios de estado', () => {
+  it("debería obtener y establecer el contador de cambios de estado", () => {
     const nuevoContador = new Map<EstadoReactor, number>();
     nuevoContador.set(estadoMock, 5);
 

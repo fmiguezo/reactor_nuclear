@@ -39,8 +39,7 @@ export default class Insertada extends EstadoBarraControl {
 
   override calcPctBarra(): number {
     return (
-      (this._barraControl.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) *
-      Constantes.MULTIPLICADOR_FORMULA_BARRA
+      (this._barraControl.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) * Constantes.MULTIPLICADOR_FORMULA_BARRA
     );
   }
 
@@ -52,9 +51,7 @@ export default class Insertada extends EstadoBarraControl {
 
   private actualizarVidaRestanteBarra(): void {
     const tiempoTranscurrido = this.calcDiffTiempoActual();
-    this._barraControl.setVidaUtilRestante(
-      this._barraControl.getVidaUtilRestante() - tiempoTranscurrido
-    );
+    this._barraControl.setVidaUtilRestante(this._barraControl.getVidaUtilRestante() - tiempoTranscurrido);
     if (this._barraControl.getVidaUtilRestante() <= 0) {
       this._barraControl.setVidaUtilRestante(0);
       this.expirar();
