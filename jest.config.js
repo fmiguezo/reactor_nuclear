@@ -4,7 +4,7 @@ console.log("Execution dir:", __dirname);
 module.exports = {
   automock: false,
   collectCoverage: true,
-  coverageProvider: "babel", //v8 seems to be really precise. and give us more accurate coverage on sonar
+  coverageProvider: "v8", //v8 seems to be really precise. and give us more accurate coverage on sonar
   coverageReporters: ["clover", "json", "lcov", "html", ["text", { skipFull: true }]],
   preset: "ts-jest",
   testEnvironment: "node",
