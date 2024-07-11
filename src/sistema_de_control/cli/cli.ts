@@ -18,10 +18,7 @@ export default class Cli {
     return rl;
   }
 
-  private promptUser(
-    _sistema: Sistema,
-    _rlInterface: readline.Interface
-  ): void {
+  private promptUser(_sistema: Sistema, _rlInterface: readline.Interface): void {
     const sistema: Sistema = _sistema;
     const rlInterface = _rlInterface;
 
@@ -33,16 +30,10 @@ export default class Cli {
         } else {
           console.log(Constantes.MENSAJE_COMANDO_RECIBIDO + { input });
 
-          const reactor = sistema
-            .obtenerPlanta()
-            .getReactores()
-            .get(parseInt(input1, 10));
+          const reactor = sistema.obtenerPlanta().getReactores().get(parseInt(input1, 10));
 
           if (reactor) {
-            RegistroComandosDisponibles.instancia
-              .obtenerCommands()
-              .get(input)
-              ?.ejecutar(reactor);
+            RegistroComandosDisponibles.instancia.obtenerCommands().get(input)?.ejecutar(reactor);
           } else {
             throw new ReactorNoEncontradoError();
           }
@@ -58,10 +49,7 @@ export default class Cli {
 
     const rlInterface = _rlInterface;
 
-    const msgBienvenida: string = styleText(
-      "green",
-      Constantes.MENSAJE_BIENVENIDA
-    );
+    const msgBienvenida: string = styleText("green", Constantes.MENSAJE_BIENVENIDA);
 
     rlInterface.write(msgBienvenida);
     this.promptUser(sistema, rlInterface);
