@@ -72,10 +72,11 @@ describe("Test del estado Crítico", () => {
 
   it("debería resetear el timeout de generación de energía correctamente", () => {
     const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
-    const spyCrearTimeOut = jest.spyOn(instance as any, 'crearTimeOut');
+    const spyCrearTimeoutEnergia = jest.spyOn(instance as any, 'crearTimeoutEnergia');
     (instance as any).resetTimeOutEnergia(10000);
+
     expect(spyEliminarTimeOut).toHaveBeenCalled();
-    expect(spyCrearTimeOut).toHaveBeenCalledWith(10000);
+    expect(spyCrearTimeoutEnergia).toHaveBeenCalledWith(10000);
   });
 
   it("debería cambiar al estado RNormal correctamente", () => {
