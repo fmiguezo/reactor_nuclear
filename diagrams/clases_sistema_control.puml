@@ -40,6 +40,16 @@ class SacarBarraDeControl {
     +ejecutar(r: Reactor): void
 }
 
+class RegistroComandosDisponibles {
+    -static _instancia: RegistroComandosDisponibles;
+    -mapaRegistros: Map<String, Command>;
+    
+    +constructor();
+    +static get instancia(): RegistroComandosDisponibles;
+    +insertarCommand(nombreDelComando: String, command: Command): void;
+    +obtenerCommands(): Map<String, Command>;
+}
+
 abstract class Alerta {
     #tipoAlerta: TipoAlerta;
     #date: Date;
@@ -125,6 +135,7 @@ class Sistema {
 
     +constructor(plantaNuclear: PlantaNuclear);
     +cargarPlanta(planta: PlantaNuclear): void;
+    +obtenerPlanta(): PlantaNuclear;
     +actualizar(r: Reactor): void;
     +actualizarTodo(): void;
     +init(): void;

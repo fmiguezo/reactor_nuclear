@@ -156,25 +156,19 @@ describe("Test del comando Encender reactor", () => {
   });
 
   it("debería recibir alguna excepción al intentar encender un reactor en estado Chernobyl", () => {
-    // Espía el método encender del reactor
     const encenderSpy = jest.spyOn(MockReactor, "encender");
 
-    // Enciende el reactor por primera vez
     instance.ejecutar(MockReactor);
 
-    // Cambia estado a RCritico
     MockReactor.cambiarEstado(new Chernobyl(MockReactor));
     expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
 
     const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
-    // Intenta encender el reactor nuevamente
     instance.ejecutar(MockReactor);
 
-    // Verifica si se llamó al método encender del reactor
     expect(encenderSpy).toHaveBeenCalled();
-
-    // Verifica si en la consola salió el error
+    
     expect(consoleSpy).toHaveBeenCalledWith(
       Constantes.MENSAJE_ESTADO_CHERNOBYL_NO_ENCENDIO
     );
