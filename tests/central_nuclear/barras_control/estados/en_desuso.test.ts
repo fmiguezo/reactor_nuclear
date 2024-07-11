@@ -36,9 +36,9 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     // Crea el spy para el constructor de EstadoBarraControl
     const superSpy = jest.spyOn(EstadoBarraControl.prototype, "constructor");
 
-    const Eliminada =
-      require("../../../../src/central_nuclear/barras_control/estados/eliminada").default;
-    new Eliminada();
+    const EnDesuso =
+      require("../../../../src/central_nuclear/barras_control/estados/en_desuso").default;
+    new EnDesuso();
 
     expect(superSpy).toHaveBeenCalled();
   });

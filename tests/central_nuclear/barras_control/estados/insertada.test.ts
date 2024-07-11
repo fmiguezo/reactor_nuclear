@@ -39,9 +39,9 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     // Crea el spy para el constructor de EstadoBarraControl
     const superSpy = jest.spyOn(EstadoBarraControl.prototype, "constructor");
 
-    const Eliminada =
-      require("../../../../src/central_nuclear/barras_control/estados/eliminada").default;
-    new Eliminada();
+    const Insertada =
+      require("../../../../src/central_nuclear/barras_control/estados/insertada").default;
+    new Insertada();
 
     expect(superSpy).toHaveBeenCalled();
   });

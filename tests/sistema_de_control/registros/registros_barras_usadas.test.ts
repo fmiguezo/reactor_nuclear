@@ -1,5 +1,26 @@
 import RegistroBarrasUsadas from "../../../src/sistema_de_control/registros/registro_barras_usadas";
 
+describe("Singleton RegistroBarrasUsadas", () => {
+  it("_instancia debe ser undefined antes de obtener una instancia", () => {
+    expect(RegistroBarrasUsadas["_instancia"]).toBeUndefined();
+  });
+
+  it("_instancia no debe ser undefined luego de obtener una instancia", () => {
+    const instanciaSingleton: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+    expect(RegistroBarrasUsadas["_instancia"]).not.toBeUndefined();
+  });
+
+  it("verifica que las instancias obtenidas sean iguales", () => {
+    const instanciaSingletonA: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+    const instanciaSingletonB: RegistroBarrasUsadas =
+      RegistroBarrasUsadas.instancia;
+
+    expect(instanciaSingletonA).toBe(instanciaSingletonB);
+  });
+});
+
 describe("RegistroBarrasUsadas", () => {
   let registro: RegistroBarrasUsadas;
 
@@ -47,4 +68,3 @@ describe("RegistroBarrasUsadas", () => {
     expect(registros.get(Array.from(registros.keys())[1])).toBe(barrasUsadas2);
   });
 });
-

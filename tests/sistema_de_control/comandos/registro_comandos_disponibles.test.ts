@@ -1,18 +1,47 @@
-import RegistroComandosDisponibles from '../../../../reactor_nuclear/src/sistema_de_control/comandos/registro_comandos_disponibles';
-import Command from '../../../../reactor_nuclear/src/sistema_de_control/comandos/command';
+import RegistroComandosDisponibles from "../../../../reactor_nuclear/src/sistema_de_control/comandos/registro_comandos_disponibles";
+import Command from "../../../../reactor_nuclear/src/sistema_de_control/comandos/command";
 
-describe('RegistroComandosDisponibles', () => {
-  let registro: RegistroComandosDisponibles;
+describe("Singleton RegistroComandosDisponibles", () => {
+  it("_instancia debe ser undefined antes de obtener una instancia", () => {
+    expect(RegistroComandosDisponibles["_instancia"]).toBeUndefined();
+  });
+
+  it("_instancia no debe ser undefined luego de obtener una instancia", () => {
+    const instanciaSingleton: RegistroComandosDisponibles =
+      RegistroComandosDisponibles.instancia;
+    expect(RegistroComandosDisponibles["_instancia"]).not.toBeUndefined();
+  });
+
+  it("verifica que las instancias obtenidas sean iguales", () => {
+    const instanciaSingletonA: RegistroComandosDisponibles =
+      RegistroComandosDisponibles.instancia;
+    const instanciaSingletonB: RegistroComandosDisponibles =
+      RegistroComandosDisponibles.instancia;
+
+    expect(instanciaSingletonA).toBe(instanciaSingletonB);
+  });
+});
+
+describe("RegistroComandosDisponibles", () => {
+  let registro: jest.Mocked<RegistroComandosDisponibles>;
   let commandMock: Command;
 
   beforeEach(() => {
-    registro = RegistroComandosDisponibles.instancia;
+    registro =
+      RegistroComandosDisponibles.instancia as jest.Mocked<RegistroComandosDisponibles>;
     commandMock = {} as Command; // Mock básico para Command, ajustar según necesidades reales
     registro.obtenerCommands().clear(); // Limpiar mapa de comandos antes de cada prueba
   });
 
-  it('Debería insertar un comando correctamente y obtenerlo después', () => {
-    const nombreComando = 'comando1';
+  it("MapaRegistros debe contener un Map", () => {
+    const instanciaSingleton: RegistroComandosDisponibles =
+      RegistroComandosDisponibles.instancia;
+
+    expect(instanciaSingleton["mapaRegistros"]).not.toBeUndefined();
+  });
+
+  it("Debería insertar un comando correctamente y obtenerlo después", () => {
+    const nombreComando = "comando1";
     registro.insertarCommand(nombreComando, commandMock);
     const comandos = registro.obtenerCommands();
 
@@ -26,16 +55,16 @@ describe('RegistroComandosDisponibles', () => {
     expect(comandoObtenido).toBe(commandMock);
   });
 
-  it('Debería devolver todos los comandos insertados', () => {
-    registro.insertarCommand('comando1', commandMock);
-    registro.insertarCommand('comando2', commandMock);
+  it("Debería devolver todos los comandos insertados", () => {
+    registro.insertarCommand("comando1", commandMock);
+    registro.insertarCommand("comando2", commandMock);
     const comandos = registro.obtenerCommands();
     expect(comandos.size).toBe(2);
-    expect(comandos.get('comando1')).toBe(commandMock);
-    expect(comandos.get('comando2')).toBe(commandMock);
+    expect(comandos.get("comando1")).toBe(commandMock);
+    expect(comandos.get("comando2")).toBe(commandMock);
   });
 
-  it('Debería devolver una instancia válida de Map<String, Command>', () => {
+  it("Debería devolver una instancia válida de Map<String, Command>", () => {
     const comandos = registro.obtenerCommands();
     expect(comandos).toBeInstanceOf(Map);
   });
