@@ -6,7 +6,10 @@ export default abstract class BarraControl implements IMecanismoDeControl {
   protected _estado!: EstadoBarraControl;
   protected _vidaUtilRestante: number;
 
-  constructor(tiempoVidaUtilTotal: number = 0, estado: EstadoBarraControl = new EnDesuso()) {
+  constructor(
+    tiempoVidaUtilTotal: number = 0,
+    estado: EstadoBarraControl = new EnDesuso()
+  ) {
     this._vidaUtilRestante = tiempoVidaUtilTotal;
     this.cambiarEstado(estado);
   }
