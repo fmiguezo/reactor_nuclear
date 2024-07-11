@@ -1,4 +1,3 @@
-
 # Documentación técnica
 
 ## INFORMACION GENERAL
@@ -45,11 +44,12 @@ Tipos y Atributos: En la versión actual del software, solo se puede crear un ti
 
 **Sensores**
 
-- **Tipos:** 
+- **Tipos:**
   Actualmente hay dos tipos de sensores implementados:
+
   - Sensor de Temperatura
   - Sensor de Energía Producida
-  
+
   Estos sensores pueden ampliarse en el futuro sin afectar el funcionamiento del código actual.
 
 - **Función:** Los sensores recogen información crítica del reactor, proporcionando a los operarios datos sobre la temperatura y la energía generada por el reactor.
@@ -127,6 +127,6 @@ Tiene como propósito vigilar el estado del reactor, y en caso de que la situaci
 
 ---
 
-**EmergencIA (pendiente de desarrollo)**
+**EmergencIA**
 
-El propósito de este módulo es realizar las acciones necesarias para estabilizar la reacción en situaciones de emergencia. Este módulo funciona sin interacción humana, aunque los operadores pueden desactivarlo para intentar estabilizarlo manualmente (no recomendado).
+El propósito de este módulo es realizar las acciones necesarias para estabilizar la reacción en situaciones de emergencia. Este módulo funciona sin interacción humana.
