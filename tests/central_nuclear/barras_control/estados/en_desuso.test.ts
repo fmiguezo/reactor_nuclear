@@ -22,22 +22,19 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     jest.clearAllTimers();
   });
 
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
+
   it("Constructor debería llamar al constructor de la clase padre", () => {
-    // Elimina mocks anteriores
     jest.resetModules();
 
-    // Crea el Mock de EstadoBarraControl para este test
     const EstadoBarraControl =
       require("../../../../src/central_nuclear/barras_control/estados/estado_barra_control").default;
-    jest.mock(
-      "../../../../src/central_nuclear/barras_control/estados/estado_barra_control"
-    );
-
-    // Crea el spy para el constructor de EstadoBarraControl
+    jest.mock("../../../../src/central_nuclear/barras_control/estados/estado_barra_control");
     const superSpy = jest.spyOn(EstadoBarraControl.prototype, "constructor");
 
-    const EnDesuso =
-      require("../../../../src/central_nuclear/barras_control/estados/en_desuso").default;
+    const EnDesuso = require("../../../../src/central_nuclear/barras_control/estados/en_desuso").default;
     new EnDesuso();
 
     expect(superSpy).toHaveBeenCalled();
@@ -75,7 +72,8 @@ describe("Test de Estado Barra de Control: EnDesuso", () => {
     expect(stateInstance.getBarraControl()).toBe(rodInstance1);
   });
 
-  afterEach(() => {
-    jest.clearAllTimers();
+  it("debería devolver la barra de control al llamar al getter", () => {
+    const barraControl = stateInstance.getBarraControl();
+    expect(barraControl).toBe(stateInstance["_barraControl"]);
   });
 });
