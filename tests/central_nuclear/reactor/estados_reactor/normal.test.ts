@@ -70,12 +70,14 @@ describe("Test del estado Normal", () => {
 
   it("debería confirmar que el reactor está encendido si el estado es RNormal", () => {
     jest.clearAllTimers();
-    expect(instance.estaEncendido()).toBeTruthy;
+    let encendido = instance.estaEncendido();
+    expect(encendido).toBeTruthy;
   });
 
   it("No debería generar alertas si está en estado RNormal", () => {
     jest.clearAllTimers();
-    expect(instance.generarAlerta()).toBeNull;
+    let alerta = instance.generarAlerta();
+    expect(alerta).toBeNull;
   });
 
   it("debería calcular un valor de energía neta en 100 si la temperatura es 280", () => {
