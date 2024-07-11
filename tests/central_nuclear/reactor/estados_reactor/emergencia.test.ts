@@ -50,13 +50,15 @@ describe("Test del estado apagado", () => {
   it("debería cambiar a estado crítico si la temperatura es 390", () => {
     MockReactor.setTemperatura(390);
     MockReactor.getEstado().verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RCritico);
   });
 
   it("debería cambiar a estado Chernobyl si la temperatura es 500", () => {
     MockReactor.setTemperatura(500);
     MockReactor.getEstado().verificarEstado();
-    expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(Chernobyl);
   });
 
   it("debería dar error si se intenta encender un reactor en estado de emergencia", () => {
@@ -65,15 +67,18 @@ describe("Test del estado apagado", () => {
 
   it("debería cambiar a estado apagado si se llama al método apagar", () => {
     instance.apagar();
-    expect(MockReactor.getEstado()).toBeInstanceOf(RApagado);
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RApagado);
   });
 
   it("debería confirmar que el reactor está encendido si el estado es emergencia", () => {
-    expect(instance.estaEncendido()).toBe(true);
+    let encendido = instance.estaEncendido();
+    expect(encendido).toBe(true);
   });
 
   it("verifica que generar alerta genere la alerta de tipo Critica", () => {
-    expect(instance.generarAlerta()).toBeInstanceOf(AlertaCritica);
+    let alerta = instance.generarAlerta();
+    expect(alerta).toBeInstanceOf(AlertaCritica);
   });
 
   it("debería poder insertar barras", () => {
