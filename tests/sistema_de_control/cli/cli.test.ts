@@ -13,15 +13,15 @@ describe("CLI", () => {
   let instancia: Cli;
   let sistema: Sistema;
   let mockReadlineInterface: {
-    write: jest.Mock,
-    on: jest.Mock,
-    close: jest.Mock,
-    pause: jest.Mock,
-    question: jest.Mock,
-    resume: jest.Mock,
-    setPrompt: jest.Mock,
-    prompt: jest.Mock,
-    removeAllListeners: jest.Mock,
+    write: jest.Mock;
+    on: jest.Mock;
+    close: jest.Mock;
+    pause: jest.Mock;
+    question: jest.Mock;
+    resume: jest.Mock;
+    setPrompt: jest.Mock;
+    prompt: jest.Mock;
+    removeAllListeners: jest.Mock;
   };
 
   beforeEach(() => {
@@ -42,6 +42,11 @@ describe("CLI", () => {
     };
 
     (readline.createInterface as jest.Mock).mockReturnValue(mockReadlineInterface as unknown as readline.Interface);
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("Debería crear una readline.Interface en nuevaSesion()", () => {
@@ -77,7 +82,9 @@ describe("CLI", () => {
     instancia["lanzarCli"](sistema, mockReadlineInterface as unknown as readline.Interface);
 
     expect(mockReadlineInterface.write).toHaveBeenCalled();
-    expect(mockReadlineInterface.write.mock.calls[0][0]).toMatch(/Bienvenido al Sistema de Control de Plantas Nucleares/);
+    expect(mockReadlineInterface.write.mock.calls[0][0]).toMatch(
+      /Bienvenido al Sistema de Control de Plantas Nucleares/
+    );
     expect(promptUserSpy).toHaveBeenCalledWith(sistema, mockReadlineInterface);
   });
 
@@ -102,7 +109,10 @@ describe("CLI", () => {
     instancia["promptUser"](sistema, mockReadlineInterface as unknown as readline.Interface);
 
     expect(mockReadlineInterface.question).toHaveBeenCalledWith(Constantes.MENSAJE_ID_REACTOR, expect.any(Function));
-    expect(mockReadlineInterface.question).toHaveBeenCalledWith(Constantes.MENSAJE_COMMAND_ELEGIDO, expect.any(Function));
+    expect(mockReadlineInterface.question).toHaveBeenCalledWith(
+      Constantes.MENSAJE_COMMAND_ELEGIDO,
+      expect.any(Function)
+    );
     expect(ejecutarMock).toHaveBeenCalledWith("reactor");
   });
 
@@ -117,6 +127,8 @@ describe("CLI", () => {
       .mockImplementationOnce((query, callback) => callback("1"))
       .mockImplementationOnce((query, callback) => callback("comando"));
 
-    expect(() => instancia["promptUser"](sistema, mockReadlineInterface as unknown as readline.Interface)).toThrow(ReactorNoEncontradoError);
+    expect(() => instancia["promptUser"](sistema, mockReadlineInterface as unknown as readline.Interface)).toThrow(
+      ReactorNoEncontradoError
+    );
   });
 });
