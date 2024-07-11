@@ -1,18 +1,21 @@
 <p align="center">
   <a href="" rel="noopener">
- <img src="../img/homero_leyendo.jpg" alt="Project logo"></a>
+ <img src="./img/homero_leyendo.jpg" alt="Project logo"></a>
 </p>
 <h3 align="center">Sistema de control para reactores</h3>
 
 <div align="center">
 
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) <br>
 ![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)
 
 </div>
 
 ---
 
-<p align="center"> Irradia seguridad
+<p align="center" style="font-weight: bold"> Irradia seguridad
     <br> 
 </p>
 
