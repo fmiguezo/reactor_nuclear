@@ -351,12 +351,6 @@ class PlantaNuclear {
     +agregarReactores(reactores: Reactor[]): void;
 }
 
-class ComprobadorSalud {
-    -estaEncendido(reactor: Reactor): boolean;
-    -tieneTemperaturaSegura(reactor: Reactor): boolean;
-    -produceEnergiaEnRango(reactor: Reactor): boolean;
-}
-
 class modEmergencIA {
     -static _instancia: modEmergencIA;
 
@@ -398,14 +392,16 @@ Reactor *... Sensor
 Reactor *...... MecanismoDeControl
 EstadoReactor ----o Reactor
 Encendible  <|.r. Reactor
-ComprobadorSalud -d[hidden]- Encendible
 DirectorBuildReactor -r[hidden]- Encendible
 Energia -d[hidden]- PlantaNuclear
 DirectorBuildReactor-[hidden]u- modEmergencIA
 Activable -[hidden]r- MecanismoDeControl
 Activable -[hidden]l- Sensor
 
-
+Energia -d[hidden]- PlantaNuclear
+BuilderReactorNormal --> Reactor
+Reactor --> Energia 
+Reactor --> BarraControl
 
 'Notas
 note bottom of SensorTemperatura: "Retorna la temperatura"
