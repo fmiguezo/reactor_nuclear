@@ -7,7 +7,7 @@ import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/b
 import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import EncenderErrorENormal from "../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 import EncenderErrorEEmergencia from "../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/critico";
 import REncenciendo from "../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
@@ -121,7 +121,9 @@ describe("Test del comando Encender reactor", () => {
     expect(encenderSpy).toHaveBeenCalled();
 
     // Verifica si en la consola salió el error
-    expect(consoleSpy).toHaveBeenCalledWith(Constantes.MENSAJE_ENCENDIDO);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      Constantes.MENSAJE_ENCENDER_CRITICO
+    );
 
     encenderSpy.mockRestore();
     consoleSpy.mockRestore();

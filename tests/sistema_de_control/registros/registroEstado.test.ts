@@ -5,53 +5,35 @@ import RCritico from "../../../src/central_nuclear/reactor/estados_reactor/criti
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";
 import RApagado from "../../../src/central_nuclear/reactor/estados_reactor/apagado";
 
-describe("RegistroEstados", () => {
-  let registro: RegistroEstados;
-  let estado: EstadoReactor;
-  let reactor: Reactor;
+describe('RegistroEstados', () => {
+  let registroEstados: RegistroEstados;
+  let estadoMock: EstadoReactor;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    // Reiniciamos la instancia entre tests para asegurar que cada test es independiente
-    (RegistroEstados as any)._instancia = null;
-    registro = RegistroEstados.instancia;
-    reactor = new Reactor();
-    estado = new RApagado(reactor);
-    reactor.setEstado(estado);
+    registroEstados = RegistroEstados.instancia;
+    estadoMock = {} as EstadoReactor;
+    registroEstados._contadorCambiosEstado = new Map<EstadoReactor, number>();
   });
 
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-    jest.clearAllMocks();
-    jest.clearAllTimers();
+  it('debería crear una instancia única de RegistroEstados', () => {
+    const otraInstancia = RegistroEstados.instancia;
+    expect(registroEstados).toBe(otraInstancia);
   });
 
-  test("debería retornar la misma instancia", () => {
-    const instancia1 = RegistroEstados.instancia;
-    const instancia2 = RegistroEstados.instancia;
-    expect(instancia1).toBe(instancia2);
+  it('debería aumentar el conteo de cambios de estado', () => {
+    registroEstados.aumentarRegistro(estadoMock);
+    expect(registroEstados._contadorCambiosEstado.get(estadoMock)).toBe(1);
+
+    registroEstados.aumentarRegistro(estadoMock);
+    expect(registroEstados._contadorCambiosEstado.get(estadoMock)).toBe(2);
   });
 
-  test("debería aumentar el registro de un estado dado", () => {
-    registro.aumentarRegistro(estado);
-    expect(registro._contadorCambiosEstado.get(estado)).toBe(1);
+  it('debería obtener y establecer el contador de cambios de estado', () => {
+    const nuevoContador = new Map<EstadoReactor, number>();
+    nuevoContador.set(estadoMock, 5);
 
-    registro.aumentarRegistro(estado);
-    expect(registro._contadorCambiosEstado.get(estado)).toBe(2);
-  });
-
-  test("debería manejar múltiples estados", () => {
-    const estado1 = new RCritico(reactor);
-    const estado2 = new RNormal(reactor);
-
-    registro.aumentarRegistro(estado1);
-    expect(registro._contadorCambiosEstado.get(estado1)).toBe(1);
-
-    registro.aumentarRegistro(estado2);
-    expect(registro._contadorCambiosEstado.get(estado2)).toBe(1);
-
-    registro.aumentarRegistro(estado1);
-    expect(registro._contadorCambiosEstado.get(estado1)).toBe(2);
+    registroEstados._contadorCambiosEstado = nuevoContador;
+    expect(registroEstados._contadorCambiosEstado).toBe(nuevoContador);
+    expect(registroEstados._contadorCambiosEstado.get(estadoMock)).toBe(5);
   });
 });

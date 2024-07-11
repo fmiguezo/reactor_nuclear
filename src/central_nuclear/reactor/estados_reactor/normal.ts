@@ -4,7 +4,7 @@ import RCritico from "./critico";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 import Reactor from "../reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 
 export default class RNormal extends EstadoReactor {
@@ -16,7 +16,6 @@ export default class RNormal extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
     this.crearTimeOutEnergia();
-    // this.verificarEstado();
   }
 
   private resetTimeOutEnergia(frecuencia: number = 30000): void {

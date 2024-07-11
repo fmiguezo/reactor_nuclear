@@ -1,6 +1,7 @@
 import Alerta from "./alerta";
 import { TipoAlerta } from "./tipo_alerta";
 import { Constantes } from "./constantes";
+
 export default class AlertaCritica extends Alerta {
   private static instance: AlertaCritica | null = null;
 

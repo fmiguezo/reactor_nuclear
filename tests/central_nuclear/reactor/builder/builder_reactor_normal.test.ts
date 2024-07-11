@@ -4,17 +4,20 @@ import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 import PlantaNuclear from "../../../../src/planta_nuclear";
 import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 import RNormal from "../../../../src/central_nuclear/reactor/estados_reactor/normal";
+import Sistema from "../../../../src/sistema_de_control/sistema";
+import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 
 describe("Tests del builder de reactor normal", () => {
   let instance: BuilderReactorNormal;
-  let plantaNuclear: PlantaNuclear;
+  let MockPlantaNuclear: jest.Mocked<PlantaNuclear> =
+    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
   let MockReactor: jest.Mocked<Reactor>;
   let MockNormal: jest.Mocked<RNormal>;
+  let MockRApagado: jest.Mocked<RApagado>;
 
   beforeEach(() => {
     jest.useFakeTimers();
     instance = new BuilderReactorNormal();
-    plantaNuclear = new PlantaNuclear();
     instance.reset();
     MockReactor = instance.getReactor() as jest.Mocked<Reactor>;
   });
@@ -49,8 +52,9 @@ describe("Tests del builder de reactor normal", () => {
     reactor.setEstado(MockNormal);
     instance.setAdminBarras();
     instance.setBarras();
+    reactor.setPlantaNuclear(MockPlantaNuclear);
     jest.spyOn(global.console, "log");
-    expect(reactor.getBarrasDeControl().length).toBe(100);
+    expect(reactor.getBarrasDeControl().length).toBe(10);
   });
 
   it("Verifica que los sensores se agreguen de forma correcta", () => {
@@ -61,7 +65,10 @@ describe("Tests del builder de reactor normal", () => {
 
   it("Verifica que el estado inicial se agregue de forma correcta", () => {
     instance.reset();
+    instance.setAdminBarras();
+    instance.setBarras();
     instance.setEstadoIncial();
-    expect(instance.getReactor().getEstado()).toBeInstanceOf(EstadoReactor);
+    MockRApagado = new RApagado(instance.getReactor()) as jest.Mocked<RApagado>;
+    expect(instance.getReactor().getEstado()).toBeInstanceOf(RApagado);
   });
 });

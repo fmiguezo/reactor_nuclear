@@ -2,7 +2,7 @@ import Reactor from "../reactor";
 import BarraControl from "../../barras_control/barra_control";
 import FabricaBarra from "../../barras_control/fabrica/fabrica_barra";
 import SelectorFabricaBarra from "../../barras_control/fabrica/selector_fabrica";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import SubirBarrasError from "../../../errores/errores_central_nuclear/errores_del_administrador_de_barras/subir_barras_error";
 import getFabricaError from "../../../errores/errores_central_nuclear/errores_selector_fabrica/get_fabrica_error";
 import InsertarBarrasError from "../../../errores/errores_central_nuclear/errores_del_administrador_de_barras/insertar_barras_error";

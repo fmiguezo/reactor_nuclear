@@ -1,5 +1,6 @@
 import FabricaBarraCadmio from "../../../../src/central_nuclear/barras_control/fabrica/fabrica_barra_cadmio";
 import SelectorFabricaBarra from "../../../../src/central_nuclear/barras_control/fabrica/selector_fabrica";
+import { Constantes } from "../../../../src/central_nuclear/barras_control/constantes";
 
 describe("Testea el selector de fabrica de barras", () => {
   let selector: SelectorFabricaBarra;
@@ -17,6 +18,6 @@ describe("Testea el selector de fabrica de barras", () => {
   it("debería retornar una excepción", () => {
     expect(() => {
       selector.getFabrica("unaFabricaQueNoExiste");
-    }).toThrow("No existe la fabrica");
+    }).toThrow(Constantes.MENSAJE_FABRICA_NO_ENCONTRADA);
   });
 });

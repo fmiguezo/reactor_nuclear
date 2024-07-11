@@ -5,7 +5,7 @@ import PlantaNuclear from "../../../src/planta_nuclear";
 import Sistema from "../../../src/sistema_de_control/sistema";
 import BuilderReactorNormal from "../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import DirectorBuildReactor from "../../../src/central_nuclear/reactor/builder/director_build_reactor";
-import { Constantes } from "../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../src/central_nuclear/reactor/constantes_reactor";
 import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/emergencia";
 import Chernobyl from "../../../src/central_nuclear/reactor/estados_reactor/chernobyl";
 import RNormal from "../../../src/central_nuclear/reactor/estados_reactor/normal";

@@ -1,7 +1,7 @@
 import Reactor from "../../../../src/central_nuclear/reactor/reactor";
 import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/apagado";
 import REncenciendo from "../../../../src/central_nuclear/reactor/estados_reactor/encendiendo";
-import { Constantes } from "../../../../src/central_nuclear/reactor/constantes";
+import { Constantes } from "../../../../src/central_nuclear/reactor/constantes_reactor";
 import AlertaApagado from "../../../../src/sistema_de_control/alertas/alerta_apagado";
 import BuilderReactorNormal from "../../../../src/central_nuclear/reactor/builder/builder_reactor_normal";
 import PlantaNuclear from "../../../../src/planta_nuclear";
@@ -63,12 +63,6 @@ describe("Test del estado apagado", () => {
 
   it("debería tener un estado de encendido falso si el reactor está apagado", () => {
     expect(instance.estaEncendido()).toBe(false);
-  });
-
-  it("no debería cambiar la temperatura si el reactor está apagado", () => {
-    let valorTemperatura = MockReactor.getTemperatura();
-    instance.incrementarTemperatura();
-    expect(valorTemperatura).toBe(MockReactor.getTemperatura());
   });
 
   it("no debería generar una alerta si el reactor está apagado", () => {

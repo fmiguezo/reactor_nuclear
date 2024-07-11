@@ -11,31 +11,32 @@ import EncenderError from "../../../../src/errores/errores_central_nuclear/error
 import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
 
 let instance: REmergencia;
-let MockPlanta: jest.Mocked<PlantaNuclear> =
-  new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-let MockSistema: jest.Mocked<Sistema> = new Sistema(
-  MockPlanta
-) as jest.Mocked<Sistema>;
+let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+let MockSistema: jest.Mocked<Sistema> = new Sistema(MockPlanta) as jest.Mocked<Sistema>;
 let MockBuilderConcreto: jest.Mocked<BuilderReactorNormal> =
   new BuilderReactorNormal() as jest.Mocked<BuilderReactorNormal>;
-let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> =
-  new DirectorBuildReactor(
-    MockBuilderConcreto
-  ) as jest.Mocked<DirectorBuildReactor>;
+let MockDirectorBuilder: jest.Mocked<DirectorBuildReactor> = new DirectorBuildReactor(
+  MockBuilderConcreto
+) as jest.Mocked<DirectorBuildReactor>;
 MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
-let MockReactor: jest.Mocked<Reactor> =
-  MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
+let MockReactor: jest.Mocked<Reactor> = MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
 
 beforeEach(() => {
   jest.useFakeTimers();
   instance = new REmergencia(MockReactor);
   MockReactor.setEstado(instance);
   MockReactor.setTemperatura(332);
+  jest.clearAllTimers();
 });
 
 afterEach(() => {
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
+  jest.clearAllMocks();
+  jest.clearAllTimers();
+});
+
+afterAll(() => {
   jest.clearAllMocks();
   jest.clearAllTimers();
 });
@@ -47,13 +48,13 @@ describe("Test del estado apagado", () => {
 
   it("debería cambiar a estado crítico si la temperatura es 390", () => {
     MockReactor.setTemperatura(390);
-    instance.verificarEstado();
+    MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
   });
 
-  it("debería cambiar a estado crítico si la temperatura es 510", () => {
-    MockReactor.setTemperatura(510);
-    instance.verificarEstado();
+  it("debería cambiar a estado Chernobyl si la temperatura es 500", () => {
+    MockReactor.setTemperatura(500);
+    MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(Chernobyl);
   });
 
