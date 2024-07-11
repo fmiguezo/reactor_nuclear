@@ -6,29 +6,18 @@ import EnergiaNetaCalculationError from "../../../../src/errores/errores_central
 describe("Test de Energia", () => {
   describe("Tests del cálculo de energía termal", () => {
     it("debería lanzar un error cuando la temperatura es menor que la mínima para producir energía", () => {
-      const temp: number = Constantes.MIN_TEMPERATURA - 1;
+      const temp: number = 279;
       expect(() => Energia.calcularEnergiaTermal(temp)).toThrow(EnergiaTermalCalculationError);
       expect(() => Energia.calcularEnergiaTermal(temp)).toThrow(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);
     });
 
-    it("debería calcular correctamente la energía termal con una temperatura válida (según la tabla)", () => {
+    it("debería calcular correctamente la energía termal con una temperatura válida (según la tabla para 280, 2100)", () => {
       const temp: number = 280;
       expect(Energia.calcularEnergiaTermal(temp)).toBe(2100);
-    });
-
-    it("debería lanzar un error cuando la energía termal es menor que la mínima permitida", () => {
-      const energiaTermal = Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL - 1;
-      expect(() => Energia.calcularEnergiaNeta(energiaTermal)).toThrow(EnergiaNetaCalculationError);
-      expect(() => Energia.calcularEnergiaNeta(energiaTermal)).toThrow(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);
     });
   });
 
   describe("Test de cálculo de energía neta", () => {
-    it("debería calcular correctamente la energía neta cuando la energía termal es igual a la mínima permitida", () => {
-      const energiaTermal = Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL;
-      expect(Energia.calcularEnergiaNeta(energiaTermal)).toBe(100);
-    });
-
     it("debería calcular correctamente la energía neta con energía termal válida (para 2100, 100)", () => {
       const energiaTermal = 2100;
       expect(Energia.calcularEnergiaNeta(energiaTermal)).toBe(100);
@@ -43,6 +32,12 @@ describe("Test de Energia", () => {
       const energiaTermal = 2233.34;
       const energiaNeta = Energia.calcularEnergiaNeta(energiaTermal);
       expect(energiaNeta).toBe(233.32);
+    });
+
+    it("debería lanzar un error cuando la energía termal es menor que la mínima permitida", () => {
+      const energiaTermal = 2099;
+      expect(() => Energia.calcularEnergiaNeta(energiaTermal)).toThrow(EnergiaNetaCalculationError);
+      expect(() => Energia.calcularEnergiaNeta(energiaTermal)).toThrow(Constantes.MENSAJE_TEMP_MIN_INSUFICIENTE);
     });
   });
 
@@ -62,18 +57,5 @@ describe("Test de Energia", () => {
   it("Verifica el cálculo de energía neta en el borde superior del umbral", () => {
     const energiaTermal = Constantes.PRODUCCCION_MINIMA_ENERGIA_TERMAL;
     expect(Energia.calcularEnergiaNeta(energiaTermal)).toBe(100);
-  });
-  
-  it("Verifica el cálculo de energía neta para valores altos de energía termal", () => {
-    const energiaTermal = 2200;
-    const expectedEnergiaNeta = Number((Constantes.M_NETA * energiaTermal + Constantes.B_NETA).toFixed(2));
-    const actualEnergiaNeta = Energia.calcularEnergiaNeta(energiaTermal);
-    expect(actualEnergiaNeta).toBe(expectedEnergiaNeta);
-  });
-
-  it("Verifica que calcular correctamente la energía termal cuando la temperatura es exactamente la mínima permitida", () => {
-    const temp = Constantes.MIN_TEMPERATURA;
-    const expectedEnergiaTermal = Number((Constantes.M_TERMAL * temp + Constantes.B_TERMAL).toFixed(2));
-    expect(Energia.calcularEnergiaTermal(temp)).toBe(expectedEnergiaTermal);
   });
 });
