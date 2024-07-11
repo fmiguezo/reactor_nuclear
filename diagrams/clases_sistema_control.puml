@@ -206,5 +206,6 @@ Empleado <|.. Supervisor
 Registro <|.. RegistroEnergiaGenerada
 Registro <|.. RegistroBarrasUsadas
 RegistroEstados -d[hidden]- Registro
+RegistroComandosDisponibles --> Command
 
 @enduml
