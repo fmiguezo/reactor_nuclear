@@ -4,8 +4,9 @@ import RCritico from "./critico";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 import Reactor from "../reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
-import { Constantes } from "../constantes";
-import BarraControl from "../../barras_control/barra_control";
+import { Constantes } from "../constantes_reactor";
+import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
+
 export default class RNormal extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -29,15 +30,11 @@ export default class RNormal extends EstadoReactor {
     }, frecuencia);
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
-    return 0;
-  }
-
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
     if (tempActual < Constantes.TEMP_MINIMA_NORMAL) {
       this.apagar();
-    } else if (tempActual >= Constantes.TEMP_MAXIMA_NORMAL) {
+    } else if (tempActual > Constantes.TEMP_MAXIMA_NORMAL) {
       this.cambiarAEstadoCritico();
     }
   }
@@ -50,7 +47,7 @@ export default class RNormal extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error(Constantes.MENSAJE_ENCENDIDO);
+    throw new EncenderError(Constantes.MENSAJE_ENCENDIDO);
   }
 
   override apagar() {
@@ -65,10 +62,15 @@ export default class RNormal extends EstadoReactor {
   }
 
   public liberarEnergia(): void {
-    const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
+
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_NORMAL;
+  }
+
+  override puedeInsertarBarras(): boolean {
+    return false;
   }
 }

@@ -6,8 +6,10 @@ import Alerta from "../../../sistema_de_control/alertas/alerta";
 import GeneradorDeAlertasEstandar from "../../../sistema_de_control/alertas/generador_alerta_estandar";
 import Reactor from "../reactor";
 import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
-import { Constantes } from "../constantes";
+import { Constantes } from "../constantes_reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
+import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
+
 export default class RCritico extends EstadoReactor {
   private _registroEnergia: RegistroEnergiaGenerada =
     RegistroEnergiaGenerada.instancia;
@@ -15,19 +17,15 @@ export default class RCritico extends EstadoReactor {
 
   constructor(r: Reactor) {
     super(r);
-    this.crearTimeOut();
+    this.crearTimeoutEnergia(120000);
   }
 
-  override calcularEnergia(temperatura: number = 0): number {
-    return 0;
-  }
-
-  private resetTimeOutEnergia(frecuencia: number = 30000): void {
+  private resetTimeOutEnergia(frecuencia: number): void {
     this.eliminarTimeOut(this._timerGeneracion);
-    this.crearTimeOut(frecuencia);
+    this.crearTimeoutEnergia(frecuencia);
   }
 
-  private crearTimeOut(frecuencia: number = 30000): void {
+  private crearTimeoutEnergia(frecuencia: number): void {
     this._timerGeneracion = setTimeout(() => {
       this.liberarEnergia();
       this.resetTimeOutEnergia(frecuencia);
@@ -36,9 +34,9 @@ export default class RCritico extends EstadoReactor {
 
   override verificarEstado(): void {
     const tempActual = this._reactor.getTemperatura();
-    if (tempActual < Constantes.TEMP_MAXIMA_NORMAL) {
+    if (tempActual < Constantes.TEMP_MINIMA_CRITICA) {
       this.cambiarAEstadoNormal();
-    } else if (tempActual >= Constantes.TEMP_CRITICA) {
+    } else if (tempActual >= Constantes.TEMP_MINIMA_EMERGENCIA) {
       this.cambiarAEstadoEmergencia();
     }
   }
@@ -48,6 +46,7 @@ export default class RCritico extends EstadoReactor {
     let estado: EstadoReactor = new RNormal(this._reactor);
     this._reactor.cambiarEstado(estado);
     RegistroEstados.instancia.aumentarRegistro(estado);
+    this._reactor.desactivarMecanismosDeControl();
   }
 
   private cambiarAEstadoEmergencia() {
@@ -57,7 +56,7 @@ export default class RCritico extends EstadoReactor {
   }
 
   override encender() {
-    throw new Error(Constantes.MENSAJE_ENCENDIDO);
+    throw new EncenderError(Constantes.MENSAJE_ENCENDER_CRITICO);
   }
 
   override apagar() {
@@ -75,9 +74,15 @@ export default class RCritico extends EstadoReactor {
   }
 
   public liberarEnergia(): void {
-    const energiaGenerada: number = this._reactor.obtenerEnergiaNeta();
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
     this._registroEnergia.insertarRegistro(energiaGenerada);
   }
+
+  override obtenerEnergiaNeta(): number {
+    let energia = super.obtenerEnergiaNeta();
+    return (energia -= energia * 0.8);
+  }
+
   override toString(): string {
     return Constantes.MENSAJE_ESTADO_CRITICO;
   }

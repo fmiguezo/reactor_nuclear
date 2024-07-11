@@ -3,6 +3,14 @@ import EstadoReactor from "../../central_nuclear/reactor/estados_reactor/estador
 export default class RegistroEstados {
     private static _instancia: RegistroEstados;
     private contadorCambiosEstado: Map<EstadoReactor, number>;
+    
+    public get _contadorCambiosEstado(): Map<EstadoReactor, number> {
+        return this.contadorCambiosEstado;
+    }
+    
+    public set _contadorCambiosEstado(value: Map<EstadoReactor, number>) {
+        this.contadorCambiosEstado = value;
+    }
 
     private constructor() {
         this.contadorCambiosEstado = new Map<EstadoReactor, number>();
@@ -14,6 +22,7 @@ export default class RegistroEstados {
         }
         return RegistroEstados._instancia;
     }
+
 
     public aumentarRegistro(estado: EstadoReactor): void {
         const conteoActual = this.contadorCambiosEstado.get(estado) || 0;

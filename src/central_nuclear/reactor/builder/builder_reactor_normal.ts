@@ -15,11 +15,11 @@ export default class BuilderReactorNormal implements IBuilder {
   }
 
   public setAdminBarras(): void {
-    this._nuevoReactor.setAadministradorBarras(new AdministradorBarras());
+    this._nuevoReactor.setAdministradorBarras(new AdministradorBarras());
   }
 
   public setBarras(): void {
-    this._nuevoReactor.getAdministradorBarras().cargarBarras(100);
+    this._nuevoReactor.getAdministradorBarras().cargarBarras(10, "cadmio");
   }
 
   public setSensores(): void {

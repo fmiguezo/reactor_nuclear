@@ -295,14 +295,10 @@ class SensorTemperatura {
     +obtenerValor(): number;
 }
 
-class Turbina {
-
-}
-
 class PlantaNuclear {
     -reactores: Reactor[];
     -sistema!: Sistema;
-    
+
     +set sistema(sistema: Sistema): void;
     +get reactores(): Reactor[] ;
     +get sistema(): Sistema;
@@ -321,35 +317,48 @@ class ComprobadorSalud {
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
 EstadoBarraDeControl <|-- Insertada
+EstadoBarraDeControl .l.|> MecanismoDeControl
 FabricaBarra <|-- FabricaBarraCadmio
-BarraControl <|-- BarraControlCadmio
+BarraControl <|-l- BarraControlCadmio
+FabricaBarraCadmio --> BarraControlCadmio
+SelectorFabricaBarras -l-> FabricaBarra
+AdministradorBarras --> BarraControl
 
-Activable <|.. MecanismoDeControl
+Activable <|...... MecanismoDeControl
 Activable <|.. Sensor
 
 Builder <|.. BuilderReactorNormal
+DirectorBuildReactor -u-> Builder
 
-Encendible <|.. EstadoReactor
-EstadoReactor <|-- Normal
-EstadoReactor <|-- Encendiendo
-EstadoReactor <|-- Emergencia
-EstadoReactor <|-- Critico
-EstadoReactor <|-- Chernobyl
-EstadoReactor <|-- Apagado
+EstadoReactor <|- Normal
+EstadoReactor <|- Encendiendo
+EstadoReactor <|- Emergencia
+EstadoReactor <|- Critico
+EstadoReactor <|- Chernobyl
+EstadoReactor <|- Apagado
 
-Sensor <|.. SensorProduccionEnergia
-Sensor <|.. SensorTemperatura
+Sensor <|.u. SensorProduccionEnergia
+Sensor <|.l. SensorTemperatura
 
-'Notas
+Reactor -r-o PlantaNuclear
+Reactor *.... Sensor
+Reactor *.. MecanismoDeControl
+EstadoReactor ---o Reactor
+Encendible  <|.r. Reactor
+ComprobadorSalud -d[hidden]- Encendible
+DirectorBuildReactor -r[hidden]- Encendible
+Energia -d[hidden]- PlantaNuclear
+
+Activable -[hidden]r- MecanismoDeControl
+Activable -[hidden]l- Sensor
 note bottom of SensorTemperatura: "Retorna la temperatura"
 note left of SensorProduccionEnergia: "Retorna la producción de energía"
 note bottom of BarraControl: "Retorna el estado de la barra"
 note bottom of BarraControl: "Retorna el tiempo de vida restante de la barra"
-note bottom of Turbina: "Retorna si la turbina está activa o no"
-note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
+note right of Chernobyl: "¡BOOM! (Easter Egg)"
 note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
 
+
+
 @enduml
-
-

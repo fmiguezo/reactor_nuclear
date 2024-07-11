@@ -1,18 +1,15 @@
 import Reactor from "./central_nuclear/reactor/reactor";
 import Sistema from "./sistema_de_control/sistema";
+
 export default class PlantaNuclear {
-  private _reactores: Reactor[] = [];
-  private _sistema!: Sistema;
+  private _reactores: Map<number, Reactor> = new Map();
+  private _sistema: Sistema = new Sistema(this);
 
-  public set sistema(sistema: Sistema) {
-    this._sistema = sistema;
-  }
-
-  public get reactores(): Reactor[] {
+  public getReactores(): Map<number, Reactor> {
     return this._reactores;
   }
 
-  public get sistema(): Sistema {
+  public getSistema(): Sistema {
     return this._sistema;
   }
 
@@ -20,7 +17,7 @@ export default class PlantaNuclear {
     this._sistema = sistema;
   }
 
-  public agregarReactores(reactores: Reactor[]): void {
-    this._reactores = this._reactores.concat(reactores);
+  public agregarReactores(reactor: Reactor): void {
+    this._reactores.set(reactor.id, reactor);
   }
 }

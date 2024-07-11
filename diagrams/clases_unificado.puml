@@ -15,6 +15,8 @@ package CentralNuclear {
 abstract class EstadoBarraDeControl {
     #BarraControl: BarraControl;
 
+    +setBarraControl(barra: BarraControl): void;
+    +getBarraControl(): BarraControl;
     +abstract estaActivo(): boolean;
     +abstract activar(): void;
     +abstract desactivar(): void;
@@ -22,10 +24,12 @@ abstract class EstadoBarraDeControl {
 }
 
 class Eliminada {
+    -RegistroBarrasUsadas:Registro;
     +estaActivo(): boolean;
     +activar(): void;
     +desactivar(): void;
     +calcPctBarra(): number;
+    -reportarVencimiento(): void;
 }
 
 class EnDesuso {
@@ -36,10 +40,15 @@ class EnDesuso {
 }
 
 class Insertada {
+    +setBarraControl(barra: BarraControl): void;
     +estaActivo(): boolean;
     +activar(): void;
     +desactivar(): void;
     +calcPctBarra(): number;
+    -actualizarVidaRestanteBarra(): void;
+    -calcDiffTiempoActual(): number;
+    -crearTimeOut(vidaRestante: number): void;
+    -expirar(): void;
 }
 
 abstract class FabricaBarra {
@@ -103,14 +112,17 @@ interface Sensor {
 }
 
 class Reactor {
-    -estado: IEstadoReactor;
+    -estado: EstadoReactor;
     -mecanimosDeControl: IMecanismoDeControl[];
     -barrasControl: BarraControl[];
     -sensores: ISensor[];
     -temperatura: number;
     -administradorBarras: AdministradorBarras;
     -plantaNuclear: PlantaNuclear;
+    -id: number;
 
+    +id(): number;
+    +id(value: number);
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
@@ -130,23 +142,32 @@ class Reactor {
     +eliminarSensor(sensor: ISensor): void;
     +getSensores(): ISensor[];
     +notificarSensores(): void;
+    +notificarSistema(): void;
     +calcularTemperatura(): void;
     +getAdministradorBarras(): AdministradorBarras;
     +setAadministradorBarras(componente: AdministradorBarras);
     +setPlantaNuclear(plantaNuclear: PlantaNuclear);
+    +getPlantaNuclear(): PlantaNuclear;
+    +puedeInsertarBarras(): boolean;
+    +desactivarMecanismosDeControl(): void;
+    +agregarBarra(barra: BarraControl): void;
 }
 
 class AdministradorBarras {
     -reactor: Reactor;
 
-    +set reactor(r: Reactor);
+    +setreactor(r: Reactor);
+    +getReactor(): Reactor;
     -retreiveColeccionBarras(): BarraControl[];
     +getBarrasInsertadas(): BarraControl[];
     +getBarrasEnDesuso(): BarraControl[];
     +getBarrasVencidas(): BarraControl[];
+    +getBarrasTotales(): BarraControl[];
     -removerBarras(barras: BarraControl[]): void;
     -agregarBarras(barras: BarraControl[]): void;
+    -crearBarras(num: number, tipo: string): BarraControl[]
     -crearBarra(material: string): BarraControl;
+    +cargarBarras(cantBarras: number, tipo: string = "cadmio"): void;
     +subirBarras(cantidadInput: number = 0): void;
     +insertarBarras(cantidadInput: number = 0): void;
     +reemplazarBarrasVencidas(material: string);
@@ -159,6 +180,7 @@ interface Builder {
     +setSensores(): void;
     +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
     +getReactor(): Reactor;
+    +setEstadoIncial(): void;
 }
 
 class DirectorBuildReactor {
@@ -169,6 +191,8 @@ class DirectorBuildReactor {
     +cargarPlantaNuclear(plantaNuclear: PlantaNuclear): void;
     +buildReactorNormal(): Reactor;
     +cambiarBuilder(builder: IBuilder): void;
+    +getBuilder(): IBuilder;
+    +getPlantaNuclear(): PlantaNuclear;
 }
 
 class BuilderReactorNormal {
@@ -180,85 +204,106 @@ class BuilderReactorNormal {
     +setSensores(): void;
     +setPlantaNuclear(plantaNuclear: PlantaNuclear): void;
     +getReactor(): Reactor;
+    +setEstadoIncial(): void;
 }
 
 abstract class EstadoReactor {
-    #incrementoTemp: number;
+    #timerTemp: NodeJS.Timeout | null;
     #reactor: Reactor;
 
     +constructor(r: Reactor);
-    +abstract calcularEnergia(temperatura: number): number;
+    +obtenerEnergiaNeta(): number;
     +abstract encender(): void;
     +abstract apagar(): void;
     +abstract estaEncendido(): boolean;
     +setReactor(reactor: Reactor): void;
-    +incrementarTemperatura(): void;
     +abstract verificarEstado(): void;
-    +generarAlerta(): Alerta;
+    +generarAlerta(): Alerta | null;
+    #crearTimeOutTemp(frecuencia: number): void;
+    -resetTimeOutTemp(frecuencia: number): void;
+    #eliminarTimeOut(timerCancelar: NodeJS.Timeout | null): void
+    +calcValorEnfriamiento(): number;
+    +modificarTemperatura(): void;
+    +puedeInsertarBarras(): boolean;
 }
 
 class Normal {
-    +calcularEnergia(temperatura: number): number;
-    +verificarEstado(): void;
+    -registroEnergia: RegistroEnergiaGenerada;
+    -timerGeneracion: NodeJS.Timeout | null;
 
+    +constructor(r: Reactor);
+    -resetTimeOutEnergia(frecuencia: number = 30000): void;
+    -crearTimeOutEnergia(frecuencia: number = 30000): void;
+    +verificarEstado(): void;
     -cambiarAEstadoCritico();
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
+    +liberarEnergia(): void;
+    +toString(): string;
+    +puedeInsertarBarras(): boolean;
 }
 
 class Encendiendo {
-    +calcularEnergia(temperatura: number): number;
+    +constructor(r: Reactor);
     +verificarEstado(): void;
-
     -cambiarAEstadoNormal();
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
+    +toString(): string;
+    +puedeInsertarBarras(): boolean;
 }
 
 class Emergencia {
-    +calcularEnergia(temperatura: number): number;
+    +constructor(r: Reactor);
     +verificarEstado(): void;
-
     -cambiarAEstadoCritico();
     -cambiarAEstadoChernobyl();
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
     +generarAlerta(): Alerta;
+    +toString(): string;
+    +obtenerEnergiaNeta(): number;
 }
 
 class Critico {
-    +calcularEnergia(temperatura: number): number;
+    +constructor(r: Reactor);
+    -resetTimeOutEnergia(frecuencia: number): void;
+    +crearTimeOut(frecuencia: number): void;
     +verificarEstado(): void;
-
     -cambiarAEstadoNormal();
     -cambiarAEstadoEmergencia();
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
     +generarAlerta(): Alerta;
+    +liberarEnergia(): void;
+    +obtenerEnergiaNeta(): number;
+    +toString(): string;
 }
 
 class Chernobyl {
-    +calcularEnergia(temperatura: number): number;
+    +constructor(r: Reactor);
+    +obtenerEnergiaNeta(): number;
     +verificarEstado(): void;
-
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
+    +toString(): string;
 }
 
 class Apagado {
-    +calcularEnergia(temperatura: number): number;
+    +constructor(r: Reactor);
+    +obtenerEnergiaNeta(): number;
     +verificarEstado(): void;
-
     +encender(): void;
     +apagar(): void;
     +estaEncendido(): boolean;
-    +incrementarTemperatura(): void;
     +generarAlerta(): Alerta;
+    +toString(): string;
+    +puedeInsertarBarras(): boolean;
 }
 
 class Energia {
@@ -278,6 +323,7 @@ class SensorProduccionEnergia {
     +activar(): void;
     +desactivar(): void;
     +actualizar(reactor: Reactor): void;
+    +toString(): string;
 }
 
 class SensorTemperatura {
@@ -292,19 +338,15 @@ class SensorTemperatura {
     +desactivar(): void;
     +actualizar(reactor: Reactor): void;
     +obtenerValor(): number;
-}
-
-class Turbina {
-
+    +toString(): string;
 }
 
 class PlantaNuclear {
-    -reactores: Reactor[];
+    -reactores: Map<number, Reactor> = new Map();
     -sistema!: Sistema;
-    
-    +set sistema(sistema: Sistema): void;
-    +get reactores(): Reactor[] ;
-    +get sistema(): Sistema;
+
+    +getreactores(): Reactor[] ;
+    +getsistema(): Sistema;
     +cargarSistema(sistema: Sistema): void;
     +agregarReactores(reactores: Reactor[]): void;
 }
@@ -320,66 +362,84 @@ class ComprobadorSalud {
 EstadoBarraDeControl <|-- Eliminada
 EstadoBarraDeControl <|-- EnDesuso
 EstadoBarraDeControl <|-- Insertada
+EstadoBarraDeControl .l.|> MecanismoDeControl
 FabricaBarra <|-- FabricaBarraCadmio
-BarraControl <|-- BarraControlCadmio
+Energia o-[hidden]r- FabricaBarra
+BarraControl <|-l- BarraControlCadmio
+FabricaBarraCadmio --> BarraControlCadmio
+SelectorFabricaBarras -l-> FabricaBarra
+AdministradorBarras --> BarraControl
 
-Activable <|.. MecanismoDeControl
+Activable <|.r. MecanismoDeControl
 Activable <|.. Sensor
 
 Builder <|.. BuilderReactorNormal
+DirectorBuildReactor --> Builder
 
-Encendible <|.. EstadoReactor
-EstadoReactor <|-- Normal
-EstadoReactor <|-- Encendiendo
-EstadoReactor <|-- Emergencia
-EstadoReactor <|-- Critico
-EstadoReactor <|-- Chernobyl
-EstadoReactor <|-- Apagado
+EstadoReactor <|- Normal
+EstadoReactor <|- Encendiendo
+EstadoReactor <|- Emergencia
+EstadoReactor <|- Critico
+EstadoReactor <|- Chernobyl
+EstadoReactor <|- Apagado
 
-Sensor <|.. SensorProduccionEnergia
-Sensor <|.. SensorTemperatura
+Sensor <|.u. SensorProduccionEnergia
+Sensor <|.l. SensorTemperatura
+
+Reactor -r-o PlantaNuclear
+Reactor *... Sensor
+Reactor *...... MecanismoDeControl
+EstadoReactor ----o Reactor
+Encendible  <|.r. Reactor
+ComprobadorSalud -d[hidden]- Encendible
+DirectorBuildReactor -r[hidden]- Encendible
+Energia -d[hidden]- PlantaNuclear
+
+Activable -[hidden]r- MecanismoDeControl
+Activable -[hidden]l- Sensor
+
+
 
 'Notas
 note bottom of SensorTemperatura: "Retorna la temperatura"
-note left of SensorProduccionEnergia: "Retorna la producción de energía"
+note top of SensorProduccionEnergia: "Retorna la producción de energía"
 note bottom of BarraControl: "Retorna el estado de la barra"
 note bottom of BarraControl: "Retorna el tiempo de vida restante de la barra"
-note bottom of Turbina: "Retorna si la turbina está activa o no"
-note bottom of Chernobyl: "¡BOOM! (Easter Egg)"
-note right of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
+note bottom of PlantaNuclear: "Contiene los reactores y el software que contiene los operadores"
 note top of EstadoBarraDeControl: "Clase abstracta para los mecanismos de control \nque serán utilizados para controlar la temperatura \ndel reactor y enfriarReactor() va a ser llamado por \nactivar() para bajar la temperatura del Reactor"
+
 
 }
 
-package Software {
+package sistemaDeControl {
 skinparam Linetype ortho
 
 interface Command {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ApagarReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class EncenderReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class InsertarBarraDeControl {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ObtenerInformacionReactor {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class ReportarEstado {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 class SacarBarraDeControl {
-    +ejecutar(comando: Command): void
+    +ejecutar(r: Reactor): void
 }
 
 abstract class Alerta {
@@ -424,7 +484,7 @@ class AlertaEstandar {
 }
 
 interface IGeneradorDeAlertas {
-    
+
 }
 
 class GeneradorAlertaApagado {
@@ -454,7 +514,7 @@ class Operario {
     -reactor: Reactor;
 
     +constructor(reactor: Reactor, nombre : String);
-    +realizarOperacion(comando: Command): void;
+    +realizarOperacion(r: Reactor): void;
     +notificar(a: Alerta): void;
 }
 
@@ -472,16 +532,49 @@ class Sistema {
     +init(): void;
 }
 
+interface Registro {
+    +insertarRegistro(registro: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
+
+class RegistroEstados {
+    -static instancia: RegistroEstados;
+    -contadorCambiosEstado: Map<EstadoReactor, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroEstados;
+    +aumentarRegistro(estado: EstadoReactor): void;
+}
+
+class RegistroEnergiaGenerada {
+    -static instancia: RegistroEnergiaGenerada;
+    -mapaRegistros: Map<Date, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroEnergiaGenerada;
+    +insertarRegistro(energiaProducida: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
+
+class RegistroBarrasUsadas {
+    -static instancia: RegistroBarrasUsadas;
+    -mapaRegistros: Map<Date, number>;
+
+    -constructor();
+    +static getInstancia(): RegistroBarrasUsadas;
+    +insertarRegistro(barrasUsadas: number): void;
+    +obtenerRegistros(): Map<Date, number>;
+}
 
 ' Relaciones
-Command <|.. ApagarReactor
-Command <|.. EncenderReactor
-Command <|.. InsertarBarraDeControl
-Command <|.u. ObtenerInformacionReactor
-Command <|.u. ReportarEstado
-Command <|.u. SacarBarraDeControl
+Command <|.l. ApagarReactor
+Command <|.l. EncenderReactor
+Command <|.l. InsertarBarraDeControl
+Command <|.l. ObtenerInformacionReactor
+Command <|.l. ReportarEstado
+Command <|.l. SacarBarraDeControl
 
-Operario ----> Command
+Operario ---> Command
 
 Alerta <|-- AlertaApagado
 Alerta <|-- AlertaCritica
@@ -499,6 +592,9 @@ GeneradorAlertaEstandar -u-> AlertaEstandar
 
 Empleado <|.. Operario
 Empleado <|.. Supervisor
-Sistema -r-* PlantaNuclear
+
+Registro <|.. RegistroEnergiaGenerada
+Registro <|.. RegistroBarrasUsadas
+RegistroEstados -d[hidden]- Registro
 
 @enduml
