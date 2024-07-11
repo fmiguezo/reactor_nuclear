@@ -48,10 +48,10 @@ describe("Test de la clase Sistema", () => {
     expect(alerta.notificar).toHaveBeenCalled();
   });
 
-  // it("debería iniciar una nueva sesión en CLI", () => {
-  //   const cliMock = jest.spyOn(Cli.prototype, "nuevaSesion");
-  //   sistema.init();
-  //   expect(cliMock).toHaveBeenCalledWith(sistema);
-  //   cliMock.mockRestore();
-  // });
+  it("debería iniciar una nueva sesión en CLI", () => {
+    const cliMock = jest.spyOn(Cli.prototype, "nuevaSesion");
+    sistema.init();
+    expect(cliMock).toHaveBeenCalledWith(sistema);
+    cliMock.mockRestore();
+  });
 });
