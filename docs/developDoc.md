@@ -1,4 +1,6 @@
-# Documentación técnica
+<h1 style="text-align:center">
+📑 Documentación técnica
+</h1>
 
 ## INFORMACION GENERAL
 
@@ -32,7 +34,7 @@ El simulador representa una planta nuclear, la cual puede contener un número in
 
 - **Función:** Son los principales mecanismos de control del reactor. Su función es crucial para evitar que el reactor explote, enfriándolo para mantenerlo en un estado normal. Este estado evita que la temperatura se vuelva crítica, previniendo estados de emergencia o un escenario catastrófico tipo "Chernobyl".
 
-Tipos y Atributos: En la versión actual del software, solo se puede crear un tipo de barra de control (barra de cadmio). Sin embargo, el diseño utiliza el patrón Factory Method, permitiendo la implementación de más tipos de barras en el futuro sin violar principios SOLID. Cada barra tiene un estado inicial (En Desuso), que cambia según si se encuentra insertada en el reactor o si ya expiró (las barras tienen una vida útil limitada).
+- **Tipos y Atributos:** En la versión actual del software, solo se puede crear un tipo de barra de control (barra de cadmio). Sin embargo, el diseño utiliza el patrón Factory Method, permitiendo la implementación de más tipos de barras en el futuro sin violar principios SOLID. Cada barra tiene un estado inicial (En Desuso), que cambia según si se encuentra insertada en el reactor o si ya expiró (las barras tienen una vida útil limitada).
 
 ---
 
@@ -96,6 +98,18 @@ El sistema de control tiene como una de sus principales funciones poder generar 
 
 Dentro de la interfaz humana se encuentran los comandos y todos los métodos que permitan al usuario interactuar con el sistema.
 
+Los tipos de comando disponibles son:
+
+```
+- apagar_reactor: apaga el reactor.
+- encender_reactor: enciende un reactor apagado.
+- insertar_barra_control: inserta una o más barras de control. Si se indica que inserte 0 barras, inserta todas.
+- obtener_info_reactor: imprime por pantalla los valores que retornan los sensores.
+- reportar_estado: imprime por pantalla en qué estado se encuentra el reactor.
+- sacar_barra_control: sube barras de control que estén insertadas en el núcleo. Puede especificarse una cantidad.
+- comandos_disponibles: retorna los comandos disponibles.
+```
+
 ---
 
 **Usuarios**
@@ -118,12 +132,6 @@ Las clases de tipo Registro permiten almacenar eventos concretos que ocurran en 
 - Registro de cambios de estado del reactor
 
 En el futuro podrían agregarse más registros.
-
----
-
-**Comprobador de salud del reactor (modificaciones pendientes)**
-
-Tiene como propósito vigilar el estado del reactor, y en caso de que la situación sea de verdadera emergencia, otro módulo del software toma el control del reactor para intentar estabilizar la reacción y evitar una explosión.
 
 ---
 
