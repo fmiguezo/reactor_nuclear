@@ -358,6 +358,13 @@ class ComprobadorSalud {
     -produceEnergiaEnRango(reactor: Reactor): boolean;
 }
 
+class modEmergencIA {
+    -static _instancia: modEmergencIA;
+
+    +static get instancia(): modEmergencIA;
+    +AZ5(reactor: Reactor): void;
+}
+
 
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
@@ -369,10 +376,9 @@ BarraControl <|-l- BarraControlCadmio
 FabricaBarraCadmio --> BarraControlCadmio
 SelectorFabricaBarras -l-> FabricaBarra
 AdministradorBarras --> BarraControl
-
 Activable <|...... MecanismoDeControl
 Activable <|.. Sensor
-
+PlantaNuclear -[hidden]r- modEmergencIA
 Builder <|.. BuilderReactorNormal
 DirectorBuildReactor -u-> Builder
 

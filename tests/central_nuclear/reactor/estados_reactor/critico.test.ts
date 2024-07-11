@@ -110,4 +110,38 @@ describe("Test del estado Crítico", () => {
   it("debería devolver el mensaje de estado crítico correctamente", () => {
     expect(instance.toString()).toBe(Constantes.MENSAJE_ESTADO_CRITICO);
   });
+
+  it("verificarEstado debería cambiar a estado RNormal si la temperatura está por debajo de Constantes.TEMP_MINIMA_CRITICA", () => {
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA - 1);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
+  });
+
+  it("verificarEstado debería cambiar a estado REmergencia si la temperatura es igual o mayor a Constantes.TEMP_MINIMA_EMERGENCIA", () => {
+    MockReactor.setTemperatura(Constantes.TEMP_MINIMA_EMERGENCIA);
+    instance.verificarEstado();
+    expect(MockReactor.getEstado()).toBeInstanceOf(REmergencia);
+  });
+
+  it("liberarEnergia debería insertar el registro en _registroEnergia con la energía neta calculada", () => {
+    const energiaNeta = 100;
+    jest.spyOn(instance, "obtenerEnergiaNeta").mockReturnValue(energiaNeta);
+    const spyInsertarRegistro = jest.spyOn(instance["_registroEnergia"], "insertarRegistro");
+    instance.liberarEnergia();
+    expect(spyInsertarRegistro).toHaveBeenCalledWith(energiaNeta);
+  });
+
+  it("obtenerEnergiaNeta debería aplicar correctamente el cálculo de reducción de energía", () => {
+    const energiaInicial = 100;
+    const energiaEsperada = energiaInicial - energiaInicial * 0.8;
+    jest.spyOn(instance as any, "obtenerEnergiaNeta").mockReturnValue(energiaEsperada);
+    const resultado = instance.obtenerEnergiaNeta();
+    expect(resultado).toBeCloseTo(energiaEsperada);
+  });
+
+  it("toString debería devolver el mensaje de estado crítico", () => {
+    const mensajeEsperado = Constantes.MENSAJE_ESTADO_CRITICO;
+    const resultado = instance.toString();
+    expect(resultado).toBe(mensajeEsperado);
+  });
 });

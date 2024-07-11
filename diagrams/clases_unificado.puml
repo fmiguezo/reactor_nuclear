@@ -357,6 +357,13 @@ class ComprobadorSalud {
     -produceEnergiaEnRango(reactor: Reactor): boolean;
 }
 
+class modEmergencIA {
+    -static _instancia: modEmergencIA;
+
+    +static get instancia(): modEmergencIA;
+    +AZ5(reactor: Reactor): void;
+}
+
 
 'Relaciones
 EstadoBarraDeControl <|-- Eliminada
@@ -394,7 +401,7 @@ Encendible  <|.r. Reactor
 ComprobadorSalud -d[hidden]- Encendible
 DirectorBuildReactor -r[hidden]- Encendible
 Energia -d[hidden]- PlantaNuclear
-
+DirectorBuildReactor-[hidden]u- modEmergencIA
 Activable -[hidden]r- MecanismoDeControl
 Activable -[hidden]l- Sensor
 
