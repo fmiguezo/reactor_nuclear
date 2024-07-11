@@ -100,4 +100,18 @@ describe("Test del estado apagado", () => {
     const energiaNeta = instance.obtenerEnergiaNeta();
     expect(energiaNeta).toEqual(energiaNetaEsperada);
   });
+
+  it("debería cambiar a estado crítico si la temperatura está entre 330 y 399 grados", () => {
+    MockReactor.setTemperatura(350);
+    MockReactor.getEstado().verificarEstado();
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(RCritico);
+  });
+
+  it("debería cambiar a estado Chernobyl si la temperatura es igual o mayor a 390 grados", () => {
+    MockReactor.setTemperatura(400);
+    MockReactor.getEstado().verificarEstado();
+    let estado = MockReactor.getEstado();
+    expect(estado).toBeInstanceOf(REmergencia);
+  });
 });
