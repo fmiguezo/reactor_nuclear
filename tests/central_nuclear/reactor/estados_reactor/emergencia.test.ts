@@ -36,6 +36,11 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
+afterAll(() => {
+  jest.clearAllMocks();
+  jest.clearAllTimers();
+});
+
 describe("Test del estado apagado", () => {
   it("debería ser una instancia de REmergencia", () => {
     expect(instance).toBeInstanceOf(REmergencia);

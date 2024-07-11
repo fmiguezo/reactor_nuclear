@@ -17,15 +17,12 @@ import REmergencia from "../../../src/central_nuclear/reactor/estados_reactor/em
 describe("Reactor", () => {
   let reactor: Reactor;
   let estadoMock: EstadoReactor;
-  let barraControlMock: BarraControl;
-  let mecanismoDeControlMock: IMecanismoDeControl;
-  let sensorMock: ISensor;
+  let barraControlMock: jest.Mocked<BarraControl>;
+  let mecanismoDeControlMock: jest.Mocked<IMecanismoDeControl>;
+  let sensorMock: jest.Mocked<ISensor>;
   let administradorBarrasMock: AdministradorBarras;
-  let plantaNuclearMock: jest.Mocked<PlantaNuclear> =
-    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
-  let sistemaMock: jest.Mocked<Sistema> = new Sistema(
-    plantaNuclearMock
-  ) as jest.Mocked<Sistema>;
+  let plantaNuclearMock: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let sistemaMock: jest.Mocked<Sistema> = new Sistema(plantaNuclearMock) as jest.Mocked<Sistema>;
   let RCriticoMock: jest.Mocked<RCritico>;
   let RApagadoMock: jest.Mocked<RApagado>;
   let REmergenciaMock: jest.Mocked<REmergencia>;
@@ -40,13 +37,13 @@ describe("Reactor", () => {
       puedeInsertarBarras: jest.fn().mockReturnValue(true),
     } as unknown as EstadoReactor;
 
-    barraControlMock = {} as unknown as BarraControl;
+    barraControlMock = {} as unknown as jest.Mocked<BarraControl>;
 
-    mecanismoDeControlMock = {} as unknown as IMecanismoDeControl;
+    mecanismoDeControlMock = {} as unknown as jest.Mocked<IMecanismoDeControl>;
 
     sensorMock = {
       actualizar: jest.fn(),
-    } as unknown as ISensor;
+    } as unknown as jest.Mocked<ISensor>;
 
     administradorBarrasMock = {
       getBarrasInsertadas: jest.fn().mockReturnValue([]),
@@ -58,6 +55,18 @@ describe("Reactor", () => {
     reactor.setEstado(estadoMock);
     reactor.setAdministradorBarras(administradorBarrasMock);
     reactor.setPlantaNuclear(plantaNuclearMock);
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.clearAllTimers();
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it("debería encender el reactor", () => {
@@ -130,9 +139,7 @@ describe("Reactor", () => {
     expect(reactor["_mecanimosDeControl"]).toContain(mecanismoDeControlMock);
 
     reactor.eliminarMecanismoDeControl(mecanismoDeControlMock);
-    expect(reactor["_mecanimosDeControl"]).not.toContain(
-      mecanismoDeControlMock
-    );
+    expect(reactor["_mecanimosDeControl"]).not.toContain(mecanismoDeControlMock);
   });
 
   it("debería agregar y eliminar sensores", () => {
@@ -182,17 +189,13 @@ describe("Reactor", () => {
   });
 
   it("debería desactivar los mecanismos de control", () => {
-    administradorBarrasMock.getBarrasInsertadas = jest
-      .fn()
-      .mockReturnValue([barraControlMock]);
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
     reactor.desactivarMecanismosDeControl();
     expect(administradorBarrasMock.subirBarras).toHaveBeenCalled();
   });
 
   it("debería manejar errores al desactivar los mecanismos de control", () => {
-    administradorBarrasMock.getBarrasInsertadas = jest
-      .fn()
-      .mockReturnValue([barraControlMock]);
+    administradorBarrasMock.getBarrasInsertadas = jest.fn().mockReturnValue([barraControlMock]);
     administradorBarrasMock.subirBarras = jest.fn().mockImplementation(() => {
       throw new SubirBarrasError(Constantes.NO_PUEDE_SUBIR_BARRA);
     });

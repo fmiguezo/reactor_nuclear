@@ -26,11 +26,11 @@ describe("Test de Barra de Control: expiracion", () => {
     expect(barraControl.getEstado()).toBeInstanceOf(EnDesuso);
   });
 
-  it("Recién creada debe tener una vida útil de 2000", () => {
+  it("Recién creada debe tener una vida útil de 120000", () => {
     expect(barraControl.getEstado()).toBeInstanceOf(EnDesuso);
     barraControl.activar();
     expect(barraControl.getEstado()).toBeInstanceOf(Insertada);
-    jest.advanceTimersByTime(2000);
+    jest.advanceTimersByTime(120000);
     expect(barraControl.getEstado()).toBeInstanceOf(Eliminada);
     expect(barraControl.estaActivo()).toBeFalsy();
   });

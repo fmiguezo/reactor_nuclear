@@ -35,6 +35,11 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
+afterAll(() => {
+  jest.clearAllMocks();
+  jest.clearAllTimers();
+});
+
 describe("Test del estado Crítico", () => {
   it("debería inicializar correctamente como estado RCritico", () => {
     expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
@@ -71,8 +76,8 @@ describe("Test del estado Crítico", () => {
   });
 
   it("debería resetear el timeout de generación de energía correctamente", () => {
-    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
-    const spyCrearTimeoutEnergia = jest.spyOn(instance as any, 'crearTimeoutEnergia');
+    const spyEliminarTimeOut = jest.spyOn(instance as any, "eliminarTimeOut");
+    const spyCrearTimeoutEnergia = jest.spyOn(instance as any, "crearTimeoutEnergia");
     (instance as any).resetTimeOutEnergia(10000);
 
     expect(spyEliminarTimeOut).toHaveBeenCalled();
@@ -80,24 +85,24 @@ describe("Test del estado Crítico", () => {
   });
 
   it("debería cambiar al estado RNormal correctamente", () => {
-    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
-    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
+    const spyEliminarTimeOut = jest.spyOn(instance as any, "eliminarTimeOut");
+    const spyCambiarEstado = jest.spyOn(MockReactor, "cambiarEstado");
     (instance as any).cambiarAEstadoNormal();
     expect(spyEliminarTimeOut).toHaveBeenCalled();
     expect(spyCambiarEstado).toHaveBeenCalledWith(expect.any(RNormal));
   });
 
   it("debería cambiar al estado REmergencia correctamente", () => {
-    const spyEliminarTimeOut = jest.spyOn(instance as any, 'eliminarTimeOut');
-    const spyCambiarEstado = jest.spyOn(MockReactor, 'cambiarEstado');
+    const spyEliminarTimeOut = jest.spyOn(instance as any, "eliminarTimeOut");
+    const spyCambiarEstado = jest.spyOn(MockReactor, "cambiarEstado");
     (instance as any).cambiarAEstadoEmergencia();
     expect(spyEliminarTimeOut).toHaveBeenCalled();
     expect(spyCambiarEstado).toHaveBeenCalledWith(expect.any(REmergencia));
   });
 
   it("debería liberar energía correctamente", () => {
-    const spyInsertarRegistro = jest.spyOn(instance['_registroEnergia'], 'insertarRegistro');
-    jest.spyOn(instance, 'obtenerEnergiaNeta').mockReturnValue(100);
+    const spyInsertarRegistro = jest.spyOn(instance["_registroEnergia"], "insertarRegistro");
+    jest.spyOn(instance, "obtenerEnergiaNeta").mockReturnValue(100);
     instance.liberarEnergia();
     expect(spyInsertarRegistro).toHaveBeenCalledWith(100);
   });
