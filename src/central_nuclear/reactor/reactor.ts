@@ -173,7 +173,6 @@ export default class Reactor {
       administradorBarras.getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => (valorEnfriamiento += b.getPctBarra()));
-    console.log(valorEnfriamiento);
     return valorEnfriamiento;
   }
 

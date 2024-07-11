@@ -1,5 +1,26 @@
 import RegistroEnergiaGenerada from "../../../src/sistema_de_control/registros/registro_energia_generada";
 
+describe("Singleton RegistroEnergiaGenerada", () => {
+  it("_instancia debe ser undefined antes de obtener una instancia", () => {
+    expect(RegistroEnergiaGenerada["_instancia"]).toBeUndefined();
+  });
+
+  it("_instancia no debe ser undefined luego de obtener una instancia", () => {
+    const instanciaSingleton: RegistroEnergiaGenerada =
+      RegistroEnergiaGenerada.instancia;
+    expect(RegistroEnergiaGenerada["_instancia"]).not.toBeUndefined();
+  });
+
+  it("verifica que las instancias obtenidas sean iguales", () => {
+    const instanciaSingletonA: RegistroEnergiaGenerada =
+      RegistroEnergiaGenerada.instancia;
+    const instanciaSingletonB: RegistroEnergiaGenerada =
+      RegistroEnergiaGenerada.instancia;
+
+    expect(instanciaSingletonA).toBe(instanciaSingletonB);
+  });
+});
+
 describe("Test de la clase registro_energia_generada.ts", () => {
   let registro: RegistroEnergiaGenerada;
 

@@ -8,6 +8,7 @@ import PlantaNuclear from "../../../../src/planta_nuclear";
 import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builder/director_build_reactor";
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import ApagarError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_apagado/apagar_error";
+import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 
 let instance: RApagado;
 

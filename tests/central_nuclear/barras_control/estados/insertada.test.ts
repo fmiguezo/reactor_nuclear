@@ -25,21 +25,42 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     jest.clearAllTimers();
   });
 
-  it('El constructor deberia settear la fecha ', () => {
-    expect(stateInstance['fechaInsertada']).toBeInstanceOf(Date);
+  it("Constructor debería llamar al constructor de la clase padre", () => {
+    // Elimina mocks anteriores
+    jest.resetModules();
+
+    // Crea el Mock de EstadoBarraControl para este test
+    const EstadoBarraControl =
+      require("../../../../src/central_nuclear/barras_control/estados/estado_barra_control").default;
+    jest.mock(
+      "../../../../src/central_nuclear/barras_control/estados/estado_barra_control"
+    );
+
+    // Crea el spy para el constructor de EstadoBarraControl
+    const superSpy = jest.spyOn(EstadoBarraControl.prototype, "constructor");
+
+    const Insertada =
+      require("../../../../src/central_nuclear/barras_control/estados/insertada").default;
+    new Insertada();
+
+    expect(superSpy).toHaveBeenCalled();
   });
 
-  it('Verifica que el getter de la barra funcione correctamente', () => {
+  it("El constructor deberia settear la fecha ", () => {
+    expect(stateInstance["fechaInsertada"]).toBeInstanceOf(Date);
+  });
+
+  it("Verifica que el getter de la barra funcione correctamente", () => {
     expect(stateInstance.getBarraControl()).toBe(rodInstance);
   });
 
-  it('Verifica que el setter de la barra funcione correctamente', () => {
+  it("Verifica que el setter de la barra funcione correctamente", () => {
     let rodInstance1 = new BarraControlCadmio(200, stateInstance);
     stateInstance.setBarraControl(rodInstance1);
     expect(stateInstance.getBarraControl()).toBe(rodInstance1);
   });
 
-  it('La instancia deberia ser de tipo Insertada', () => {
+  it("La instancia deberia ser de tipo Insertada", () => {
     expect(stateInstance).toBeInstanceOf(Insertada);
   });
 
@@ -74,7 +95,10 @@ describe("Test de Estado Barra de Control: Insertada", () => {
 
   it("Se verifica el funcionamiento del metodo desactivar cuando timeoutBarra es null", () => {
     const clearTimeoutSpy = jest.spyOn(global, "clearTimeout");
-    const actualizarVidaRestanteBarraSpy = jest.spyOn(stateInstance as any, "actualizarVidaRestanteBarra");
+    const actualizarVidaRestanteBarraSpy = jest.spyOn(
+      stateInstance as any,
+      "actualizarVidaRestanteBarra"
+    );
     const cambiarEstadoSpy = jest.spyOn(rodInstance as any, "cambiarEstado");
     // No aseguramos que el timeoutBarra sea null
     stateInstance["timeoutBarra"] = null;
@@ -95,7 +119,10 @@ describe("Test de Estado Barra de Control: Insertada", () => {
 
   it("Se verifica que desactivar limpia el timeotBarra si existe", () => {
     const clearTimeoutSpy = jest.spyOn(global, "clearTimeout");
-    const actualizarVidaRestanteBarraSpy = jest.spyOn(stateInstance as any, "actualizarVidaRestanteBarra");
+    const actualizarVidaRestanteBarraSpy = jest.spyOn(
+      stateInstance as any,
+      "actualizarVidaRestanteBarra"
+    );
     const cambiarEstadoSpy = jest.spyOn(rodInstance as any, "cambiarEstado");
     // Le damos un balor al timeoutBarra
     stateInstance["timeoutBarra"] = setTimeout(() => {}, 1000);
@@ -116,7 +143,8 @@ describe("Test de Estado Barra de Control: Insertada", () => {
   it("Se verifica el metodo calcPctBarra de el valor esperado", () => {
     stateInstance.setBarraControl(rodInstance);
     expect(stateInstance.calcPctBarra()).toBe(
-      (rodInstance.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) * Constantes.MULTIPLICADOR_FORMULA_BARRA
+      (rodInstance.getVidaUtilRestante() / Constantes.VIDA_UTIL_BARRA) *
+        Constantes.MULTIPLICADOR_FORMULA_BARRA
     );
   });
 
@@ -141,8 +169,13 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     rodInstance.setVidaUtilRestante(1000);
     stateInstance.setBarraControl(rodInstance);
     // Lo que hago es forsar que el calcDiffTiempoActualSpy devuelva 500
-    const calcDiffTiempoActualSpy = jest.spyOn(stateInstance as any, "calcDiffTiempoActual").mockReturnValue(500);
-    const setVidaUtilSpy = jest.spyOn(rodInstance as any, "setVidaUtilRestante");
+    const calcDiffTiempoActualSpy = jest
+      .spyOn(stateInstance as any, "calcDiffTiempoActual")
+      .mockReturnValue(500);
+    const setVidaUtilSpy = jest.spyOn(
+      rodInstance as any,
+      "setVidaUtilRestante"
+    );
     // Usando el as any, puedo usar el metodo privado
     (stateInstance as any).actualizarVidaRestanteBarra();
     // Esto es lo que espero que suceda:
@@ -153,8 +186,13 @@ describe("Test de Estado Barra de Control: Insertada", () => {
   it("Se verifica el metodo actualizarVidaRestanteBarra cuando la vida util de la barra es <= 0", () => {
     rodInstance.setVidaUtilRestante(400);
     stateInstance.setBarraControl(rodInstance);
-    const calcDiffTiempoActualSpy = jest.spyOn(stateInstance as any, "calcDiffTiempoActual").mockReturnValue(500);
-    const setVidaUtilSpy = jest.spyOn(rodInstance as any, "setVidaUtilRestante");
+    const calcDiffTiempoActualSpy = jest
+      .spyOn(stateInstance as any, "calcDiffTiempoActual")
+      .mockReturnValue(500);
+    const setVidaUtilSpy = jest.spyOn(
+      rodInstance as any,
+      "setVidaUtilRestante"
+    );
     const expirarSpy = jest.spyOn(stateInstance as any, "expirar");
 
     (stateInstance as any).actualizarVidaRestanteBarra();
@@ -175,7 +213,10 @@ describe("Test de Estado Barra de Control: Insertada", () => {
     // Verifica que se alla llamado a el setTimeout una vez
     expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
     // Verifica que setTimeout haya sido llamado con la función expirar
-    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), vidaRestante);
+    expect(setTimeoutSpy).toHaveBeenCalledWith(
+      expect.any(Function),
+      vidaRestante
+    );
     // Simula la ejecución de la función que setTimeout debería llamar
     const setTimeoutCallback = setTimeoutSpy.mock.calls[0][0] as () => void;
     setTimeoutCallback(); // Simula que expira el tiempo (Linea de codigo magica sacada de un lugar fantastico)
