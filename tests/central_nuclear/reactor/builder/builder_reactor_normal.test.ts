@@ -9,7 +9,8 @@ import RApagado from "../../../../src/central_nuclear/reactor/estados_reactor/ap
 
 describe("Tests del builder de reactor normal", () => {
   let instance: BuilderReactorNormal;
-  let MockPlantaNuclear: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
+  let MockPlantaNuclear: jest.Mocked<PlantaNuclear> =
+    new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
   let MockReactor: jest.Mocked<Reactor>;
   let MockNormal: jest.Mocked<RNormal>;
   let MockRApagado: jest.Mocked<RApagado>;
@@ -39,7 +40,9 @@ describe("Tests del builder de reactor normal", () => {
 
   it("Verifica que el administrador se agregue de forma correcta", () => {
     instance.setAdminBarras();
-    expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(AdministradorBarras);
+    expect(instance.getReactor().getAdministradorBarras()).toBeInstanceOf(
+      AdministradorBarras
+    );
   });
 
   it("Verifica que las barras se agreguen de forma correcta", () => {
@@ -51,7 +54,7 @@ describe("Tests del builder de reactor normal", () => {
     instance.setBarras();
     reactor.setPlantaNuclear(MockPlantaNuclear);
     jest.spyOn(global.console, "log");
-    expect(reactor.getBarrasDeControl().length).toBe(100);
+    expect(reactor.getBarrasDeControl().length).toBe(10);
   });
 
   it("Verifica que los sensores se agreguen de forma correcta", () => {

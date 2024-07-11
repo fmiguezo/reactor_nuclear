@@ -5,14 +5,13 @@ import { Constantes } from "../constantes_reactor";
 import BarraControl from "../../barras_control/barra_control";
 import EnergiaNetaCalculationError from "../../../errores/errores_central_nuclear/errores_reaccion/error_energia/energia_neta_calculation_error";
 import Energia from "../reaccion/energia";
+import AdministradorBarras from "../administrador/administrador_barras";
 
 export default abstract class EstadoReactor implements IEncendible {
   protected _reactor: Reactor;
-  protected _timerTemp: NodeJS.Timeout | null = null;
 
   constructor(r: Reactor) {
     this._reactor = r;
-    this.crearTimeOutTemp(120000);
   }
 
   public obtenerEnergiaNeta(): number {
@@ -45,44 +44,13 @@ export default abstract class EstadoReactor implements IEncendible {
     return null;
   }
 
-  protected crearTimeOutTemp(frecuencia: number): void {
-    this._timerTemp = setTimeout(() => {
-      this.modificarTemperatura();
-      this.resetTimeOutTemp(frecuencia);
-    }, frecuencia);
-  }
-  private resetTimeOutTemp(frecuencia: number): void {
-    this.eliminarTimeOut(this._timerTemp);
-    this.crearTimeOutTemp(frecuencia);
+  public puedeInsertarBarras(): boolean {
+    return true;
   }
 
   protected eliminarTimeOut(timerCancelar: NodeJS.Timeout | null): void {
     if (timerCancelar !== null) {
       clearTimeout(timerCancelar);
     }
-  }
-
-  public calcValorEnfriamiento(): number {
-    const barrasInsertadas: BarraControl[] = this._reactor
-      .getAdministradorBarras()
-      .getBarrasInsertadas();
-    let valorEnfriamiento: number = 0;
-    barrasInsertadas.forEach((b) => {
-      valorEnfriamiento += b.getPctBarra();
-    });
-
-    return valorEnfriamiento;
-  }
-
-  public modificarTemperatura(): void {
-    let nuevaTemp: number = this._reactor.getTemperatura();
-    nuevaTemp += 100;
-    nuevaTemp -= this.calcValorEnfriamiento();
-    this._reactor.setTemperatura(nuevaTemp);
-    this.verificarEstado();
-  }
-
-  public puedeInsertarBarras(): boolean {
-    return true;
   }
 }

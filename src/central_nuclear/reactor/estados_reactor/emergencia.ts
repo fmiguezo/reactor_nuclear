@@ -8,10 +8,16 @@ import { Constantes } from "../constantes_reactor";
 import RegistroEstados from "../../../sistema_de_control/registros/registroEstados";
 import EncenderError from "../../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import Reactor from "../reactor";
+import RegistroEnergiaGenerada from "../../../sistema_de_control/registros/registro_energia_generada";
 
 export default class REmergencia extends EstadoReactor {
+  private _registroEnergia: RegistroEnergiaGenerada =
+    RegistroEnergiaGenerada.instancia;
+  private _timerGeneracion: NodeJS.Timeout | null = null;
+
   constructor(r: Reactor) {
     super(r);
+    this.crearTimeoutEnergia(120000);
   }
 
   override verificarEstado(): void {
@@ -21,6 +27,13 @@ export default class REmergencia extends EstadoReactor {
     } else if (tempActual >= Constantes.TEMP_CHERNOBYL) {
       this.cambiarAEstadoChernobyl();
     }
+  }
+
+  private crearTimeoutEnergia(frecuencia: number): void {
+    this._timerGeneracion = setTimeout(() => {
+      this.liberarEnergia();
+      this.resetTimeOutEnergia(frecuencia);
+    }, frecuencia);
   }
 
   private cambiarAEstadoCritico() {
@@ -55,8 +68,18 @@ export default class REmergencia extends EstadoReactor {
     return Constantes.MENSAJE_ESTADO_EMERGENCIA;
   }
 
+  public liberarEnergia(): void {
+    const energiaGenerada: number = this.obtenerEnergiaNeta();
+    this._registroEnergia.insertarRegistro(energiaGenerada);
+  }
+
   override obtenerEnergiaNeta(): number {
     let energia = super.obtenerEnergiaNeta();
     return (energia -= energia * 0.8);
+  }
+
+  private resetTimeOutEnergia(frecuencia: number): void {
+    this.eliminarTimeOut(this._timerGeneracion);
+    this.crearTimeoutEnergia(frecuencia);
   }
 }

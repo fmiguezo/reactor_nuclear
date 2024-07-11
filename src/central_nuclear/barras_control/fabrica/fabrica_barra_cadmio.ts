@@ -7,7 +7,10 @@ import FabricaBarra from "./fabrica_barra";
 export default class FabricaBarraCadmio extends FabricaBarra {
   override crearBarra(): BarraControl {
     const nuevoEstado: EstadoBarraControl = new EnDesuso();
-    const nuevaBarra: BarraControl = new BarraControlCadmio(2000, nuevoEstado);
+    const nuevaBarra: BarraControl = new BarraControlCadmio(
+      120000,
+      nuevoEstado
+    );
     nuevoEstado.setBarraControl(nuevaBarra);
     nuevaBarra.cambiarEstado(nuevoEstado);
     return nuevaBarra;

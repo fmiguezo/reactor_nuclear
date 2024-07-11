@@ -8,7 +8,6 @@ import ApagarError from "../../../errores/errores_central_nuclear/errores_de_los
 export default class Chernobyl extends EstadoReactor {
   constructor(r: Reactor) {
     super(r);
-    this.eliminarTimeOut(this._timerTemp);
   }
 
   override obtenerEnergiaNeta(): number {

@@ -19,6 +19,7 @@ export default class Reactor {
   private _administradorBarras!: AdministradorBarras;
   private _plantaNuclear!: PlantaNuclear;
   private _id: number = 0;
+  protected _timerTemp: NodeJS.Timeout | null = null;
 
   public get id(): number {
     return this._id;
@@ -29,9 +30,11 @@ export default class Reactor {
 
   public encender(): void {
     this._estado.encender();
+    this.crearTimeOutTemp(10000);
   }
 
   public apagar(): void {
+    this.eliminarTimeOut(this._timerTemp);
     this._estado.apagar();
   }
 
@@ -87,12 +90,18 @@ export default class Reactor {
     }
   }
 
-  public agregarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
+  public agregarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
     this._mecanimosDeControl.push(mecanismoDeControl);
   }
 
-  public eliminarMecanismoDeControl(mecanismoDeControl: IMecanismoDeControl): void {
-    this._mecanimosDeControl = this._mecanimosDeControl.filter((mecanismo) => mecanismo !== mecanismoDeControl);
+  public eliminarMecanismoDeControl(
+    mecanismoDeControl: IMecanismoDeControl
+  ): void {
+    this._mecanimosDeControl = this._mecanimosDeControl.filter(
+      (mecanismo) => mecanismo !== mecanismoDeControl
+    );
   }
 
   public agregarSensor(sensor: ISensor): void {
@@ -120,7 +129,7 @@ export default class Reactor {
     return this._administradorBarras;
   }
 
-  public setAadministradorBarras(admin: AdministradorBarras) {
+  public setAdministradorBarras(admin: AdministradorBarras) {
     this._administradorBarras = admin;
     admin.setReactor(this);
   }
@@ -153,5 +162,50 @@ export default class Reactor {
 
   public agregarBarra(barra: BarraControl): void {
     this._barrasControl.push(barra);
+  }
+
+  // Temperatura
+
+  public calcValorEnfriamiento(): number {
+    const administradorBarras: AdministradorBarras =
+      this.getAdministradorBarras();
+    let barrasInsertadas: BarraControl[] =
+      administradorBarras.getBarrasInsertadas();
+    let valorEnfriamiento: number = 0;
+    barrasInsertadas.forEach((b) => (valorEnfriamiento += b.getPctBarra()));
+    console.log(valorEnfriamiento);
+    return valorEnfriamiento;
+  }
+
+  public incrementarTemperatura(): void {
+    let nuevaTemp: number = this.getTemperatura();
+    nuevaTemp += 10;
+    this.setTemperatura(nuevaTemp);
+    this.getEstado().verificarEstado();
+  }
+
+  public enfriarReactor(): void {
+    this._temperatura -= this.calcValorEnfriamiento();
+  }
+
+  // Timers
+
+  private crearTimeOutTemp(frecuencia: number): void {
+    this._timerTemp = setTimeout(() => {
+      this.incrementarTemperatura();
+      this.enfriarReactor();
+      this.resetTimeOutTemp(frecuencia);
+    }, frecuencia);
+  }
+
+  private eliminarTimeOut(timerCancelar: NodeJS.Timeout | null): void {
+    if (timerCancelar !== null) {
+      clearTimeout(timerCancelar);
+    }
+  }
+
+  private resetTimeOutTemp(frecuencia: number): void {
+    this.eliminarTimeOut(this._timerTemp);
+    this.crearTimeOutTemp(frecuencia);
   }
 }

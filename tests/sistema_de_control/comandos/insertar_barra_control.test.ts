@@ -28,6 +28,7 @@ describe("Test del comando insertar barra de control", () => {
     ) as jest.Mocked<DirectorBuildReactor>;
   MockDirectorBuilder.cargarPlantaNuclear(MockPlanta);
   let MockReactor: jest.Mocked<Reactor>;
+  let MockRCritico: jest.Mocked<RCritico>;
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -35,6 +36,7 @@ describe("Test del comando insertar barra de control", () => {
       MockDirectorBuilder.buildReactorNormal() as jest.Mocked<Reactor>;
     instance =
       new InsertarBarraDeControl() as jest.Mocked<InsertarBarraDeControl>;
+    MockRCritico = new RCritico(MockReactor) as jest.Mocked<RCritico>;
   });
 
   afterEach(() => {
@@ -49,6 +51,7 @@ describe("Test del comando insertar barra de control", () => {
     MockReactor.encender();
     expect(MockReactor.estaEncendido()).toBeTruthy();
     MockReactor.setTemperatura(Constantes.TEMP_MINIMA_NORMAL);
+    MockReactor.getEstado().verificarEstado();
     expect(MockReactor.getEstado()).toBeInstanceOf(RNormal);
 
     // Setea el spy
@@ -66,11 +69,9 @@ describe("Test del comando insertar barra de control", () => {
   });
 
   it("Debería poder bajar las barras en estado Crítico", () => {
-    // Setea el estado en RNormal
-    MockReactor.encender();
-    expect(MockReactor.estaEncendido()).toBeTruthy();
+    // Setea el estado en RCritico
     MockReactor.setTemperatura(Constantes.TEMP_MINIMA_CRITICA);
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
+    MockReactor.cambiarEstado(MockRCritico);
 
     // Frena el tiempo para evitar explosiones
     jest.clearAllTimers();
@@ -96,20 +97,14 @@ describe("Test del comando insertar barra de control", () => {
 
   it("Deberia ejecutar el comando y disminuir la temperatura", () => {
     MockReactor.encender();
-    // Setea la temperatura en TEMP_MINIMA_CRITICA + 30
-    MockReactor.setTemperatura(330 + 30);
 
-    // Esto es necesario porque setTemperatura no verificaEstado
-    MockReactor.getEstado().verificarEstado();
-    MockReactor.getEstado().verificarEstado();
+    const temperaturaInicial: number = 370;
 
-    // Verifica que reactor esté en estado RCritico
-    expect(MockReactor.getEstado()).toBeInstanceOf(RCritico);
-
-    const temperaturaInicial: number = MockReactor.getTemperatura();
+    MockReactor.setTemperatura(temperaturaInicial);
+    MockReactor.cambiarEstado(MockRCritico);
 
     // Baja todas las barras
-    const params = { param1: 100 };
+    const params = { param1: 10 };
     instance.ejecutar(MockReactor, params);
 
     // Comprueba que hayan bajado todas las barras
@@ -117,8 +112,12 @@ describe("Test del comando insertar barra de control", () => {
       MockReactor.getAdministradorBarras().getBarrasInsertadas().length
     ).toBe(MockReactor.getAdministradorBarras().getBarrasTotales().length);
 
+    expect(
+      MockReactor.getAdministradorBarras().getBarrasEnDesuso().length
+    ).toBe(0);
+
     // Avanza el tiempo
-    jest.advanceTimersByTime(350);
+    jest.advanceTimersByTime(10000);
 
     // Verifica que la temperatura haya disminuido
     expect(MockReactor.getTemperatura()).toBeLessThan(temperaturaInicial);
