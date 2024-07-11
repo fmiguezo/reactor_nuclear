@@ -173,7 +173,7 @@ export default class Reactor {
       administradorBarras.getBarrasInsertadas();
     let valorEnfriamiento: number = 0;
     barrasInsertadas.forEach((b) => (valorEnfriamiento += b.getPctBarra()));
-    return (valorEnfriamiento/420);
+    return (valorEnfriamiento/100);
   }
 
   public incrementarTemperatura(): void {
