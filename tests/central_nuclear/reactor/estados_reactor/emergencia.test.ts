@@ -9,6 +9,7 @@ import DirectorBuildReactor from "../../../../src/central_nuclear/reactor/builde
 import Sistema from "../../../../src/sistema_de_control/sistema";
 import EncenderError from "../../../../src/errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
 import AlertaCritica from "../../../../src/sistema_de_control/alertas/alerta_critica";
+import EstadoReactor from "../../../../src/central_nuclear/reactor/estados_reactor/estadoreactor";
 
 let instance: REmergencia;
 let MockPlanta: jest.Mocked<PlantaNuclear> = new PlantaNuclear() as jest.Mocked<PlantaNuclear>;
@@ -77,5 +78,21 @@ describe("Test del estado apagado", () => {
 
   it("debería poder insertar barras", () => {
     expect(instance.puedeInsertarBarras()).toBeTruthy();
+  });
+
+  it("debería inserta la energía generada en el registro al llamar a liberarEnergia", () => {
+    const mockInsertarRegistro = jest.spyOn(instance["_registroEnergia"], "insertarRegistro");
+    const mockEnergiaNeta = 100;
+    jest.spyOn(instance, "obtenerEnergiaNeta").mockReturnValue(mockEnergiaNeta);
+    instance.liberarEnergia();
+    expect(mockInsertarRegistro).toHaveBeenCalledWith(mockEnergiaNeta);
+  });
+
+  it("debería calcular correctamente la energía neta a obtenerEnergiaNeta", () => {
+    const energia = 100;
+    const energiaNetaEsperada = energia * 0.2;
+    jest.spyOn(EstadoReactor.prototype, "obtenerEnergiaNeta").mockReturnValue(energia);
+    const energiaNeta = instance.obtenerEnergiaNeta();
+    expect(energiaNeta).toEqual(energiaNetaEsperada);
   });
 });
