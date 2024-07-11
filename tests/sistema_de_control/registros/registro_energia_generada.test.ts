@@ -6,16 +6,13 @@ describe("Singleton RegistroEnergiaGenerada", () => {
   });
 
   it("_instancia no debe ser undefined luego de obtener una instancia", () => {
-    const instanciaSingleton: RegistroEnergiaGenerada =
-      RegistroEnergiaGenerada.instancia;
+    const instanciaSingleton: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
     expect(RegistroEnergiaGenerada["_instancia"]).not.toBeUndefined();
   });
 
   it("verifica que las instancias obtenidas sean iguales", () => {
-    const instanciaSingletonA: RegistroEnergiaGenerada =
-      RegistroEnergiaGenerada.instancia;
-    const instanciaSingletonB: RegistroEnergiaGenerada =
-      RegistroEnergiaGenerada.instancia;
+    const instanciaSingletonA: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
+    const instanciaSingletonB: RegistroEnergiaGenerada = RegistroEnergiaGenerada.instancia;
 
     expect(instanciaSingletonA).toBe(instanciaSingletonB);
   });
@@ -75,5 +72,63 @@ describe("Test de la clase registro_energia_generada.ts", () => {
     const valores = Array.from(registros.values());
     expect(valores).toContain(energiaProducida1);
     expect(valores).toContain(energiaProducida2);
+  });
+
+  it("Debería permitir insertar múltiples registros y mantener el orden", () => {
+    const energiaProducida1 = 5;
+    const energiaProducida2 = 10;
+
+    registro.insertarRegistro(energiaProducida1);
+    registro.insertarRegistro(energiaProducida2);
+
+    const registros = registro.obtenerRegistros();
+    const fechas = Array.from(registros.keys());
+
+    expect(registros.size).toBe(2);
+    expect(registros.get(fechas[0])).toBe(energiaProducida1);
+    expect(registros.get(fechas[1])).toBe(energiaProducida2);
+  });
+
+  it("Debería manejar correctamente la inserción con fechas iguales", () => {
+    const energiaProducida1 = 5;
+    const energiaProducida2 = 10;
+    const fecha = new Date();
+
+    registro.insertarRegistro(energiaProducida1);
+    registro.insertarRegistro(energiaProducida2);
+
+    const registros = registro.obtenerRegistros();
+    const fechas = Array.from(registros.keys());
+
+    expect(registros.size).toBe(2);
+    expect(fechas[0]).toEqual(fechas[1]);
+    expect(registros.get(fechas[0])).toBe(energiaProducida1);
+    expect(registros.get(fechas[1])).toBe(energiaProducida2);
+  });
+
+  it("Debería manejar correctamente registros con valores negativos", () => {
+    const energiaProducida = -5;
+
+    registro.insertarRegistro(energiaProducida);
+
+    const registros = registro.obtenerRegistros();
+    const [fecha, valor] = Array.from(registros.entries())[0];
+
+    expect(registros.size).toBe(1);
+    expect(valor).toBe(energiaProducida);
+    expect(fecha).toBeInstanceOf(Date);
+  });
+
+  it("Debería retornar un mapa vacío si no se han insertado registros", () => {
+    const registros = registro.obtenerRegistros();
+
+    expect(registros.size).toBe(0);
+  });
+
+  it("Debería manejar correctamente la creación de múltiples instancias", () => {
+    const instancia1 = RegistroEnergiaGenerada.instancia;
+    const instancia2 = RegistroEnergiaGenerada.instancia;
+
+    expect(instancia1).toBe(instancia2);
   });
 });
