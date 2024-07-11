@@ -11,7 +11,6 @@ export default class modEmergencIA {
   }
 
   public AZ5(reactor: Reactor): void {
-    console.log("ME LLAMARON");
     const administradorBarras = reactor.getAdministradorBarras();
 
     administradorBarras.reemplazarBarrasVencidas();
