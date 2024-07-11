@@ -156,9 +156,6 @@ export default class Reactor {
   public agregarBarra(barra: BarraControl): void {
     this._barrasControl.push(barra);
   }
-
-  // Temperatura
-
   public calcValorEnfriamiento(): number {
     const administradorBarras: AdministradorBarras = this.getAdministradorBarras();
     let barrasInsertadas: BarraControl[] = administradorBarras.getBarrasInsertadas();
