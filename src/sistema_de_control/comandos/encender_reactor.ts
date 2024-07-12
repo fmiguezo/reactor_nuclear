@@ -4,6 +4,7 @@ import EncenderErrorEChernobyl from "../../errores/errores_central_nuclear/error
 import EncenderErrorENormal from "../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_normal/error_encender";
 import EncenderErrorECritico from "../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_critico/encender_error";
 import EncenderErrorEEmergencia from "../../errores/errores_central_nuclear/errores_de_los_estados_del_reactor/error_estado_emergencia/error_encender";
+
 export default class EncenderReactor implements Command {
   public ejecutar(r: Reactor): void {
     try {
